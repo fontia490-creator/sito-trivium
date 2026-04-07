@@ -438,14 +438,14 @@
   background:radial-gradient(circle,rgba(0,212,232,.15) 0%,transparent 70%);border-radius:50%;}
 .pstat .sn{font-size:2.5rem;font-weight:900;color:var(--cyan);}
 .pstat .sl{font-size:.8rem;color:rgba(200,200,200,.55);margin-top:5px;line-height:1.5;}
-.problem-text h2{color:var(--bg-card);}
+.problem-text h2{color:var(--white);}
 .problem-text .lead{color:rgba(200,200,200,.65);}
 .fact-list{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
 .fact{display:flex;gap:12px;align-items:flex-start;}
 .fact-icon{width:36px;height:36px;border-radius:8px;background:rgba(0,212,232,.15);
   border:1px solid rgba(0,212,232,.3);display:flex;align-items:center;justify-content:center;
   font-size:.95rem;flex-shrink:0;}
-.fact h4{font-size:.9rem;font-weight:700;color:var(--bg-card);margin-bottom:3px;}
+.fact h4{font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:3px;}
 .fact p{font-size:.82rem;color:rgba(200,200,200,.5);line-height:1.5;}
 
 /* ========== TECH SCHEMA ========== */
@@ -491,7 +491,7 @@
 .vcard-body h3{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:8px;}
 .vcard-body p{font-size:.84rem;color:var(--gray);line-height:1.65;margin-bottom:14px;}
 .vcard-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-.vtag{background:var(--blue-100);color:var(--cyan2);font-size:.71rem;
+.vtag{background:rgba(0,212,232,0.1);color:var(--cyan);font-size:.71rem;
   font-weight:600;padding:3px 10px;border-radius:20px;}
 .vcard-link{display:inline-flex;align-items:center;gap:5px;color:var(--cyan);
   font-size:.84rem;font-weight:700;transition:gap .2s;}
@@ -504,7 +504,7 @@
 .steps-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:start;margin-top:50px;position:relative;}
 /* connector lines */
 .steps-flow::before{content:'';position:absolute;top:36px;left:calc(10%);right:calc(10%);
-  height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue-200),var(--cyan));
+  height:2px;background:linear-gradient(90deg,var(--cyan),var(--cyan2),var(--cyan));
   background-size:200% 100%;animation:flowline 3s linear infinite;}
 @keyframes flowline{0%{background-position:0 0;}100%{background-position:200% 0;}}
 .step{text-align:center;padding:0 12px;position:relative;z-index:2;}
@@ -518,13 +518,13 @@
 
 /* ========== DATA SECTION ========== */
 #data{padding:110px 0;
-  background:linear-gradient(135deg,var(--white) 0%,var(--gray2) 100%);}
+  background:linear-gradient(135deg,#0d1520 0%,#1a1e24 100%);}
 .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;margin-top:50px;}
 /* Animated chart */
 .chart-box{background:rgba(200,200,200,.04);border:1px solid rgba(0,212,232,.2);
   border-radius:18px;padding:28px;}
 .chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
-.chart-head h3{font-size:.95rem;font-weight:700;color:var(--bg-card);}
+.chart-head h3{font-size:.95rem;font-weight:700;color:var(--white);}
 .chart-period{display:flex;gap:8px;}
 .cp{background:rgba(200,200,200,.06);border:1px solid rgba(200,200,200,.1);
   color:rgba(200,200,200,.5);font-size:.72rem;padding:4px 12px;border-radius:20px;cursor:pointer;transition:all .2s;}
@@ -543,7 +543,7 @@
 .di{display:flex;align-items:center;gap:9px;}
 .di-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
 .di span{font-size:.82rem;color:rgba(200,200,200,.55);}
-.di strong{font-size:.82rem;color:var(--bg-card);margin-left:auto;}
+.di strong{font-size:.82rem;color:var(--white);margin-left:auto;}
 /* Metric cards */
 .metrics-col{display:flex;flex-direction:column;gap:16px;}
 .metric-card{background:rgba(200,200,200,.04);border:1px solid rgba(0,212,232,.15);
@@ -558,12 +558,12 @@
 .mc-trend.down{color:#f87171;}
 
 /* ========== STATS BAR ========== */
-#statsbar{padding:70px 0;background:linear-gradient(90deg,var(--azure-deep),var(--cyan2));}
+#statsbar{padding:70px 0;background:linear-gradient(90deg,#003344,var(--cyan2));}
 #statsbar .container{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
 .stb{text-align:center;padding:24px;background:rgba(200,200,200,.08);
   border-radius:14px;border:1px solid rgba(200,200,200,.15);transition:all .2s;}
 .stb:hover{background:rgba(200,200,200,.14);}
-.stb .n{font-size:2.8rem;font-weight:900;color:var(--bg-card);}
+.stb .n{font-size:2.8rem;font-weight:900;color:var(--white);}
 .stb .l{font-size:.8rem;color:rgba(200,200,200,.65);margin-top:6px;}
 
 /* ========== BUSINESS PLAN ========== */
@@ -605,7 +605,7 @@
 .citem{display:flex;gap:14px;align-items:flex-start;padding:18px;
   background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;transition:all .2s;}
 .citem:hover{border-color:var(--cyan);box-shadow:var(--shadow);}
-.ci-ico{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));
+.ci-ico{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,rgba(0,212,232,0.15),rgba(0,180,200,0.25));
   display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 .ci-txt h4{font-size:.9rem;font-weight:700;color:var(--white);}
 .ci-txt p{font-size:.82rem;color:var(--gray);margin-top:2px;}
@@ -632,7 +632,7 @@
 .cta-band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .cta-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,74,110,.93),rgba(2,132,199,.85));z-index:1;}
 .cta-content{position:relative;z-index:2;padding:90px 0;text-align:center;}
-.cta-content h2{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;color:var(--bg-card);margin-bottom:16px;}
+.cta-content h2{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;color:var(--white);margin-bottom:16px;}
 .cta-content p{font-size:1.05rem;color:rgba(200,200,200,.75);margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto;}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 
@@ -830,6 +830,108 @@
         grid-template-columns: 1fr 1fr;
       }
     }
+
+    /* ===== LOGO: shift right + light trace animation ===== */
+    .hero-visual {
+      justify-content: flex-end;
+      padding-right: 20px;
+    }
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 420px;
+      height: 420px;
+    }
+    /* Light trace on triangle edges */
+    @keyframes traceOuter {
+      0%   { stroke-dashoffset: 1000; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes traceInner {
+      0%   { stroke-dashoffset: 800; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes traceLine {
+      0%   { stroke-dashoffset: 200; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .logo-trace-outer {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: traceOuter 3s ease forwards, traceOuter 6s ease 3s infinite alternate;
+      filter: drop-shadow(0 0 8px #00eeff);
+    }
+    .logo-trace-inner {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      animation: traceInner 3s ease .5s forwards, traceInner 6s ease 3.5s infinite alternate;
+      filter: drop-shadow(0 0 5px #00d4e8);
+    }
+    .logo-trace-line {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: traceLine 2s ease 1s forwards;
+      filter: drop-shadow(0 0 4px #00d4e8);
+    }
+    /* Orbiting glow dot along triangle perimeter */
+    @keyframes orbitTriangle {
+      0%   { offset-distance: 0%; }
+      100% { offset-distance: 100%; }
+    }
+    
+
+    /* ===== LOGO: shift right + light trace animation ===== */
+    .hero-visual {
+      justify-content: flex-end;
+      padding-right: 20px;
+    }
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 420px;
+      height: 420px;
+    }
+    /* Light trace on triangle edges */
+    @keyframes traceOuter {
+      0%   { stroke-dashoffset: 1000; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes traceInner {
+      0%   { stroke-dashoffset: 800; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes traceLine {
+      0%   { stroke-dashoffset: 200; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .logo-trace-outer {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: traceOuter 3s ease forwards, traceOuter 6s ease 3s infinite alternate;
+      filter: drop-shadow(0 0 8px #00eeff);
+    }
+    .logo-trace-inner {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      animation: traceInner 3s ease .5s forwards, traceInner 6s ease 3.5s infinite alternate;
+      filter: drop-shadow(0 0 5px #00d4e8);
+    }
+    .logo-trace-line {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: traceLine 2s ease 1s forwards;
+      filter: drop-shadow(0 0 4px #00d4e8);
+    }
+    /* Orbiting glow dot along triangle perimeter */
+    @keyframes orbitTriangle {
+      0%   { offset-distance: 0%; }
+      100% { offset-distance: 100%; }
+    }
+    
   </style>
 </head>
 
@@ -881,7 +983,7 @@
           <circle cx="50" cy="50" r="10" fill="url(#glow)" opacity=".5" />
         </svg>
         <div>
-          <div class="nav-logo-text">Trivium<span>.</span></div>
+          <div class="nav-logo-text">TRIVIUM</div>
           <div class="nav-sub">Where Paths Converge</div>
         </div>
       </div>
@@ -926,6 +1028,10 @@
             <div class="n" data-count="99">0</div>
             <div class="l">% Uptime SLA</div>
           </div>
+          <div class="hstat">
+            <div class="n" data-count="34">0</div>
+            <div class="l">% Aumento Ricavi</div>
+          </div>
         </div>
       </div>
       <div class="hero-visual">
@@ -946,27 +1052,38 @@
                 <stop offset="60%" stop-color="#00d4e8" stop-opacity=".6" />
                 <stop offset="100%" stop-color="#00d4e8" stop-opacity="0" />
               </radialGradient>
-              <filter id="blur">
-                <feGaussianBlur stdDeviation="3" />
+              <filter id="blur"><feGaussianBlur stdDeviation="3" /></filter>
+              <filter id="glow-strong">
+                <feGaussianBlur stdDeviation="4" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
             </defs>
-            <!-- Glow behind triangle -->
-            <polygon points="100,18 188,166 12,166" fill="rgba(0,212,232,0.05)" filter="url(#blur)" />
-            <!-- Outer triangle -->
-            <polygon points="100,14 191,169 9,169" stroke="url(#lg2)" stroke-width="5" fill="none"
-              stroke-linejoin="round" />
-            <!-- Inner triangle -->
-            <polygon points="100,38 172,158 28,158" stroke="url(#lg2)" stroke-width="3" fill="none"
-              stroke-linejoin="round" opacity=".6" />
-            <!-- Three converging lines -->
-            <line x1="100" y1="38" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="28" y1="158" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="172" y1="158" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round" />
+            <!-- Glow fill behind -->
+            <polygon points="100,18 188,166 12,166" fill="rgba(0,212,232,0.06)" filter="url(#blur)" />
+            <!-- Base outer triangle (dim) -->
+            <polygon points="100,14 191,169 9,169" stroke="rgba(0,212,232,0.25)" stroke-width="4" fill="none" stroke-linejoin="round" />
+            <!-- Animated light trace outer -->
+            <polygon class="logo-trace-outer" points="100,14 191,169 9,169" stroke="#00eeff" stroke-width="3" fill="none" stroke-linejoin="round" />
+            <!-- Base inner triangle (dim) -->
+            <polygon points="100,38 172,158 28,158" stroke="rgba(0,212,232,0.18)" stroke-width="2.5" fill="none" stroke-linejoin="round" />
+            <!-- Animated light trace inner -->
+            <polygon class="logo-trace-inner" points="100,38 172,158 28,158" stroke="#00d4e8" stroke-width="2" fill="none" stroke-linejoin="round" />
+            <!-- Three converging lines (dim) -->
+            <line x1="100" y1="38" x2="100" y2="100" stroke="rgba(0,212,232,0.3)" stroke-width="2.5" stroke-linecap="round" />
+            <line x1="28" y1="158" x2="100" y2="100" stroke="rgba(0,212,232,0.3)" stroke-width="2.5" stroke-linecap="round" />
+            <line x1="172" y1="158" x2="100" y2="100" stroke="rgba(0,212,232,0.3)" stroke-width="2.5" stroke-linecap="round" />
+            <!-- Animated lines -->
+            <line class="logo-trace-line" x1="100" y1="38" x2="100" y2="100" stroke="#00eeff" stroke-width="2.5" stroke-linecap="round" />
+            <line class="logo-trace-line" x1="28" y1="158" x2="100" y2="100" stroke="#00eeff" stroke-width="2.5" stroke-linecap="round" style="animation-delay:0.3s" />
+            <line class="logo-trace-line" x1="172" y1="158" x2="100" y2="100" stroke="#00eeff" stroke-width="2.5" stroke-linecap="round" style="animation-delay:0.6s" />
             <!-- Center glow -->
             <circle cx="100" cy="100" r="22" fill="url(#glw)" />
-            <!-- Center dot -->
-            <circle cx="100" cy="100" r="10" fill="#00eeff" />
-            <circle cx="100" cy="100" r="6" fill="#ffffff" />
+            <!-- Center dot pulsing -->
+            <circle cx="100" cy="100" r="10" fill="#00eeff" filter="url(#glow-strong)">
+              <animate attributeName="r" values="9;13;9" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;0.7;1" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="100" cy="100" r="5" fill="#ffffff" />
           </svg>
         </div>
       </div>
@@ -1027,12 +1144,12 @@
       <!-- Animated SVG Architecture Diagram -->
       <svg class="schema-svg" viewBox="0 0 960 280" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Background -->
-        <rect width="960" height="280" rx="20" fill="#f0f9ff"/>
+        <rect width="960" height="280" rx="20" fill="#1a2030"/>
         <rect width="960" height="280" rx="20" fill="url(#bgGrad)" opacity=".4"/>
         <defs>
           <linearGradient id="bgGrad" x1="0" y1="0" x2="960" y2="280" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#dbeafe" stop-opacity=".5"/>
-            <stop offset="1" stop-color="#e0f2fe" stop-opacity=".3"/>
+            <stop stop-color="#1a2030" stop-opacity=".5"/>
+            <stop offset="1" stop-color="#22272f" stop-opacity=".3"/>
           </linearGradient>
           <linearGradient id="nodeGrad" x1="0" y1="0" x2="1" y2="1">
             <stop stop-color="var(--cyan2)"/>
@@ -1042,17 +1159,17 @@
         </defs>
 
         <!-- Layer labels -->
-        <text x="96" y="26" text-anchor="middle" font-size="11" fill="#64748b" font-weight="700" font-family="Segoe UI,sans-serif">FIELD LAYER</text>
-        <text x="288" y="26" text-anchor="middle" font-size="11" fill="#64748b" font-weight="700" font-family="Segoe UI,sans-serif">EDGE GATEWAY</text>
-        <text x="480" y="26" text-anchor="middle" font-size="11" fill="#64748b" font-weight="700" font-family="Segoe UI,sans-serif">CLOUD PLATFORM</text>
-        <text x="672" y="26" text-anchor="middle" font-size="11" fill="#64748b" font-weight="700" font-family="Segoe UI,sans-serif">AI ENGINE</text>
-        <text x="864" y="26" text-anchor="middle" font-size="11" fill="#64748b" font-weight="700" font-family="Segoe UI,sans-serif">USER APPS</text>
+        <text x="96" y="26" text-anchor="middle" font-size="11" fill="rgba(0,212,232,0.7)" font-weight="700" font-family="Segoe UI,sans-serif">FIELD LAYER</text>
+        <text x="288" y="26" text-anchor="middle" font-size="11" fill="rgba(0,212,232,0.7)" font-weight="700" font-family="Segoe UI,sans-serif">EDGE GATEWAY</text>
+        <text x="480" y="26" text-anchor="middle" font-size="11" fill="rgba(0,212,232,0.7)" font-weight="700" font-family="Segoe UI,sans-serif">CLOUD PLATFORM</text>
+        <text x="672" y="26" text-anchor="middle" font-size="11" fill="rgba(0,212,232,0.7)" font-weight="700" font-family="Segoe UI,sans-serif">AI ENGINE</text>
+        <text x="864" y="26" text-anchor="middle" font-size="11" fill="rgba(0,212,232,0.7)" font-weight="700" font-family="Segoe UI,sans-serif">USER APPS</text>
 
         <!-- dividers -->
-        <line x1="192" y1="35" x2="192" y2="265" stroke="#dbeafe" stroke-width="1.5"/>
-        <line x1="384" y1="35" x2="384" y2="265" stroke="#dbeafe" stroke-width="1.5"/>
-        <line x1="576" y1="35" x2="576" y2="265" stroke="#dbeafe" stroke-width="1.5"/>
-        <line x1="768" y1="35" x2="768" y2="265" stroke="#dbeafe" stroke-width="1.5"/>
+        <line x1="192" y1="35" x2="192" y2="265" stroke="rgba(0,212,232,0.1)" stroke-width="1.5"/>
+        <line x1="384" y1="35" x2="384" y2="265" stroke="rgba(0,212,232,0.1)" stroke-width="1.5"/>
+        <line x1="576" y1="35" x2="576" y2="265" stroke="rgba(0,212,232,0.1)" stroke-width="1.5"/>
+        <line x1="768" y1="35" x2="768" y2="265" stroke="rgba(0,212,232,0.1)" stroke-width="1.5"/>
 
         <!-- Sensor node -->
         <g class="schema-node" filter="url(#glow2)">
@@ -1068,10 +1185,10 @@
 
         <!-- Edge Gateway -->
         <g class="schema-node" filter="url(#glow2)">
-          <rect x="228" y="90" width="120" height="100" rx="14" fill="white" stroke="var(--cyan)" stroke-width="2"/>
+          <rect x="228" y="90" width="120" height="100" rx="14" fill="#22272f" stroke="var(--cyan)" stroke-width="2"/>
           <text x="288" y="130" text-anchor="middle" font-size="22">🖥</text>
           <text x="288" y="153" text-anchor="middle" font-size="11" fill="var(--white)" font-weight="700" font-family="Segoe UI,sans-serif">Edge Node</text>
-          <text x="288" y="168" text-anchor="middle" font-size="9" fill="#64748b" font-family="Segoe UI,sans-serif">Local Processing</text>
+          <text x="288" y="168" text-anchor="middle" font-size="9" fill="rgba(176,190,197,0.7)" font-family="Segoe UI,sans-serif">Local Processing</text>
           <rect x="248" y="175" width="80" height="10" rx="5" fill="#e0f2fe"/>
           <rect x="248" y="175" width="58" height="10" rx="5" fill="var(--cyan)"/>
         </g>
@@ -1095,10 +1212,10 @@
 
         <!-- AI Engine -->
         <g class="schema-node" filter="url(#glow2)">
-          <rect x="612" y="90" width="120" height="100" rx="14" fill="white" stroke="var(--cyan)" stroke-width="2"/>
+          <rect x="612" y="90" width="120" height="100" rx="14" fill="#22272f" stroke="var(--cyan)" stroke-width="2"/>
           <text x="672" y="130" text-anchor="middle" font-size="22">🤖</text>
           <text x="672" y="153" text-anchor="middle" font-size="11" fill="var(--white)" font-weight="700" font-family="Segoe UI,sans-serif">AI Engine</text>
-          <text x="672" y="168" text-anchor="middle" font-size="9" fill="#64748b" font-family="Segoe UI,sans-serif">ML Prediction</text>
+          <text x="672" y="168" text-anchor="middle" font-size="9" fill="rgba(176,190,197,0.7)" font-family="Segoe UI,sans-serif">ML Prediction</text>
           <circle cx="652" cy="182" r="4" fill="var(--cyan)" opacity=".6"/>
           <circle cx="672" cy="182" r="5" fill="var(--cyan)"/>
           <circle cx="692" cy="182" r="4" fill="var(--cyan)" opacity=".6"/>
@@ -1159,13 +1276,13 @@
         <div class="bar"></div>
         <p class="lead">From exposed curbside poles to underground garages — our hardware lineup handles any condition with military-grade resilience and zero-compromise accuracy.</p>
       </div>
-      <div class="rv d2" style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;">
-        <h3 style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:18px;">🏆 Platform Performance</h3>
+      <div class="rv d2" style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--white);margin-bottom:18px;">🏆 Platform Performance</h3>
         <div style="display:flex;flex-direction:column;gap:14px;">
-          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Detection Accuracy</span><span style="color:var(--navy);font-weight:700;">99.4%</span></div><div style="height:6px;background:var(--blue-100);border-radius:3px;"><div style="height:100%;width:99.4%;background:linear-gradient(90deg,var(--azure-mid),var(--azure));border-radius:3px;" class="bar-progress"></div></div></div>
-          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Revenue Recovery</span><span style="color:var(--navy);font-weight:700;">+34%</span></div><div style="height:6px;background:var(--blue-100);border-radius:3px;"><div style="height:100%;width:34%;background:linear-gradient(90deg,var(--cyan2),#06b6d4);border-radius:3px;" class="bar-progress"></div></div></div>
-          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Traffic Reduction</span><span style="color:var(--navy);font-weight:700;">-28%</span></div><div style="height:6px;background:var(--blue-100);border-radius:3px;"><div style="height:100%;width:28%;background:linear-gradient(90deg,#0369a1,var(--cyan));border-radius:3px;" class="bar-progress"></div></div></div>
-          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">System Uptime</span><span style="color:var(--navy);font-weight:700;">99.9%</span></div><div style="height:6px;background:var(--blue-100);border-radius:3px;"><div style="height:100%;width:99%;background:linear-gradient(90deg,var(--azure-mid),var(--azure));border-radius:3px;" class="bar-progress"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Detection Accuracy</span><span style="color:var(--cyan);font-weight:700;">99.4%</span></div><div style="height:6px;background:rgba(0,212,232,0.15);border-radius:3px;"><div style="height:100%;width:99.4%;background:linear-gradient(90deg,var(--cyan2),var(--cyan));border-radius:3px;" class="bar-progress"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Revenue Recovery</span><span style="color:var(--cyan);font-weight:700;">+34%</span></div><div style="height:6px;background:rgba(0,212,232,0.15);border-radius:3px;"><div style="height:100%;width:34%;background:linear-gradient(90deg,var(--cyan2),#06b6d4);border-radius:3px;" class="bar-progress"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">Traffic Reduction</span><span style="color:var(--cyan);font-weight:700;">-28%</span></div><div style="height:6px;background:rgba(0,212,232,0.15);border-radius:3px;"><div style="height:100%;width:28%;background:linear-gradient(90deg,#0369a1,var(--cyan));border-radius:3px;" class="bar-progress"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px;"><span style="color:var(--gray);">System Uptime</span><span style="color:var(--cyan);font-weight:700;">99.9%</span></div><div style="height:6px;background:rgba(0,212,232,0.15);border-radius:3px;"><div style="height:100%;width:99%;background:linear-gradient(90deg,var(--cyan2),var(--cyan));border-radius:3px;" class="bar-progress"></div></div></div>
         </div>
       </div>
     </div>
@@ -1384,77 +1501,7 @@
   </div>
 </section>
 
-<!-- STATS BAR -->
-<section id="statsbar">
-  <div class="container">
-    <div class="stb rv"><div class="n" data-count="500">0</div><div class="l">Cities Deployed</div></div>
-    <div class="stb rv d1"><div class="n" data-count="10">0</div><div class="l">Million+ Spaces</div></div>
-    <div class="stb rv d2"><div class="n" data-count="99">0</div><div class="l">% Detection Accuracy</div></div>
-    <div class="stb rv d3"><div class="n" data-count="34">0</div><div class="l">% Revenue Increase</div></div>
-  </div>
-</section>
 
-<!-- BUSINESS PLAN -->
-<section id="plans">
-  <div class="container">
-    <div class="plans-header rv">
-      <div class="chip"><span class="blink"></span> Pricing</div>
-      <h2 class="h2">Choose Your <em>Plan</em></h2>
-      <div class="bar" style="margin:0 auto 16px;"></div>
-      <p class="lead">Transparent pricing with no hidden fees. Scale from a single block to an entire city network.</p>
-    </div>
-    <div class="billing-toggle">
-      <span>Monthly</span>
-      <div class="tog on" id="bt" onclick="togBill()"></div>
-      <span class="active">Annual</span>
-      <span class="save-tag">Save 20%</span>
-    </div>
-    <div class="plans-row">
-      <div class="plan rv">
-        <h3>🌱 Starter</h3>
-        <div class="price"><span class="pv" data-m="490" data-y="390">€390</span><sub> /mo · billed annually</sub></div>
-        <p class="pdesc">Perfect for pilot programs and small municipalities with up to 100 parking spaces.</p>
-        <ul class="plan-feats">
-          <li>Up to 100 sensors</li>
-          <li>Cloud dashboard (standard)</li>
-          <li>mPark app included</li>
-          <li>Monthly analytics reports</li>
-          <li>Email support (48h)</li>
-        </ul>
-        <a href="#contact" class="btn btn-ghost">Start Free Trial</a>
-      </div>
-      <div class="plan top rv d1">
-        <div class="plan-mark">⭐ MOST POPULAR</div>
-        <h3>🏙 Professional</h3>
-        <div class="price"><span class="pv" data-m="1290" data-y="990">€990</span><sub> /mo · billed annually</sub></div>
-        <p class="pdesc">For growing cities and private operators managing 100–2,000 spaces.</p>
-        <ul class="plan-feats">
-          <li>Up to 2,000 sensors</li>
-          <li>AI Engine + Predictive Analytics</li>
-          <li>LPR camera integration</li>
-          <li>Dynamic pricing module</li>
-          <li>ERP / MaaS connectors</li>
-          <li>Priority support 24/7</li>
-        </ul>
-        <a href="#contact" class="btn btn-cyan">Request Demo</a>
-      </div>
-      <div class="plan rv d2">
-        <h3>🌐 Enterprise</h3>
-        <div class="price">Custom<sub> — contact sales</sub></div>
-        <p class="pdesc">For large cities, national operators, and multi-site networks over 2,000 spaces.</p>
-        <ul class="plan-feats">
-          <li>Unlimited sensors</li>
-          <li>White-label platform</li>
-          <li>Dedicated AI model</li>
-          <li>On-premise or private cloud</li>
-          <li>99.9% contractual SLA</li>
-          <li>Dedicated account manager</li>
-        </ul>
-        <a href="#contact" class="btn btn-ghost">Talk to Sales</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- CTA BAND with video -->
 <div class="cta-band">
@@ -1493,13 +1540,13 @@
         </div>
         <!-- Mini testimonials -->
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:14px;">
-          <div style="background:var(--off-white);border:1px solid var(--border);border-radius:12px;padding:16px;border-left:4px solid var(--azure);">
+          <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;padding:16px;border-left:4px solid var(--cyan);">
             <p style="font-size:.84rem;color:var(--gray);font-style:italic;line-height:1.65;margin-bottom:10px;">"Revenue increased 34% in the first quarter. Best infrastructure investment the city has made."</p>
-            <span style="font-size:.8rem;font-weight:700;color:var(--navy);">— City of Chengdu, Traffic Director</span>
+            <span style="font-size:.8rem;font-weight:700;color:var(--cyan);">— City of Chengdu, Traffic Director</span>
           </div>
-          <div style="background:var(--off-white);border:1px solid var(--border);border-radius:12px;padding:16px;border-left:4px solid var(--azure);">
+          <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;padding:16px;border-left:4px solid var(--cyan);">
             <p style="font-size:.84rem;color:var(--gray);font-style:italic;line-height:1.65;margin-bottom:10px;">"Deployment was complete in 18 days. The system paid for itself within 6 months."</p>
-            <span style="font-size:.8rem;font-weight:700;color:var(--navy);">— MallGroup Operations, Bangkok</span>
+            <span style="font-size:.8rem;font-weight:700;color:var(--cyan);">— MallGroup Operations, Bangkok</span>
           </div>
         </div>
       </div>
@@ -1708,6 +1755,32 @@ const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
 },{threshold:.3});
 document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid').forEach(s=>cObs.observe(s));
+
+// ---- HERO STATS: animate immediately on load ----
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.hero-stats [data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let n = 0; const step = Math.max(1, Math.ceil(target/60));
+    const iv = setInterval(() => {
+      n = Math.min(n+step, target);
+      el.textContent = n + (target >= 100 ? '+' : target === 99 ? '%' : '+');
+      if(n >= target) clearInterval(iv);
+    }, 20);
+  });
+});
+
+// ---- HERO STATS: animate immediately on load ----
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.hero-stats [data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let n = 0; const step = Math.max(1, Math.ceil(target/60));
+    const iv = setInterval(() => {
+      n = Math.min(n+step, target);
+      el.textContent = n + (target >= 100 ? '+' : target === 99 ? '%' : '+');
+      if(n >= target) clearInterval(iv);
+    }, 20);
+  });
+});
 
 // ===== BAR CHART =====
 const barData7={labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],vals:[3200,4100,3800,4600,5100,4300,3700]};
