@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Trivium — Where Paths Converge</title>
+<style>
+/* ========== RESET & VARIABLES ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-deep:#1a1e24;
+  --bg-card:#22272f;
+  --bg-card2:#2a3040;
+  --cyan:#00d4e8;
+  --cyan2:#00b4c8;
+  --cyan-glow:rgba(0,212,232,0.18);
+  --cyan-glow2:rgba(0,212,232,0.06);
+  --white:#ffffff;
+  --gray:#8896a8;
+  --gray2:#b0bec5;
+  --border:rgba(0,212,232,0.15);
+  --font:'Segoe UI',system-ui,sans-serif;
+  --radius:14px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg-deep);color:var(--white);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ========== CANVAS PARTICLES ========== */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+/* ========== UTILITY ========== */
+.container{max-width:1160px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+.tag{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,232,0.1);
+  border:1px solid var(--border);color:var(--cyan);font-size:.78rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:30px;margin-bottom:16px;}
+.tag .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.5;}}
+h2.sec-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:14px;}
+h2.sec-title span{color:var(--cyan);}
+.sec-sub{font-size:1rem;color:var(--gray2);line-height:1.75;max-width:620px;}
+.divider{width:50px;height:3px;background:linear-gradient(90deg,var(--cyan),transparent);border-radius:3px;margin:0 0 28px;}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 30px;border-radius:8px;
+  font-weight:700;font-size:.94rem;cursor:pointer;border:none;transition:all .25s;letter-spacing:.02em;}
+.btn-cyan{background:var(--cyan);color:#0a1628;}
+.btn-cyan:hover{background:#00eeff;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,232,0.35);}
+.btn-ghost{background:rgba(255,255,255,0.06);border:1.5px solid rgba(0,212,232,0.3);color:var(--white);}
+.btn-ghost:hover{border-color:var(--cyan);background:rgba(0,212,232,0.1);}
+
+/* ========== TOPBAR ========== */
+.topbar{background:rgba(15,18,24,0.95);padding:7px 0;border-bottom:1px solid var(--border);position:relative;z-index:100;}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.topbar-left{font-size:.82rem;color:var(--gray);}
+.topbar-left a{color:var(--cyan);margin:0 6px;}
+.topbar-right{display:flex;gap:16px;align-items:center;font-size:.82rem;}
+.topbar-right a{color:var(--gray);}
+.topbar-right a.active{color:var(--cyan);font-weight:700;}
+.topbar-right a:hover{color:var(--white);}
+
+/* ========== NAVBAR ========== */
+.navbar{position:sticky;top:0;z-index:99;
+  background:rgba(22,27,34,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);}
+.navbar .container{display:flex;align-items:center;justify-content:space-between;height:68px;}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.nav-logo-text{font-size:1.35rem;font-weight:900;letter-spacing:.03em;}
+.nav-logo-text span{color:var(--cyan);}
+.nav-sub{font-size:.65rem;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;margin-top:1px;}
+.nav-links{display:flex;align-items:center;gap:30px;list-style:none;}
+.nav-links a{font-size:.9rem;color:var(--gray2);font-weight:500;padding:6px 2px;
+  border-bottom:2px solid transparent;transition:all .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:.3s;}
+
+/* ========== HERO ========== */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 80px;
+  position:relative;overflow:hidden;}
+/* glow bg */
+.hero::before{content:'';position:absolute;top:-150px;right:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,212,232,0.1) 0%,transparent 65%);
+  border-radius:50%;pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-100px;left:-150px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(0,180,200,0.07) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;}
+.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;}
+.hero-left{animation:fadeUp .8s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.hero h1{font-size:clamp(2.1rem,4.5vw,3.8rem);font-weight:900;line-height:1.08;margin-bottom:24px;}
+.hero h1 span{color:var(--cyan);position:relative;}
+.hero h1 span::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,var(--cyan),transparent);}
+.hero p{color:var(--gray2);font-size:1.05rem;line-height:1.8;margin-bottom:36px;max-width:500px;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:50px;}
+.hero-stats{display:flex;gap:36px;border-top:1px solid var(--border);padding-top:30px;}
+.hstat .n{font-size:2.1rem;font-weight:900;color:var(--cyan);line-height:1;}
+.hstat .l{font-size:.78rem;color:var(--gray);margin-top:5px;letter-spacing:.04em;}
+
+/* Hero visual — Trivium Logo animated */
+.hero-visual{display:flex;align-items:center;justify-content:center;animation:fadeUp .8s .2s ease both;}
+.logo-wrapper{position:relative;display:flex;align-items:center;justify-content:center;
+  width:380px;height:380px;}
+/* Glow rings */
+.glow-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,232,0.15);animation:ringPulse 3s ease-in-out infinite;}
+.glow-ring:nth-child(1){width:280px;height:280px;animation-delay:0s;}
+.glow-ring:nth-child(2){width:340px;height:340px;animation-delay:.5s;}
+.glow-ring:nth-child(3){width:380px;height:380px;animation-delay:1s;}
+@keyframes ringPulse{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.1;transform:scale(1.03);}}
+.logo-svg{width:240px;height:240px;filter:drop-shadow(0 0 30px rgba(0,212,232,0.5));
+  animation:logoFloat 4s ease-in-out infinite;}
+@keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* ========== CHI SIAMO ========== */
+#chi-siamo{padding:110px 0;position:relative;z-index:1;}
+#chi-siamo .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;
+  padding:40px;position:relative;overflow:hidden;}
+.about-card::before{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;
+  background:radial-gradient(circle,rgba(0,212,232,0.08) 0%,transparent 70%);border-radius:50%;}
+.about-card h3{font-size:1.3rem;font-weight:800;margin-bottom:16px;color:var(--cyan);}
+.about-card p{color:var(--gray2);line-height:1.8;font-size:.93rem;margin-bottom:20px;}
+.ab-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
+.ab-stat{background:var(--bg-card2);border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center;}
+.ab-stat .n{font-size:1.8rem;font-weight:900;color:var(--cyan);}
+.ab-stat .l{font-size:.75rem;color:var(--gray);margin-top:3px;}
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px;}
+.val-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;
+  transition:border-color .2s,transform .2s;}
+.val-card:hover{border-color:var(--cyan);transform:translateY(-3px);}
+.val-card .icon{font-size:1.5rem;margin-bottom:10px;}
+.val-card h4{font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:6px;}
+.val-card p{font-size:.82rem;color:var(--gray);line-height:1.6;}
+/* Timeline */
+.timeline{margin-top:30px;display:flex;flex-direction:column;gap:16px;}
+.tl-item{display:flex;gap:14px;align-items:flex-start;}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:5px;
+  box-shadow:0 0 10px var(--cyan);}
+.tl-item h4{font-size:.9rem;font-weight:700;color:var(--cyan);}
+.tl-item p{font-size:.83rem;color:var(--gray);margin-top:3px;}
+
+/* ========== PRODOTTI ========== */
+#prodotti{padding:110px 0;position:relative;z-index:1;}
+.products-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:36px 0 40px;}
+.ptab{padding:10px 22px;border-radius:30px;font-size:.88rem;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--border);color:var(--gray);background:transparent;transition:all .2s;}
+.ptab:hover{border-color:var(--cyan);color:var(--cyan);}
+.ptab.active{background:var(--cyan);color:#0a1628;border-color:var(--cyan);}
+.products-panel{display:none;}
+.products-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.prod-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;transition:all .25s;cursor:pointer;}
+.prod-card:hover{border-color:var(--cyan);transform:translateY(-5px);
+  box-shadow:0 12px 40px rgba(0,212,232,0.12);}
+.prod-card-top{padding:32px;display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  position:relative;overflow:hidden;}
+.prod-card-top::after{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,rgba(0,212,232,0.1) 0%,transparent 70%);}
+.prod-icon{font-size:2.4rem;}
+.prod-card-top h3{font-size:1rem;font-weight:800;}
+.prod-card-bottom{padding:0 32px 28px;display:flex;flex-direction:column;gap:10px;}
+.prod-card-bottom p{font-size:.85rem;color:var(--gray);line-height:1.65;}
+.prod-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.prod-tag{background:rgba(0,212,232,0.08);border:1px solid rgba(0,212,232,0.2);
+  color:var(--cyan);font-size:.72rem;font-weight:600;padding:2px 10px;border-radius:20px;}
+.prod-link{display:inline-flex;align-items:center;gap:5px;color:var(--cyan);
+  font-size:.85rem;font-weight:700;margin-top:6px;transition:gap .2s;}
+.prod-card:hover .prod-link{gap:10px;}
+
+/* ========== STATS ========== */
+#stats{padding:70px 0;background:linear-gradient(135deg,rgba(0,60,70,.4),rgba(0,30,50,.4));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1;}
+#stats .container{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.stat-box{text-align:center;padding:28px 16px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:14px;transition:border-color .2s,transform .2s;}
+.stat-box:hover{border-color:var(--cyan);transform:translateY(-4px);}
+.stat-box .sn{font-size:2.8rem;font-weight:900;color:var(--cyan);line-height:1;}
+.stat-box .sl{font-size:.82rem;color:var(--gray);margin-top:8px;}
+
+/* ========== BUSINESS PLAN ========== */
+#business-plan{padding:110px 0;position:relative;z-index:1;}
+#business-plan .container{display:grid;grid-template-columns:1fr 1.5fr;gap:70px;align-items:start;}
+.bp-left{position:sticky;top:90px;}
+.bp-feature{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px;}
+.bp-icon-box{width:44px;height:44px;border-radius:10px;background:var(--bg-card2);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;transition:background .2s,border-color .2s;}
+.bp-feature:hover .bp-icon-box{background:rgba(0,212,232,0.1);border-color:var(--cyan);}
+.bp-feature h4{font-size:.93rem;font-weight:700;margin-bottom:5px;}
+.bp-feature p{font-size:.84rem;color:var(--gray);line-height:1.65;}
+/* Pricing toggle */
+.toggle-wrap{display:flex;align-items:center;gap:12px;margin-bottom:30px;font-size:.9rem;color:var(--gray);}
+.toggle{width:52px;height:28px;background:var(--bg-card2);border:1px solid var(--border);
+  border-radius:30px;cursor:pointer;position:relative;transition:background .3s;}
+.toggle.on{background:var(--cyan);}
+.toggle::after{content:'';position:absolute;top:4px;left:4px;width:20px;height:20px;
+  border-radius:50%;background:var(--white);transition:transform .3s;}
+.toggle.on::after{transform:translateX(24px);}
+.toggle-wrap span.active{color:var(--white);font-weight:700;}
+.save-badge{background:rgba(0,212,232,0.15);border:1px solid var(--border);
+  color:var(--cyan);font-size:.73rem;font-weight:700;padding:2px 10px;border-radius:20px;}
+.plans-col{display:flex;flex-direction:column;gap:20px;}
+.plan{background:var(--bg-card);border:1.5px solid var(--border);border-radius:18px;
+  padding:28px 30px;transition:all .25s;position:relative;}
+.plan:hover{border-color:var(--cyan);box-shadow:0 6px 30px rgba(0,212,232,0.1);}
+.plan.featured{border-color:var(--cyan);background:linear-gradient(135deg,rgba(0,212,232,0.07),rgba(0,30,40,.5));}
+.plan-badge{position:absolute;top:-13px;right:22px;background:var(--cyan);color:#0a1628;
+  font-size:.7rem;font-weight:800;padding:3px 14px;border-radius:20px;letter-spacing:.06em;}
+.plan h3{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+.plan .price{font-size:2.2rem;font-weight:900;color:var(--cyan);}
+.plan .price span{font-size:.88rem;color:var(--gray);font-weight:400;}
+.plan .desc{font-size:.84rem;color:var(--gray);margin:10px 0 18px;line-height:1.6;}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.plan-feats li{font-size:.84rem;display:flex;gap:8px;align-items:center;}
+.plan-feats li::before{content:'';width:16px;height:16px;border-radius:50%;
+  background:rgba(0,212,232,0.15);border:1.5px solid var(--cyan);flex-shrink:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%2300d4e8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:10px;}
+.plan .btn{width:100%;justify-content:center;margin-top:4px;}
+
+/* ========== RICERCA CLIENTI ========== */
+#ricerca-clienti{padding:110px 0;position:relative;z-index:1;}
+/* Process steps */
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:50px 0;}
+.ps{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:24px;text-align:center;position:relative;transition:all .25s;}
+.ps:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+  color:var(--cyan);font-size:1.2rem;z-index:2;}
+.ps:hover{border-color:var(--cyan);transform:translateY(-4px);}
+.ps-num{width:36px;height:36px;border-radius:50%;background:rgba(0,212,232,0.12);
+  border:1.5px solid var(--cyan);color:var(--cyan);font-weight:800;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.ps h4{font-size:.9rem;font-weight:700;margin-bottom:7px;}
+.ps p{font-size:.8rem;color:var(--gray);line-height:1.6;}
+/* Accordion FAQ */
+.faq-section{margin:50px 0;}
+.faq-section h3{font-size:1.3rem;font-weight:800;margin-bottom:24px;}
+.faq-item{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;
+  background:var(--bg-card);transition:border-color .2s;}
+.faq-item.open{border-color:var(--cyan);}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;
+  cursor:pointer;font-weight:600;font-size:.93rem;transition:color .2s;}
+.faq-q:hover{color:var(--cyan);}
+.faq-arrow{width:22px;height:22px;border-radius:50%;background:rgba(0,212,232,0.1);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;transition:transform .3s,background .2s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);background:rgba(0,212,232,0.2);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 22px;}
+.faq-a.open{max-height:200px;padding:0 22px 18px;}
+.faq-a p{font-size:.87rem;color:var(--gray);line-height:1.75;}
+/* Contact Form */
+.contact-wrapper{display:grid;grid-template-columns:1fr 1.3fr;gap:40px;margin-top:60px;align-items:start;}
+.contact-info h3{font-size:1.4rem;font-weight:800;margin-bottom:12px;}
+.contact-info p{color:var(--gray2);font-size:.93rem;line-height:1.75;margin-bottom:28px;}
+.contact-items{display:flex;flex-direction:column;gap:14px;}
+.ci{display:flex;gap:12px;align-items:flex-start;}
+.ci-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,212,232,0.1);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;}
+.ci h4{font-size:.88rem;font-weight:700;color:var(--white);}
+.ci p{font-size:.82rem;color:var(--gray);margin-top:2px;}
+.form-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:36px;}
+.form-box h3{font-size:1.1rem;font-weight:800;margin-bottom:20px;}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.fg label{font-size:.82rem;font-weight:600;color:var(--gray2);}
+.fg input,.fg select,.fg textarea{
+  background:var(--bg-card2);border:1.5px solid var(--border);border-radius:8px;
+  padding:11px 14px;font-size:.9rem;color:var(--white);font-family:var(--font);
+  outline:none;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan);}
+.fg select option{background:var(--bg-card2);}
+.fg textarea{resize:vertical;min-height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-submit{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px;}
+.form-note{font-size:.77rem;color:var(--gray);}
+/* Testimonials */
+.testi-section{margin-top:70px;}
+.testi-section h3{font-size:1.3rem;font-weight:800;margin-bottom:28px;}
+.testi-track{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.testi{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:24px;border-top:3px solid var(--cyan);transition:transform .2s;}
+.testi:hover{transform:translateY(-4px);}
+.testi-stars{color:var(--cyan);font-size:.9rem;margin-bottom:10px;}
+.testi blockquote{font-size:.86rem;color:var(--gray2);line-height:1.75;font-style:italic;margin-bottom:16px;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.tav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#005566,#00d4e8);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;}
+.tauth h4{font-size:.86rem;font-weight:700;}
+.tauth p{font-size:.76rem;color:var(--gray);}
+/* CTA */
+.cta-banner{
+  background:linear-gradient(135deg,rgba(0,212,232,0.12),rgba(0,50,70,.4));
+  border:1px solid var(--border);border-radius:22px;padding:60px;
+  display:flex;align-items:center;justify-content:space-between;gap:30px;
+  flex-wrap:wrap;margin-top:70px;position:relative;overflow:hidden;}
+.cta-banner::before{content:'';position:absolute;right:-100px;top:-100px;
+  width:350px;height:350px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,232,0.12) 0%,transparent 65%);}
+.cta-text h2{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;margin-bottom:10px;}
+.cta-text p{color:var(--gray2);font-size:.95rem;}
+.cta-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+/* ========== PARTNERS ========== */
+#partners{padding:60px 0;border-top:1px solid var(--border);position:relative;z-index:1;}
+#partners .container{text-align:center;}
+#partners p{font-size:.8rem;color:var(--gray);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:30px;}
+.logos{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;align-items:center;}
+.logo-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+  padding:12px 26px;font-weight:700;font-size:.9rem;color:var(--gray);
+  transition:border-color .2s,color .2s;}
+.logo-pill:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* ========== FOOTER ========== */
+footer{background:rgba(12,15,20,.95);border-top:1px solid var(--border);position:relative;z-index:1;}
+.footer-main{padding:70px 0 50px;}
+.footer-main .container{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}
+.footer-brand p{font-size:.86rem;color:var(--gray);line-height:1.75;margin:14px 0 22px;}
+.social-row{display:flex;gap:10px;}
+.soc{width:36px;height:36px;border-radius:8px;background:var(--bg-card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.soc:hover{background:rgba(0,212,232,0.15);border-color:var(--cyan);}
+.footer-col h4{font-size:.85rem;font-weight:700;margin-bottom:16px;color:var(--white);
+  padding-bottom:10px;border-bottom:1px solid var(--border);}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.footer-col ul li a{font-size:.84rem;color:var(--gray);transition:color .2s;}
+.footer-col ul li a:hover{color:var(--cyan);}
+.footer-btm{border-top:1px solid var(--border);padding:20px 0;}
+.footer-btm .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.footer-btm p{font-size:.8rem;color:var(--gray);}
+.footer-btm a{color:rgba(255,255,255,0.35);font-size:.8rem;margin-left:18px;transition:color .2s;}
+.footer-btm a:hover{color:var(--cyan);}
+
+/* ========== SCROLL REVEAL ========== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1024px){
+  #stats .container{grid-template-columns:repeat(2,1fr);}
+  .products-panel.active{grid-template-columns:1fr 1fr;}
+  .footer-main .container{grid-template-columns:1fr 1fr;}
+  .testi-track{grid-template-columns:1fr 1fr;}
+  .process-steps{grid-template-columns:repeat(2,1fr);}
+  .ps:not(:last-child)::after{display:none;}
+}
+@media(max-width:768px){
+  .hero .container,#chi-siamo .container,#business-plan .container,.contact-wrapper{grid-template-columns:1fr;}
+  .hero-visual{display:none;}
+  .nav-links,.nav-actions{display:none;}
+  .hamburger{display:flex;}
+  .products-panel.active{grid-template-columns:1fr;}
+  .testi-track{grid-template-columns:1fr;}
+  .process-steps{grid-template-columns:1fr 1fr;}
+  .footer-main .container{grid-template-columns:1fr;}
+  .cta-banner{padding:36px 28px;}
+  .form-row{grid-template-columns:1fr;}
+  #stats .container{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== CANVAS PARTICLES ===== -->
+<canvas id="particles"></canvas>
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">📞 +39 02 XXXX XXXX &nbsp;·&nbsp; ✉ <a href="#">hello@trivium.io</a></div>
+    <div class="topbar-right">
+      <a href="#" class="active">IT</a>
+      <a href="#">EN</a>
+      <a href="#">ES</a>
+      <a href="#">Portal Partner →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-logo" onclick="scrollTo(0,0)">
+      <!-- SVG Logo inline -->
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0090a8"/>
+            <stop offset="100%" stop-color="#00d4e8"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00eeff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- Outer triangle -->
+        <polygon points="50,8 95,82 5,82" stroke="url(#lg1)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+        <!-- Inner triangle -->
+        <polygon points="50,22 82,74 18,74" stroke="url(#lg1)" stroke-width="2.5" fill="none" stroke-linejoin="round" opacity=".7"/>
+        <!-- 3 paths to center -->
+        <line x1="50" y1="22" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="82" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Center glow dot -->
+        <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
+        <circle cx="50" cy="50" r="10" fill="url(#glow)" opacity=".5"/>
+      </svg>
+      <div>
+        <div class="nav-logo-text">Trivium<span>.</span></div>
+        <div class="nav-sub">Where Paths Converge</div>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#chi-siamo">Chi Siamo</a></li>
+      <li><a href="#prodotti">Prodotti</a></li>
+      <li><a href="#business-plan">Business Plan</a></li>
+      <li><a href="#ricerca-clienti">Clienti</a></li>
+      <li><a href="#partners">Partner</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#ricerca-clienti" class="btn btn-ghost" style="padding:9px 20px;font-size:.85rem;">Contattaci</a>
+      <a href="#business-plan" class="btn btn-cyan" style="padding:9px 20px;font-size:.85rem;">Demo Gratuita →</a>
+    </div>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-left">
+      <div class="tag"><span class="dot"></span> Piattaforma Intelligente B2B</div>
+      <h1>Dove Ogni <span>Percorso</span> Porta al Successo</h1>
+      <p>Trivium è la piattaforma IoT e analytics che connette aziende, dati e decisioni — trasformando la complessità in vantaggio competitivo concreto e misurabile.</p>
+      <div class="hero-cta">
+        <a href="#prodotti" class="btn btn-cyan">Scopri la Piattaforma ↓</a>
+        <a href="#ricerca-clienti" class="btn btn-ghost">Parla con un Esperto</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="n" data-count="320">0</div><div class="l">Clienti Attivi</div></div>
+        <div class="hstat"><div class="n" data-count="50">0</div><div class="l">Paesi Coperti</div></div>
+        <div class="hstat"><div class="n" data-count="99">0</div><div class="l">% Uptime SLA</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="logo-wrapper">
+        <div class="glow-ring"></div>
+        <div class="glow-ring"></div>
+        <div class="glow-ring"></div>
+        <!-- Large SVG Logo -->
+        <svg class="logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lg2" x1="0" y1="200" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#0080a0"/>
+              <stop offset="50%" stop-color="#00b4c8"/>
+              <stop offset="100%" stop-color="#00eeff"/>
+            </linearGradient>
+            <radialGradient id="glw" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00eeff"/>
+              <stop offset="60%" stop-color="#00d4e8" stop-opacity=".6"/>
+              <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur">
+              <feGaussianBlur stdDeviation="3"/>
+            </filter>
+          </defs>
+          <!-- Glow behind triangle -->
+          <polygon points="100,18 188,166 12,166" fill="rgba(0,212,232,0.05)" filter="url(#blur)"/>
+          <!-- Outer triangle -->
+          <polygon points="100,14 191,169 9,169" stroke="url(#lg2)" stroke-width="5" fill="none" stroke-linejoin="round"/>
+          <!-- Inner triangle -->
+          <polygon points="100,38 172,158 28,158" stroke="url(#lg2)" stroke-width="3" fill="none" stroke-linejoin="round" opacity=".6"/>
+          <!-- Three converging lines -->
+          <line x1="100" y1="38" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="28" y1="158" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="172" y1="158" x2="100" y2="100" stroke="url(#lg2)" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Center glow -->
+          <circle cx="100" cy="100" r="22" fill="url(#glw)"/>
+          <!-- Center dot -->
+          <circle cx="100" cy="100" r="10" fill="#00eeff"/>
+          <circle cx="100" cy="100" r="6" fill="#ffffff"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CHI SIAMO ===== -->
+<section id="chi-siamo">
+  <div class="container">
+    <div class="reveal">
+      <div class="about-card">
+        <h3>🏢 La Nostra Storia</h3>
+        <p>Fondata nel 2018 a Milano, Trivium nasce dalla visione di tre ingegneri con l'obiettivo di semplificare la gestione dei dati per le imprese moderne. Oggi siamo presenti in 50 paesi con una piattaforma usata da oltre 320 aziende globali.</p>
+        <p>Il nostro approccio combina intelligenza artificiale, IoT e UX design per creare strumenti che le persone vogliono davvero usare — non solo che devono usare.</p>
+        <div class="ab-stats">
+          <div class="ab-stat"><div class="n" data-count="320">0</div><div class="l">Clienti Enterprise</div></div>
+          <div class="ab-stat"><div class="n" data-count="50">0</div><div class="l">Paesi</div></div>
+          <div class="ab-stat"><div class="n" data-count="200">0</div><div class="l">Team Members</div></div>
+          <div class="ab-stat"><div class="n" data-count="8">0</div><div class="l">Anni di R&D</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s;">
+      <div class="tag"><span class="dot"></span> Chi Siamo</div>
+      <h2 class="sec-title">Tre <span>Percorsi</span>, Una Destinazione</h2>
+      <div class="divider"></div>
+      <p class="sec-sub" style="margin-bottom:28px;">Trivium è costruita su tre pilastri fondamentali che definiscono ogni prodotto, ogni partnership e ogni interazione con i nostri clienti.</p>
+      <div class="values-grid">
+        <div class="val-card reveal">
+          <div class="icon">🎯</div>
+          <h4>Missione</h4>
+          <p>Rendere l'intelligenza dei dati accessibile a ogni organizzazione, indipendentemente dalla sua dimensione.</p>
+        </div>
+        <div class="val-card reveal">
+          <div class="icon">🌐</div>
+          <h4>Visione</h4>
+          <p>Un ecosistema digitale dove ogni azienda può convergere verso decisioni migliori, più veloci.</p>
+        </div>
+        <div class="val-card reveal">
+          <div class="icon">⚡</div>
+          <h4>Innovazione</h4>
+          <p>Il 20% del fatturato reinvestito in R&D ogni anno per rimanere all'avanguardia tecnologica.</p>
+        </div>
+        <div class="val-card reveal">
+          <div class="icon">🤝</div>
+          <h4>Partnership</h4>
+          <p>Crediamo nel valore della co-creazione: i migliori prodotti nascono insieme ai clienti.</p>
+        </div>
+      </div>
+      <div class="timeline reveal" style="margin-top:30px;">
+        <div class="tl-item"><div class="tl-dot"></div><div><h4>2018 — Fondazione</h4><p>Tre co-founder, una visione, un prototipo MVP.</p></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><h4>2020 — Serie A €8M</h4><p>Espansione Europa e primo contratto enterprise.</p></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><h4>2022 — 100+ clienti</h4><p>Lancio del modulo AI e apertura uffici a Londra e Berlino.</p></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div><h4>2024 — Serie B €25M</h4><p>Espansione globale, 50 paesi, piattaforma enterprise.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNERS ===== -->
+<section id="partners">
+  <div class="container">
+    <p>Scelto da aziende leader in tutto il mondo</p>
+    <div class="logos">
+      <div class="logo-pill">NovaTech</div>
+      <div class="logo-pill">EuroGrid</div>
+      <div class="logo-pill">DataCore</div>
+      <div class="logo-pill">SmartOps</div>
+      <div class="logo-pill">ItaliaLogistica</div>
+      <div class="logo-pill">AlphaStack</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODOTTI ===== -->
+<section id="prodotti" style="padding:110px 0;position:relative;z-index:1;">
+  <div class="container">
+    <div class="reveal">
+      <div class="tag"><span class="dot"></span> I Nostri Prodotti</div>
+      <h2 class="sec-title">Un Ecosistema <span>Completo</span></h2>
+      <div class="divider"></div>
+      <p class="sec-sub">Dalla raccolta dati IoT all'AI predittiva, passando per analytics real-time e integrazioni enterprise. Tutto in un'unica piattaforma modulare.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="products-tabs">
+      <button class="ptab active" onclick="switchTab(this,'all')">Tutti</button>
+      <button class="ptab" onclick="switchTab(this,'iot')">IoT & Hardware</button>
+      <button class="ptab" onclick="switchTab(this,'cloud')">Cloud & Analytics</button>
+      <button class="ptab" onclick="switchTab(this,'ai')">AI & Automation</button>
+    </div>
+
+    <!-- Panel: ALL -->
+    <div class="products-panel active" id="panel-all">
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">📡</div><h3>Trivium Sense</h3></div><div class="prod-card-bottom"><p>Sensori IoT wireless per la raccolta dati ambientali, operativi e di processo in tempo reale con latenza sub-secondo.</p><div class="prod-tags"><span class="prod-tag">IoT</span><span class="prod-tag">LoRa</span><span class="prod-tag">IP67</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">☁️</div><h3>Trivium Cloud</h3></div><div class="prod-card-bottom"><p>Piattaforma SaaS multi-tenant per aggregazione, visualizzazione e alerting di dati da migliaia di dispositivi connessi.</p><div class="prod-tags"><span class="prod-tag">SaaS</span><span class="prod-tag">Multi-tenant</span><span class="prod-tag">API</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">🤖</div><h3>Trivium AI</h3></div><div class="prod-card-bottom"><p>Motore ML predittivo per manutenzione preventiva, anomaly detection e ottimizzazione automatica dei processi.</p><div class="prod-tags"><span class="prod-tag">ML</span><span class="prod-tag">Predittivo</span><span class="prod-tag">AutoML</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">📊</div><h3>Trivium Insight</h3></div><div class="prod-card-bottom"><p>Dashboard no-code con report automatici, KPI personalizzabili e export schedulato per tutti i livelli aziendali.</p><div class="prod-tags"><span class="prod-tag">BI</span><span class="prod-tag">No-code</span><span class="prod-tag">Reportistica</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">🔗</div><h3>Trivium Connect</h3></div><div class="prod-card-bottom"><p>Gateway di integrazione per ERP, CRM e sistemi legacy. 200+ connettori pre-built, webhook e SDK open source.</p><div class="prod-tags"><span class="prod-tag">Middleware</span><span class="prod-tag">SDK</span><span class="prod-tag">200+ integrazioni</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card reveal"><div class="prod-card-top"><div class="prod-icon">🔒</div><h3>Trivium Shield</h3></div><div class="prod-card-bottom"><p>Suite di sicurezza e compliance: cifratura end-to-end, GDPR toolkit, audit log immutabile e zero-trust architecture.</p><div class="prod-tags"><span class="prod-tag">Security</span><span class="prod-tag">GDPR</span><span class="prod-tag">Zero-Trust</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+    </div>
+
+    <!-- Panel: IoT -->
+    <div class="products-panel" id="panel-iot">
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">📡</div><h3>Trivium Sense</h3></div><div class="prod-card-bottom"><p>Sensori IoT wireless per raccolta dati ambientali e operativi in real-time.</p><div class="prod-tags"><span class="prod-tag">IoT</span><span class="prod-tag">LoRa</span><span class="prod-tag">IP67</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">🔋</div><h3>Trivium Edge</h3></div><div class="prod-card-bottom"><p>Dispositivi edge computing per elaborazione locale dei dati, indipendenti dalla connettività cloud.</p><div class="prod-tags"><span class="prod-tag">Edge</span><span class="prod-tag">Embedded</span><span class="prod-tag">Offline</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+    </div>
+
+    <!-- Panel: Cloud -->
+    <div class="products-panel" id="panel-cloud">
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">☁️</div><h3>Trivium Cloud</h3></div><div class="prod-card-bottom"><p>Piattaforma SaaS per aggregazione e visualizzazione dati da dispositivi connessi.</p><div class="prod-tags"><span class="prod-tag">SaaS</span><span class="prod-tag">Multi-tenant</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">📊</div><h3>Trivium Insight</h3></div><div class="prod-card-bottom"><p>Dashboard no-code con KPI personalizzabili e report schedulati automatici.</p><div class="prod-tags"><span class="prod-tag">BI</span><span class="prod-tag">No-code</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+    </div>
+
+    <!-- Panel: AI -->
+    <div class="products-panel" id="panel-ai">
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">🤖</div><h3>Trivium AI</h3></div><div class="prod-card-bottom"><p>Motore ML predittivo per manutenzione preventiva e anomaly detection.</p><div class="prod-tags"><span class="prod-tag">ML</span><span class="prod-tag">AutoML</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+      <div class="prod-card"><div class="prod-card-top"><div class="prod-icon">⚡</div><h3>Trivium Auto</h3></div><div class="prod-card-bottom"><p>Workflow automation intelligente: trigger basati su dati, azioni automatiche e loop di ottimizzazione.</p><div class="prod-tags"><span class="prod-tag">Automation</span><span class="prod-tag">No-code</span></div><a href="#" class="prod-link">Scopri →</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section id="stats">
+  <div class="container">
+    <div class="stat-box reveal"><div class="sn" data-count="320">0</div><div class="sl">Clienti Enterprise</div></div>
+    <div class="stat-box reveal"><div class="sn" data-count="50">0</div><div class="sl">Paesi nel Mondo</div></div>
+    <div class="stat-box reveal"><div class="sn" data-count="99">0</div><div class="sl">% Uptime Garantito</div></div>
+    <div class="stat-box reveal"><div class="sn" data-count="180">0</div><div class="sl">% ROI Medio Anno 1</div></div>
+  </div>
+</section>
+
+<!-- ===== BUSINESS PLAN ===== -->
+<section id="business-plan">
+  <div class="container">
+    <div class="bp-left reveal">
+      <div class="tag"><span class="dot"></span> Business Plan</div>
+      <h2 class="sec-title">Piani Pensati per <span>Crescere</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--gray2);line-height:1.8;margin-bottom:32px;">Da startup innovativa a grande enterprise, Trivium scala con te. Nessun lock-in, prezzi trasparenti, contratti flessibili.</p>
+
+      <div class="bp-feature"><div class="bp-icon-box">⚡</div><div><h4>Setup in 24 ore</h4><p>Onboarding guidato, template preconfigurati e supporto live fin dal primo giorno.</p></div></div>
+      <div class="bp-feature"><div class="bp-icon-box">📈</div><div><h4>ROI Medio 180%</h4><p>I nostri clienti vedono il ritorno sull'investimento mediamente entro 5 mesi.</p></div></div>
+      <div class="bp-feature"><div class="bp-icon-box">🔓</div><div><h4>Zero Lock-in</h4><p>Export completo dei tuoi dati in qualsiasi momento. La tua autonomia è garantita.</p></div></div>
+      <div class="bp-feature"><div class="bp-icon-box">🌍</div><div><h4>Supporto Multilingue</h4><p>Team dedicato in italiano, inglese, francese e tedesco, disponibile 24/7.</p></div></div>
+
+      <!-- Toggle annuale/mensile -->
+      <div class="toggle-wrap" style="margin-top:36px;">
+        <span>Mensile</span>
+        <div class="toggle on" id="billingToggle" onclick="toggleBilling()"></div>
+        <span class="active">Annuale</span>
+        <span class="save-badge">Risparmi 20%</span>
+      </div>
+    </div>
+
+    <div class="plans-col reveal" style="transition-delay:.2s;">
+      <!-- Starter -->
+      <div class="plan">
+        <h3>🌱 Starter</h3>
+        <div class="price"><span class="price-val" data-monthly="490" data-yearly="390">€390</span> <span>/ mese · fatturato annualmente</span></div>
+        <p class="desc">Per team piccoli e PMI che vogliono iniziare a raccogliere e visualizzare dati operativi.</p>
+        <ul class="plan-feats">
+          <li>Fino a 50 dispositivi IoT</li>
+          <li>Dashboard cloud standard</li>
+          <li>5 report automatici/mese</li>
+          <li>3 utenti inclusi</li>
+          <li>Supporto email (48h)</li>
+        </ul>
+        <a href="#ricerca-clienti" class="btn btn-ghost">Inizia Gratis 14 giorni</a>
+      </div>
+      <!-- Pro -->
+      <div class="plan featured">
+        <div class="plan-badge">⭐ PIÙ POPOLARE</div>
+        <h3>🚀 Professional</h3>
+        <div class="price"><span class="price-val" data-monthly="1290" data-yearly="990">€990</span> <span>/ mese · fatturato annualmente</span></div>
+        <p class="desc">Per aziende in crescita che necessitano di AI, automazioni avanzate e integrazioni enterprise.</p>
+        <ul class="plan-feats">
+          <li>Fino a 500 dispositivi IoT</li>
+          <li>Trivium AI + Insight inclusi</li>
+          <li>Report illimitati</li>
+          <li>20 utenti inclusi</li>
+          <li>Connettori ERP/CRM (200+)</li>
+          <li>Supporto prioritario 24/7</li>
+        </ul>
+        <a href="#ricerca-clienti" class="btn btn-cyan">Richiedi Demo →</a>
+      </div>
+      <!-- Enterprise -->
+      <div class="plan">
+        <h3>🏢 Enterprise</h3>
+        <div class="price">Custom <span>— contattaci</span></div>
+        <p class="desc">Soluzione white-label su misura per grandi organizzazioni con esigenze specifiche di scala e compliance.</p>
+        <ul class="plan-feats">
+          <li>Dispositivi illimitati</li>
+          <li>Piattaforma white-label</li>
+          <li>SLA 99.9% contrattuale</li>
+          <li>Account manager dedicato</li>
+          <li>On-premise o cloud privato</li>
+          <li>Integrazioni custom</li>
+        </ul>
+        <a href="#ricerca-clienti" class="btn btn-ghost">Parla con le Vendite</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RICERCA CLIENTI ===== -->
+<section id="ricerca-clienti">
+  <div class="container">
+    <div class="reveal">
+      <div class="tag"><span class="dot"></span> Ricerca Clienti</div>
+      <h2 class="sec-title">Il Nostro <span>Processo</span> per Trovarti</h2>
+      <div class="divider"></div>
+      <p class="sec-sub">Non vendiamo prodotti generici. Investiamo tempo per capire la tua realtà e costruire una soluzione che crea valore reale — non solo promesse.</p>
+    </div>
+
+    <!-- Process Steps -->
+    <div class="process-steps">
+      <div class="ps reveal"><div class="ps-num">1</div><h4>Discovery</h4><p>Analizziamo il tuo contesto, i tuoi obiettivi e le sfide operative che vuoi risolvere.</p></div>
+      <div class="ps reveal"><div class="ps-num">2</div><h4>Profilazione</h4><p>Definiamo il profilo ideale e mappiamo le soluzioni più adatte al tuo settore.</p></div>
+      <div class="ps reveal"><div class="ps-num">3</div><h4>Proposta</h4><p>Presentiamo una soluzione tecnica personalizzata con ROI stimato e piano di implementazione.</p></div>
+      <div class="ps reveal"><div class="ps-num">4</div><h4>Crescita</h4><p>Dopo il go-live monitoriamo insieme i risultati e ottimizziamo in modo continuo.</p></div>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="faq-section reveal">
+      <h3>Domande Frequenti</h3>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Quanto tempo richiede l'implementazione? <div class="faq-arrow">▼</div></div>
+        <div class="faq-a"><p>Il piano Starter è operativo in meno di 24 ore. Per il Professional la configurazione completa richiede 3-5 giorni lavorativi. Le implementazioni Enterprise sono pianificate su misura ma raramente superano le 4 settimane.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">I miei dati sono al sicuro? <div class="faq-arrow">▼</div></div>
+        <div class="faq-a"><p>Assolutamente. Utilizziamo cifratura AES-256 in transit e at rest, architettura zero-trust e siamo conformi GDPR, ISO 27001 e SOC 2 Type II. Puoi esportare tutti i tuoi dati in qualsiasi momento.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">È possibile integrare i sistemi già in uso? <div class="faq-arrow">▼</div></div>
+        <div class="faq-a"><p>Sì. Trivium Connect include oltre 200 connettori pre-built per i principali ERP (SAP, Oracle, Microsoft), CRM (Salesforce, HubSpot), e sistemi MES. Per sistemi custom è disponibile un SDK open source.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Posso iniziare con un pilota prima di impegnarmi? <div class="faq-arrow">▼</div></div>
+        <div class="faq-a"><p>Certamente! Offriamo una prova gratuita di 14 giorni sul piano Professional, completa di tutti i moduli. Per progetti Enterprise organizziamo un Proof of Concept (PoC) su un sottoinsieme del tuo ambiente produttivo.</p></div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-wrapper reveal">
+      <div class="contact-info">
+        <h3>Parliamo del Tuo Progetto</h3>
+        <p>Compila il modulo o contattaci direttamente. Il nostro team risponde entro 4 ore lavorative con una proposta preliminare personalizzata.</p>
+        <div class="contact-items">
+          <div class="ci"><div class="ci-icon">📞</div><div><h4>Telefono</h4><p>+39 02 XXXX XXXX — Lun-Ven 9-18</p></div></div>
+          <div class="ci"><div class="ci-icon">✉️</div><div><h4>Email</h4><p>hello@trivium.io</p></div></div>
+          <div class="ci"><div class="ci-icon">📍</div><div><h4>Sede</h4><p>Via dell'Innovazione 42, 20124 Milano</p></div></div>
+          <div class="ci"><div class="ci-icon">💬</div><div><h4>Live Chat</h4><p>Disponibile sul sito — risposta media 3 minuti</p></div></div>
+        </div>
+      </div>
+      <div class="form-box">
+        <h3>Richiedi una Consulenza Gratuita</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="fg"><label>Nome e Cognome *</label><input type="text" placeholder="Mario Rossi" required/></div>
+            <div class="fg"><label>Email Aziendale *</label><input type="email" placeholder="mario@azienda.it" required/></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>Azienda</label><input type="text" placeholder="Rossi S.p.A."/></div>
+            <div class="fg"><label>Settore</label>
+              <select>
+                <option>— Seleziona —</option>
+                <option>Manifatturiero</option>
+                <option>Logistica & Trasporti</option>
+                <option>Energia & Utilities</option>
+                <option>Retail & GDO</option>
+                <option>Healthcare</option>
+                <option>Finance</option>
+                <option>Altro</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Dimensione Azienda</label>
+            <select>
+              <option>— Seleziona —</option>
+              <option>1–10 dipendenti</option>
+              <option>11–50 dipendenti</option>
+              <option>51–200 dipendenti</option>
+              <option>201–1000 dipendenti</option>
+              <option>Oltre 1000 dipendenti</option>
+            </select>
+          </div>
+          <div class="fg"><label>Descrivi la tua sfida o progetto</label>
+            <textarea placeholder="Es. Vogliamo monitorare in tempo reale i consumi energetici dei nostri 12 stabilimenti..."></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-cyan">Invia Richiesta →</button>
+            <span class="form-note">🔒 GDPR compliant · Risposta entro 4h</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testi-section reveal">
+      <h3>Cosa Dicono i Nostri Clienti</h3>
+      <div class="testi-track">
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <blockquote>"Trivium ha trasformato il nostro reparto produzione. In 3 mesi abbiamo ridotto i fermi macchina del 42% grazie all'AI predittivo."</blockquote>
+          <div class="testi-author"><div class="tav">GR</div><div class="tauth"><h4>Giuseppe Romano</h4><p>CTO — MetalTech S.p.A.</p></div></div>
+        </div>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <blockquote>"L'integrazione con SAP è stata completata in 2 giorni. La dashboard è così intuitiva che i nostri manager la usano da soli."</blockquote>
+          <div class="testi-author"><div class="tav">SF</div><div class="tauth"><h4>Sara Ferrari</h4><p>Operations Director — LogiGroup</p></div></div>
+        </div>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <blockquote>"Il ROI è stato superiore alle aspettative. Abbiamo recuperato l'investimento in 4 mesi e ora stiamo scalando a tutti i siti."</blockquote>
+          <div class="testi-author"><div class="tav">AL</div><div class="tauth"><h4>Andrea Luca</h4><p>CEO — EnergyFirst</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner reveal">
+      <div class="cta-text">
+        <h2>Pronto a Convergere verso il Futuro?</h2>
+        <p>Prenota una demo di 30 minuti con un nostro esperto — completamente gratuita e senza impegno.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-cyan">📅 Prenota Demo</a>
+        <a href="tel:+390200000000" class="btn btn-ghost">📞 Chiamaci Ora</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-main">
+    <div class="container">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <svg width="28" height="28" viewBox="0 0 100 100" fill="none"><defs><linearGradient id="flg" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0090a8"/><stop offset="100%" stop-color="#00d4e8"/></linearGradient></defs><polygon points="50,8 95,82 5,82" stroke="url(#flg)" stroke-width="5" fill="none" stroke-linejoin="round"/><polygon points="50,22 82,74 18,74" stroke="url(#flg)" stroke-width="3" fill="none" stroke-linejoin="round" opacity=".6"/><line x1="50" y1="22" x2="50" y2="50" stroke="url(#flg)" stroke-width="3" stroke-linecap="round"/><line x1="18" y1="74" x2="50" y2="50" stroke="url(#flg)" stroke-width="3" stroke-linecap="round"/><line x1="82" y1="74" x2="50" y2="50" stroke="url(#flg)" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="7" fill="#00eeff"/></svg>
+          <span style="font-size:1.15rem;font-weight:900;color:var(--white);">Trivium<span style="color:var(--cyan);">.</span></span>
+        </div>
+        <p>Piattaforma IoT & Analytics per aziende che vogliono trasformare i dati in valore concreto. Presente in 50 paesi, 320+ clienti enterprise.</p>
+        <div class="social-row">
+          <div class="soc" title="LinkedIn">in</div>
+          <div class="soc" title="Twitter">𝕏</div>
+          <div class="soc" title="GitHub">⌥</div>
+          <div class="soc" title="YouTube">▶</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Prodotti</h4>
+        <ul>
+          <li><a href="#">Trivium Sense</a></li>
+          <li><a href="#">Trivium Cloud</a></li>
+          <li><a href="#">Trivium AI</a></li>
+          <li><a href="#">Trivium Insight</a></li>
+          <li><a href="#">Trivium Connect</a></li>
+          <li><a href="#">Trivium Shield</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Azienda</h4>
+        <ul>
+          <li><a href="#">Chi Siamo</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press Kit</a></li>
+          <li><a href="#">Partner Program</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Supporto</h4>
+        <ul>
+          <li><a href="#">Documentazione</a></li>
+          <li><a href="#">Developer SDK</a></li>
+          <li><a href="#">Status Page</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Contattaci</a></li>
+          <li><a href="#">GDPR Center</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-btm">
+    <div class="container">
+      <p>© 2026 Trivium S.r.l. — P.IVA IT12345678901 — Tutti i diritti riservati.</p>
+      <div><a href="#">Privacy Policy</a><a href="#">Cookie Policy</a><a href="#">Termini di Servizio</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// ---- PARTICLES ----
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, dots = [];
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function randBetween(a,b){return Math.random()*(b-a)+a;}
+for(let i=0;i<80;i++){
+  dots.push({
+    x: randBetween(0,W), y: randBetween(0,H),
+    vx: randBetween(-.3,.3), vy: randBetween(-.3,.3),
+    r: randBetween(1,2.5), o: randBetween(.15,.5)
+  });
+}
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  // lines between close dots
+  for(let i=0;i<dots.length;i++){
+    for(let j=i+1;j<dots.length;j++){
+      const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){
+        ctx.beginPath();
+        ctx.strokeStyle=`rgba(0,212,232,${.12*(1-d/140)})`;
+        ctx.lineWidth=.8;
+        ctx.moveTo(dots[i].x,dots[i].y);
+        ctx.lineTo(dots[j].x,dots[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  // dots
+  dots.forEach(d=>{
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,212,232,${d.o})`;
+    ctx.fill();
+    d.x+=d.vx; d.y+=d.vy;
+    if(d.x<0||d.x>W) d.vx*=-1;
+    if(d.y<0||d.y>H) d.vy*=-1;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ---- SCROLL REVEAL ----
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}
+  });
+},{threshold:0.1});
+reveals.forEach(r=>observer.observe(r));
+
+// ---- COUNTER ANIMATION ----
+function animateCounter(el){
+  const target = parseInt(el.dataset.count);
+  let current = 0;
+  const step = Math.ceil(target/60);
+  const timer = setInterval(()=>{
+    current = Math.min(current+step, target);
+    el.textContent = current + (el.classList.contains('sn') || el.parentElement.classList.contains('hstat') ? (el.dataset.count==='99'?'%':'+') : '+');
+    if(current>=target) clearInterval(timer);
+  },25);
+}
+const counterObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('[data-count]').forEach(animateCounter);
+      counterObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.hero-stats,.ab-stats,#stats').forEach(s=>counterObs.observe(s));
+
+// ---- PRODUCT TABS ----
+const panelMap = {all:'panel-all',iot:'panel-iot',cloud:'panel-cloud',ai:'panel-ai'};
+function switchTab(btn,key){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.products-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelMap[key]).classList.add('active');
+}
+
+// ---- BILLING TOGGLE ----
+let isYearly = true;
+function toggleBilling(){
+  isYearly = !isYearly;
+  document.getElementById('billingToggle').classList.toggle('on', isYearly);
+  document.querySelectorAll('.price-val').forEach(el=>{
+    const val = isYearly ? el.dataset.yearly : el.dataset.monthly;
+    el.textContent = '€'+val;
+  });
+  document.querySelectorAll('.plan .price span').forEach(el=>{
+    el.textContent = isYearly ? '/ mese · fatturato annualmente' : '/ mese · fatturato mensilmente';
+  });
+}
+
+// ---- FAQ ACCORDION ----
+function toggleFaq(item){
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>{
+    f.classList.remove('open');
+    f.querySelector('.faq-a').classList.remove('open');
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    item.querySelector('.faq-a').classList.add('open');
+  }
+}
+
+// ---- FORM SUBMIT ----
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.textContent = '✓ Richiesta Inviata!';
+  btn.style.background = '#00a040';
+  btn.disabled = true;
+  setTimeout(()=>{
+    btn.textContent = 'Invia Richiesta →';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  },3500);
+}
+
+// ---- NAVBAR ACTIVE ----
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(pageYOffset >= s.offsetTop-120) cur=s.id;
+  });
+  navLinks.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href')==='#'+cur);
+  });
+});
+</script>
+</body>
+</html>

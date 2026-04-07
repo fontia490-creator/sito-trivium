@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WisdomEP – Smart Parking & IoT Solutions</title>
+  <style>
+    /* =====================================================
+       RESET & BASE
+    ===================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-dark:  #0a1628;
+      --blue-mid:   #0d2d5e;
+      --blue-main:  #1557b0;
+      --blue-light: #2a85e8;
+      --cyan:       #00c8e0;
+      --cyan-soft:  #a0eaf4;
+      --white:      #ffffff;
+      --gray-bg:    #f4f7fb;
+      --gray-mid:   #e0e8f0;
+      --gray-text:  #4a5568;
+      --font-main:  'Segoe UI', Arial, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body  { font-family: var(--font-main); color: var(--blue-dark); background: var(--white); }
+    h1, h2, h3, h4 { line-height: 1.2; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* =====================================================
+       UTILITY
+    ===================================================== */
+    .container   { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .section-tag { display: inline-block; background: var(--cyan); color: var(--blue-dark);
+                   font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
+                   text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 14px; }
+    .section-title { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; color: var(--blue-dark); margin-bottom: 16px; }
+    .section-sub   { font-size: 1.05rem; color: var(--gray-text); max-width: 640px; line-height: 1.7; }
+    .btn-primary {
+      display: inline-block; background: var(--blue-light); color: var(--white);
+      padding: 13px 32px; border-radius: 6px; font-weight: 700; font-size: 0.97rem;
+      border: none; cursor: pointer; transition: background .2s, transform .2s;
+    }
+    .btn-primary:hover { background: var(--blue-main); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-block; background: transparent; color: var(--blue-light);
+      padding: 12px 30px; border-radius: 6px; font-weight: 700; font-size: 0.97rem;
+      border: 2px solid var(--blue-light); cursor: pointer; transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--blue-light); color: var(--white); }
+    .divider { width: 60px; height: 4px; background: var(--cyan); border-radius: 4px; margin: 0 0 28px; }
+
+    /* =====================================================
+       TOPBAR
+    ===================================================== */
+    .topbar {
+      background: var(--blue-dark); color: rgba(255,255,255,0.7);
+      font-size: 0.82rem; padding: 6px 0;
+    }
+    .topbar .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .topbar a { color: var(--cyan); margin-left: 18px; }
+    .topbar .lang { display: flex; gap: 8px; }
+    .topbar .lang a { color: rgba(255,255,255,0.6); }
+    .topbar .lang a.active { color: var(--cyan); font-weight: 700; }
+
+    /* =====================================================
+       NAVBAR
+    ===================================================== */
+    .navbar {
+      position: sticky; top: 0; z-index: 999;
+      background: rgba(10,22,40,0.97); backdrop-filter: blur(8px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+    }
+    .navbar .container {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .navbar-logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .navbar-logo .logo-icon {
+      width: 42px; height: 42px; background: var(--cyan);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 1.1rem; color: var(--blue-dark);
+    }
+    .navbar-logo .logo-name { color: var(--white); font-size: 1.3rem; font-weight: 800; letter-spacing: 0.04em; }
+    .navbar-logo .logo-name span { color: var(--cyan); }
+
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.82); font-size: 0.95rem; font-weight: 500;
+                   padding: 6px 0; border-bottom: 2px solid transparent; transition: all .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+    .hero {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, #0a3a6e 100%);
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 120px 0 80px;
+    }
+    /* decorative grid */
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,224,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,224,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    /* decorative glow */
+    .hero::after {
+      content: ''; position: absolute; top: -80px; right: -120px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,200,224,0.14) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero .container { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px;
+                  background: rgba(0,200,224,0.12); border: 1px solid rgba(0,200,224,0.3);
+                  color: var(--cyan); font-size: 0.83rem; font-weight: 600; letter-spacing: 0.1em;
+                  padding: 6px 16px; border-radius: 30px; margin-bottom: 22px; }
+    .hero-badge .dot { width: 8px; height: 8px; background: var(--cyan); border-radius: 50%;
+                       animation: blink 1.4s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero h1 { font-size: clamp(2rem, 4.5vw, 3.6rem); color: var(--white); font-weight: 900;
+               line-height: 1.1; margin-bottom: 22px; }
+    .hero h1 span { color: var(--cyan); }
+    .hero p { color: rgba(255,255,255,0.72); font-size: 1.1rem; line-height: 1.8; margin-bottom: 36px; max-width: 520px; }
+    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 32px; margin-top: 52px; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 2rem; font-weight: 900; color: var(--cyan); }
+    .hero-stat .lbl { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Hero visual – smart city mockup */
+    .hero-visual {
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .city-card {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(0,200,224,0.25);
+      border-radius: 20px; padding: 36px; width: 100%; max-width: 420px;
+      backdrop-filter: blur(10px);
+    }
+    .city-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .city-card-icon { width: 48px; height: 48px; background: var(--cyan); border-radius: 12px;
+                      display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .city-card-title { color: var(--white); font-weight: 700; font-size: 1rem; }
+    .city-card-sub   { color: rgba(255,255,255,0.5); font-size: 0.82rem; }
+    .park-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
+    .park-slot {
+      aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;
+    }
+    .park-slot.free    { background: rgba(0,200,224,0.18); border: 1px solid rgba(0,200,224,0.4); color: var(--cyan); }
+    .park-slot.busy    { background: rgba(255,80,80,0.18);  border: 1px solid rgba(255,80,80,0.4);  color: #ff8080; }
+    .park-slot.reserved{ background: rgba(255,200,0,0.18);  border: 1px solid rgba(255,200,0,0.4);  color: #ffd700; }
+    .park-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+    .park-legend span { font-size: 0.78rem; color: rgba(255,255,255,0.55); display: flex; align-items: center; gap: 5px; }
+    .park-legend span::before { content: ''; width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .park-legend .l-free::before  { background: var(--cyan); }
+    .park-legend .l-busy::before  { background: #ff8080; }
+    .park-legend .l-res::before   { background: #ffd700; }
+    .metrics-row { display: flex; gap: 10px; margin-top: 20px; }
+    .metric-pill { flex: 1; background: rgba(255,255,255,0.06); border-radius: 10px;
+                   padding: 12px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.08); }
+    .metric-pill .mv { font-size: 1.2rem; font-weight: 800; color: var(--cyan); }
+    .metric-pill .ml { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    /* =====================================================
+       CHI SIAMO
+    ===================================================== */
+    #chi-siamo { padding: 100px 0; background: var(--white); }
+    #chi-siamo .container { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-box {
+      background: linear-gradient(135deg, var(--blue-mid), var(--blue-light));
+      border-radius: 20px; padding: 48px 36px; color: white; min-height: 360px;
+      display: flex; flex-direction: column; justify-content: center; gap: 24px;
+    }
+    .about-img-box h3 { font-size: 1.5rem; font-weight: 800; }
+    .about-img-box p  { font-size: 0.95rem; color: rgba(255,255,255,0.8); line-height: 1.7; }
+    .about-badge-float {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--cyan); color: var(--blue-dark); padding: 16px 20px; border-radius: 14px;
+      font-weight: 800; font-size: 0.85rem; box-shadow: 0 8px 24px rgba(0,200,224,0.35);
+    }
+    .about-badge-float .big { font-size: 1.8rem; display: block; }
+    .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+    .value-card {
+      background: var(--gray-bg); border-radius: 12px; padding: 20px;
+      border-left: 4px solid var(--cyan);
+    }
+    .value-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--blue-main); }
+    .value-card p  { font-size: 0.87rem; color: var(--gray-text); line-height: 1.6; }
+    .team-row { display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
+    .team-card {
+      background: var(--gray-bg); border-radius: 12px; padding: 16px 20px; flex: 1; min-width: 130px;
+      text-align: center;
+    }
+    .team-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg,var(--blue-light),var(--cyan));
+                   margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;
+                   font-size: 1.4rem; font-weight: 900; color: white; }
+    .team-card h4 { font-size: 0.9rem; font-weight: 700; }
+    .team-card p  { font-size: 0.78rem; color: var(--gray-text); }
+
+    /* =====================================================
+       PRODOTTI
+    ===================================================== */
+    #prodotti { padding: 100px 0; background: var(--gray-bg); }
+    #prodotti > .container > .section-intro { margin-bottom: 60px; }
+    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .product-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: transform .25s, box-shadow .25s;
+    }
+    .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+    .product-card-img {
+      height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem;
+      position: relative; overflow: hidden;
+    }
+    .product-card-img .bg-circle {
+      position: absolute; width: 180px; height: 180px; border-radius: 50%;
+      top: -40px; right: -40px; opacity: 0.15;
+    }
+    .product-card-body { padding: 24px; }
+    .product-card-body h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+    .product-card-body p  { font-size: 0.88rem; color: var(--gray-text); line-height: 1.65; margin-bottom: 18px; }
+    .product-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+    .product-tag { background: var(--gray-mid); color: var(--blue-main); font-size: 0.75rem;
+                   font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+    .product-link { color: var(--blue-light); font-size: 0.88rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+    .product-link::after { content: '→'; transition: transform .2s; }
+    .product-card:hover .product-link::after { transform: translateX(4px); }
+
+    /* product colors */
+    .pc-blue  { background: linear-gradient(135deg, #e8f1fd, #c5d9f8); }
+    .pc-cyan  { background: linear-gradient(135deg, #e0f9fc, #b0f0f8); }
+    .pc-teal  { background: linear-gradient(135deg, #e0f4f0, #a8e6da); }
+    .pc-purple{ background: linear-gradient(135deg, #ede8fb, #c9bdf4); }
+    .pc-orange{ background: linear-gradient(135deg, #fef3e8, #fdd4a8); }
+    .pc-green { background: linear-gradient(135deg, #e8f8ee, #b0e8c4); }
+
+    /* =====================================================
+       BUSINESS PLAN
+    ===================================================== */
+    #business-plan { padding: 100px 0; background: var(--white); }
+    #business-plan .container { display: grid; grid-template-columns: 1fr 1.4fr; gap: 70px; align-items: start; }
+    .bp-left h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 800; margin-bottom: 18px; }
+    .bp-left p  { color: var(--gray-text); line-height: 1.75; margin-bottom: 28px; }
+    .bp-features { display: flex; flex-direction: column; gap: 16px; }
+    .bp-feature { display: flex; gap: 14px; align-items: flex-start; }
+    .bp-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--gray-bg);
+               flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+               border: 1px solid var(--gray-mid); }
+    .bp-feature-text h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .bp-feature-text p  { font-size: 0.85rem; color: var(--gray-text); line-height: 1.6; }
+
+    .bp-plans { display: flex; flex-direction: column; gap: 20px; }
+    .plan-card {
+      border: 2px solid var(--gray-mid); border-radius: 16px; padding: 28px; position: relative;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .plan-card:hover { border-color: var(--blue-light); box-shadow: 0 6px 24px rgba(21,87,176,0.1); }
+    .plan-card.featured {
+      border-color: var(--cyan); background: linear-gradient(135deg, #f0fbfd, #e0f9fc);
+      box-shadow: 0 6px 28px rgba(0,200,224,0.18);
+    }
+    .plan-badge { position: absolute; top: -13px; right: 20px; background: var(--cyan);
+                  color: var(--blue-dark); font-size: 0.72rem; font-weight: 800;
+                  padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: .08em; }
+    .plan-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+    .plan-card .plan-price { font-size: 2rem; font-weight: 900; color: var(--blue-main); }
+    .plan-card .plan-price span { font-size: 0.9rem; color: var(--gray-text); font-weight: 400; }
+    .plan-card .plan-desc { color: var(--gray-text); font-size: 0.87rem; margin: 10px 0 16px; line-height: 1.6; }
+    .plan-features-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+    .plan-features-list li { font-size: 0.87rem; display: flex; gap: 8px; align-items: center; }
+    .plan-features-list li::before { content: '✓'; color: var(--cyan); font-weight: 900; flex-shrink: 0; }
+    .plan-card .btn-primary, .plan-card .btn-outline { width: 100%; text-align: center; }
+
+    /* =====================================================
+       RICERCA CLIENTI
+    ===================================================== */
+    #ricerca-clienti { padding: 100px 0; background: var(--gray-bg); }
+    #ricerca-clienti .container { display: flex; flex-direction: column; gap: 60px; }
+    .rc-intro { max-width: 660px; }
+    .rc-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .rc-card  {
+      background: var(--white); border-radius: 16px; padding: 32px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    }
+    .rc-card .rc-icon { font-size: 2rem; margin-bottom: 14px; }
+    .rc-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; color: var(--blue-main); }
+    .rc-card p  { font-size: 0.88rem; color: var(--gray-text); line-height: 1.7; margin-bottom: 20px; }
+    .rc-steps { display: flex; flex-direction: column; gap: 10px; }
+    .rc-step  { display: flex; gap: 10px; align-items: flex-start; }
+    .rc-step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--cyan);
+                   color: var(--blue-dark); font-size: 0.75rem; font-weight: 800;
+                   flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .rc-step p { font-size: 0.84rem; color: var(--gray-text); margin: 0; }
+
+    /* CTA Banner */
+    .rc-cta-banner {
+      background: linear-gradient(135deg, var(--blue-mid), var(--blue-main));
+      border-radius: 20px; padding: 56px 56px; display: flex;
+      align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap;
+    }
+    .rc-cta-banner h2 { color: var(--white); font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; max-width: 540px; }
+    .rc-cta-banner p  { color: rgba(255,255,255,0.72); margin-top: 10px; font-size: 0.95rem; }
+    .cta-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-white { display: inline-block; background: var(--white); color: var(--blue-main);
+                 padding: 13px 32px; border-radius: 6px; font-weight: 800; font-size: 0.95rem;
+                 transition: background .2s, transform .2s; }
+    .btn-white:hover { background: var(--cyan); transform: translateY(-2px); }
+    .btn-ghost { display: inline-block; background: rgba(255,255,255,0.1);
+                 border: 2px solid rgba(255,255,255,0.4); color: var(--white);
+                 padding: 11px 28px; border-radius: 6px; font-weight: 700; font-size: 0.95rem; transition: all .2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* Customer form */
+    .rc-form-wrapper {
+      background: var(--white); border-radius: 20px; padding: 48px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    .rc-form-wrapper h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .rc-form-wrapper p  { color: var(--gray-text); margin-bottom: 32px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--blue-dark); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border: 1.5px solid var(--gray-mid); border-radius: 8px; padding: 11px 14px;
+      font-size: 0.93rem; font-family: var(--font-main); color: var(--blue-dark);
+      outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--blue-light); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit { margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .form-note { font-size: 0.8rem; color: var(--gray-text); }
+
+    /* Testimonials */
+    .testimonials { margin-top: 20px; }
+    .testimonials h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 28px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .testi-card {
+      background: var(--white); border-radius: 14px; padding: 24px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.06); border-top: 4px solid var(--cyan);
+    }
+    .testi-stars { color: #f5c518; font-size: 0.9rem; margin-bottom: 10px; }
+    .testi-text  { font-size: 0.87rem; color: var(--gray-text); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-avatar { width: 38px; height: 38px; border-radius: 50%;
+                    background: linear-gradient(135deg, var(--blue-main), var(--cyan));
+                    display: flex; align-items: center; justify-content: center;
+                    font-weight: 800; color: white; font-size: 0.85rem; }
+    .testi-name { font-weight: 700; font-size: 0.88rem; }
+    .testi-role { font-size: 0.78rem; color: var(--gray-text); }
+
+    /* =====================================================
+       PARTNERS / LOGOS
+    ===================================================== */
+    #partners { padding: 60px 0; background: var(--white); border-top: 1px solid var(--gray-mid); border-bottom: 1px solid var(--gray-mid); }
+    #partners .container { text-align: center; }
+    #partners p { font-size: 0.85rem; color: var(--gray-text); letter-spacing: 0.08em;
+                  text-transform: uppercase; font-weight: 600; margin-bottom: 32px; }
+    .logos-row { display: flex; gap: 36px; flex-wrap: wrap; align-items: center; justify-content: center; }
+    .logo-placeholder {
+      background: var(--gray-bg); border: 1.5px solid var(--gray-mid); border-radius: 10px;
+      padding: 14px 28px; font-weight: 800; font-size: 0.95rem; color: #9aa8b8;
+      letter-spacing: 0.04em;
+    }
+
+    /* =====================================================
+       STATS BAR
+    ===================================================== */
+    #stats { padding: 70px 0; background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); }
+    #stats .container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .stat-item { text-align: center; }
+    .stat-item .sn { font-size: 2.8rem; font-weight: 900; color: var(--cyan); }
+    .stat-item .sl { font-size: 0.88rem; color: rgba(255,255,255,0.6); margin-top: 6px; }
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+    footer { background: var(--blue-dark); color: rgba(255,255,255,0.7); }
+    .footer-main { padding: 70px 0 48px; }
+    .footer-main .container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand h3 { color: var(--white); font-size: 1.2rem; font-weight: 800; margin-bottom: 14px; }
+    .footer-brand p  { font-size: 0.88rem; line-height: 1.75; color: rgba(255,255,255,0.55); margin-bottom: 22px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-btn { width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.08);
+                  display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+                  transition: background .2s; cursor: pointer; }
+    .social-btn:hover { background: var(--cyan); color: var(--blue-dark); }
+    .footer-col h4 { color: var(--white); font-size: 0.9rem; font-weight: 700;
+                     margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 0.87rem; color: rgba(255,255,255,0.55); transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--cyan); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 20px 0; }
+    .footer-bottom .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.83rem; }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+    @media (max-width: 1024px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .testi-grid    { grid-template-columns: 1fr 1fr; }
+      #stats .container { grid-template-columns: repeat(2, 1fr); }
+      .footer-main .container { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero .container     { grid-template-columns: 1fr; }
+      .hero-visual         { display: none; }
+      #chi-siamo .container{ grid-template-columns: 1fr; }
+      #business-plan .container { grid-template-columns: 1fr; }
+      .products-grid       { grid-template-columns: 1fr; }
+      .rc-grid             { grid-template-columns: 1fr; }
+      .form-grid           { grid-template-columns: 1fr; }
+      .testi-grid          { grid-template-columns: 1fr; }
+      .rc-cta-banner       { padding: 36px 28px; }
+      .rc-form-wrapper     { padding: 28px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger           { display: flex; }
+      .about-badge-float   { right: 10px; bottom: -10px; }
+      .footer-main .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== TOPBAR ==================== -->
+  <div class="topbar">
+    <div class="container">
+      <span>📞 +86 400-XXX-XXXX &nbsp;|&nbsp; ✉ info@wisdomep.com</span>
+      <div style="display:flex;gap:18px;align-items:center;">
+        <div class="lang">
+          <a href="#" class="active">EN</a>
+          <a href="#">中文</a>
+          <a href="#">IT</a>
+        </div>
+        <a href="#">Portale Partner →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-logo">
+        <div class="logo-icon">W</div>
+        <span class="logo-name">Wisdom<span>EP</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#chi-siamo">Chi Siamo</a></li>
+        <li><a href="#prodotti">Prodotti</a></li>
+        <li><a href="#business-plan">Business Plan</a></li>
+        <li><a href="#ricerca-clienti">Ricerca Clienti</a></li>
+        <li><a href="#partners">Partner</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#ricerca-clienti" class="btn-outline">Contattaci</a>
+        <a href="#business-plan" class="btn-primary">Demo Gratuita</a>
+      </div>
+      <div class="hamburger" onclick="this.classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <div class="container">
+      <!-- left -->
+      <div class="hero-left">
+        <div class="hero-badge"><span class="dot"></span> Smart City IoT Platform</div>
+        <h1>Soluzioni di <span>Parcheggio Intelligente</span> per la Città del Futuro</h1>
+        <p>WisdomEP progetta e distribuisce piattaforme IoT di nuova generazione per la gestione del traffico statico urbano — dati in tempo reale, automazione avanzata e integrazione cloud.</p>
+        <div class="hero-cta">
+          <a href="#prodotti" class="btn-primary">Scopri i Prodotti</a>
+          <a href="#ricerca-clienti" class="btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.4);">Parla con un esperto</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">500+</div><div class="lbl">Città Connesse</div></div>
+          <div class="hero-stat"><div class="num">10M+</div><div class="lbl">Posti Monitorati</div></div>
+          <div class="hero-stat"><div class="num">99.9%</div><div class="lbl">Uptime Garantito</div></div>
+        </div>
+      </div>
+      <!-- right: parking visualization -->
+      <div class="hero-visual">
+        <div class="city-card">
+          <div class="city-card-header">
+            <div class="city-card-icon">🅿</div>
+            <div>
+              <div class="city-card-title">Smart Parking Dashboard</div>
+              <div class="city-card-sub">Centro Città — Live</div>
+            </div>
+          </div>
+          <div class="park-grid">
+            <div class="park-slot free">F</div>
+            <div class="park-slot busy">O</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot reserved">R</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot busy">O</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot busy">O</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot reserved">R</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot busy">O</div>
+            <div class="park-slot free">F</div>
+            <div class="park-slot free">F</div>
+          </div>
+          <div class="park-legend">
+            <span class="l-free">Libero (9)</span>
+            <span class="l-busy">Occupato (4)</span>
+            <span class="l-res">Riservato (2)</span>
+          </div>
+          <div class="metrics-row">
+            <div class="metric-pill"><div class="mv">67%</div><div class="ml">Occupazione</div></div>
+            <div class="metric-pill"><div class="mv">2.4s</div><div class="ml">Latenza</div></div>
+            <div class="metric-pill"><div class="mv">438</div><div class="ml">Sensori</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHI SIAMO ==================== -->
+  <section id="chi-siamo">
+    <div class="container">
+      <!-- visual -->
+      <div class="about-visual">
+        <div class="about-img-box">
+          <h3>🏙 Intelligenza al Servizio della Città</h3>
+          <p>Fondata nel 2015 a Shenzhen, WisdomEP è cresciuta fino a diventare uno dei leader globali nelle soluzioni IoT per la mobilità urbana e il parcheggio intelligente.</p>
+          <p>Il nostro team di oltre 200 ingegneri e urban planner lavora ogni giorno per rendere le città più efficienti, sostenibili e vivibili.</p>
+        </div>
+        <div class="about-badge-float">
+          <span class="big">10+</span>
+          anni di esperienza
+        </div>
+      </div>
+      <!-- content -->
+      <div class="about-content">
+        <div class="section-tag">Chi Siamo</div>
+        <h2 class="section-title">La Tecnologia che Muove le Città</h2>
+        <div class="divider"></div>
+        <p class="section-sub">WisdomEP combina hardware IoT, intelligenza artificiale e cloud computing per offrire alle amministrazioni comunali e agli operatori privati strumenti di gestione avanzata del traffico e del parcheggio.</p>
+
+        <div class="about-values">
+          <div class="value-card">
+            <h4>🎯 Missione</h4>
+            <p>Trasformare la mobilità urbana attraverso soluzioni digitali scalabili e accessibili.</p>
+          </div>
+          <div class="value-card">
+            <h4>👁 Visione</h4>
+            <p>Una rete globale di città intelligenti interconnesse e sostenibili.</p>
+          </div>
+          <div class="value-card">
+            <h4>⚡ Innovazione</h4>
+            <p>R&D continuo: 15% del fatturato reinvestito in ricerca e sviluppo.</p>
+          </div>
+          <div class="value-card">
+            <h4>🌍 Sostenibilità</h4>
+            <p>Riduzione delle emissioni CO₂ grazie all'ottimizzazione dei flussi di traffico.</p>
+          </div>
+        </div>
+
+        <div class="team-row">
+          <div class="team-card">
+            <div class="team-avatar">CEO</div>
+            <h4>Zhang Wei</h4>
+            <p>CEO & Co-Founder</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">CTO</div>
+            <h4>Li Ming</h4>
+            <p>CTO & IoT Lead</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">CMO</div>
+            <h4>Sarah Chen</h4>
+            <p>CMO & Sales</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PARTNER LOGOS ==================== -->
+  <section id="partners">
+    <div class="container">
+      <p>Scelto da oltre 500 amministrazioni e operatori in tutto il mondo</p>
+      <div class="logos-row">
+        <div class="logo-placeholder">CityGov Pro</div>
+        <div class="logo-placeholder">SmartUrban</div>
+        <div class="logo-placeholder">ParkOS</div>
+        <div class="logo-placeholder">IoT Alliance</div>
+        <div class="logo-placeholder">MobiCity</div>
+        <div class="logo-placeholder">UniPark</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PRODOTTI ==================== -->
+  <section id="prodotti">
+    <div class="container">
+      <div class="section-intro">
+        <div class="section-tag">I Nostri Prodotti</div>
+        <h2 class="section-title">Ecosistema Completo per il Parcheggio Intelligente</h2>
+        <div class="divider"></div>
+        <p class="section-sub">Dall'hardware al cloud, offriamo una suite integrata di soluzioni per ogni esigenza — dalle piccole aree di sosta ai grandi hub urbani multilivello.</p>
+      </div>
+
+      <div class="products-grid">
+
+        <!-- P1 -->
+        <div class="product-card">
+          <div class="product-card-img pc-blue">
+            🚗
+            <div class="bg-circle" style="background:#1557b0;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>P-IOTEYE Sensor</h3>
+            <p>Sensore magnetico da pavimento per il rilevamento in tempo reale della presenza veicolo. Installazione rapida, batteria 5 anni, IP68.</p>
+            <div class="product-tags">
+              <span class="product-tag">IoT Hardware</span>
+              <span class="product-tag">IP68</span>
+              <span class="product-tag">LoRaWAN</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+        <!-- P2 -->
+        <div class="product-card">
+          <div class="product-card-img pc-cyan">
+            ☁️
+            <div class="bg-circle" style="background:#00c8e0;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>Cloud Parking Platform</h3>
+            <p>Dashboard SaaS per la gestione centralizzata di migliaia di posti auto. Analytics avanzati, heatmap e reportistica automatica.</p>
+            <div class="product-tags">
+              <span class="product-tag">SaaS</span>
+              <span class="product-tag">Analytics</span>
+              <span class="product-tag">API REST</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+        <!-- P3 -->
+        <div class="product-card">
+          <div class="product-card-img pc-teal">
+            📱
+            <div class="bg-circle" style="background:#0e8a74;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>mPark App</h3>
+            <p>App mobile per l'utente finale: navigazione verso posti liberi, prenotazione, pagamento digitale integrato e storico sosta.</p>
+            <div class="product-tags">
+              <span class="product-tag">iOS / Android</span>
+              <span class="product-tag">Pagamenti</span>
+              <span class="product-tag">GPS</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+        <!-- P4 -->
+        <div class="product-card">
+          <div class="product-card-img pc-purple">
+            🤖
+            <div class="bg-circle" style="background:#6c3fc4;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>AI Traffic Engine</h3>
+            <p>Motore predittivo basato su ML per anticipare la domanda di parcheggio e ottimizzare i flussi in entrata/uscita in tempo reale.</p>
+            <div class="product-tags">
+              <span class="product-tag">Machine Learning</span>
+              <span class="product-tag">Predittivo</span>
+              <span class="product-tag">Real-time</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+        <!-- P5 -->
+        <div class="product-card">
+          <div class="product-card-img pc-orange">
+            🖥
+            <div class="bg-circle" style="background:#d4680a;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>Totem LED Dinamico</h3>
+            <p>Pannelli LED outdoor per la segnalazione in tempo reale dei posti liberi nelle vicinanze. Resistente alle intemperie, gestito da cloud.</p>
+            <div class="product-tags">
+              <span class="product-tag">Hardware</span>
+              <span class="product-tag">LED</span>
+              <span class="product-tag">Outdoor</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+        <!-- P6 -->
+        <div class="product-card">
+          <div class="product-card-img pc-green">
+            🔗
+            <div class="bg-circle" style="background:#1a7a40;"></div>
+          </div>
+          <div class="product-card-body">
+            <h3>Integration Gateway</h3>
+            <p>Middleware di integrazione con sistemi ERP, MaaS, e piattaforme smart city di terze parti. SDK disponibile per sviluppatori.</p>
+            <div class="product-tags">
+              <span class="product-tag">Middleware</span>
+              <span class="product-tag">SDK</span>
+              <span class="product-tag">Open API</span>
+            </div>
+            <a href="#" class="product-link">Scopri di più</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STATS ==================== -->
+  <section id="stats">
+    <div class="container">
+      <div class="stat-item"><div class="sn">500+</div><div class="sl">Città nel Mondo</div></div>
+      <div class="stat-item"><div class="sn">10M+</div><div class="sl">Posti Monitorati</div></div>
+      <div class="stat-item"><div class="sn">98%</div><div class="sl">Soddisfazione Cliente</div></div>
+      <div class="stat-item"><div class="sn">40%</div><div class="sl">Riduzione CO₂</div></div>
+    </div>
+  </section>
+
+  <!-- ==================== BUSINESS PLAN ==================== -->
+  <section id="business-plan">
+    <div class="container">
+      <!-- left -->
+      <div class="bp-left">
+        <div class="section-tag">Business Plan</div>
+        <h2 class="section-title">Il Piano Giusto per Ogni Realtà Urbana</h2>
+        <div class="divider"></div>
+        <p>Che tu gestisca un piccolo parcheggio comunale o una rete metropolitana di migliaia di posti, abbiamo un piano su misura per le tue esigenze operative e di budget.</p>
+
+        <div class="bp-features">
+          <div class="bp-feature">
+            <div class="bp-icon">⚙️</div>
+            <div class="bp-feature-text">
+              <h4>Implementazione Rapida</h4>
+              <p>Go-live in meno di 30 giorni con supporto dedicato all'onboarding e training del personale.</p>
+            </div>
+          </div>
+          <div class="bp-feature">
+            <div class="bp-icon">📊</div>
+            <div class="bp-feature-text">
+              <h4>ROI Misurabile</h4>
+              <p>I nostri clienti riportano un ritorno sull'investimento medio del 180% entro il primo anno.</p>
+            </div>
+          </div>
+          <div class="bp-feature">
+            <div class="bp-icon">🔒</div>
+            <div class="bp-feature-text">
+              <h4>Contratti Flessibili</h4>
+              <p>Mensile, annuale o enterprise custom. Nessun lock-in: sei libero di scalare o disdire in qualsiasi momento.</p>
+            </div>
+          </div>
+          <div class="bp-feature">
+            <div class="bp-icon">🌐</div>
+            <div class="bp-feature-text">
+              <h4>Supporto 24/7</h4>
+              <p>Team di supporto tecnico dedicato con SLA garantiti per i piani Professional ed Enterprise.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: pricing cards -->
+      <div class="bp-plans">
+
+        <div class="plan-card">
+          <h3>🌱 Starter</h3>
+          <div class="plan-price">€290 <span>/ mese</span></div>
+          <p class="plan-desc">Perfetto per parcheggi di quartiere, comuni piccoli o pilota sperimentali fino a 100 posti.</p>
+          <ul class="plan-features-list">
+            <li>Fino a 100 sensori IoT</li>
+            <li>Dashboard cloud base</li>
+            <li>App mPark inclusa</li>
+            <li>Report mensile automatico</li>
+            <li>Supporto via email (72h)</li>
+          </ul>
+          <a href="#ricerca-clienti" class="btn-outline">Inizia la prova gratuita</a>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-badge">⭐ Più Popolare</div>
+          <h3>🚀 Professional</h3>
+          <div class="plan-price">€890 <span>/ mese</span></div>
+          <p class="plan-desc">La scelta dei comuni di medie dimensioni e degli operatori privati con 100–1.000 posti da gestire.</p>
+          <ul class="plan-features-list">
+            <li>Fino a 1.000 sensori IoT</li>
+            <li>Dashboard avanzata + AI Engine</li>
+            <li>Totem LED inclusi (fino a 5)</li>
+            <li>Integrazione con sistemi comunali</li>
+            <li>Analytics predittivo</li>
+            <li>Supporto prioritario 24/7</li>
+          </ul>
+          <a href="#ricerca-clienti" class="btn-primary">Richiedi Demo</a>
+        </div>
+
+        <div class="plan-card">
+          <h3>🏙 Enterprise</h3>
+          <div class="plan-price">Custom <span>/ anno</span></div>
+          <p class="plan-desc">Per grandi città, reti metropolitane e operatori con esigenze specifiche e volume superiore a 1.000 posti.</p>
+          <ul class="plan-features-list">
+            <li>Sensori illimitati</li>
+            <li>Piattaforma white-label</li>
+            <li>AI Traffic Engine dedicato</li>
+            <li>Integration Gateway full</li>
+            <li>SLA 99.9% garantito</li>
+            <li>Account manager dedicato</li>
+          </ul>
+          <a href="#ricerca-clienti" class="btn-outline">Contatta le Vendite</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== RICERCA CLIENTI ==================== -->
+  <section id="ricerca-clienti">
+    <div class="container">
+
+      <!-- intro -->
+      <div class="rc-intro">
+        <div class="section-tag">Ricerca Clienti</div>
+        <h2 class="section-title">Lavoriamo Insieme per Trovare la Soluzione Ideale</h2>
+        <div class="divider"></div>
+        <p class="section-sub">Non vendiamo prodotti preconfezionati. Il nostro processo inizia ascoltando le esigenze specifiche della tua città o organizzazione — per costruire una soluzione che funziona davvero.</p>
+      </div>
+
+      <!-- how we work -->
+      <div class="rc-grid">
+        <div class="rc-card">
+          <div class="rc-icon">🔍</div>
+          <h3>Analisi delle Esigenze</h3>
+          <p>Ogni progetto parte da un'analisi approfondita del contesto urbano, dei flussi di traffico esistenti e degli obiettivi dell'amministrazione o dell'operatore.</p>
+          <div class="rc-steps">
+            <div class="rc-step"><div class="rc-step-num">1</div><p>Raccolta dati sul territorio (superficie, volume, picchi)</p></div>
+            <div class="rc-step"><div class="rc-step-num">2</div><p>Intervista con responsabili tecnici e amministrativi</p></div>
+            <div class="rc-step"><div class="rc-step-num">3</div><p>Analisi dei sistemi preesistenti e compatibilità</p></div>
+          </div>
+        </div>
+        <div class="rc-card">
+          <div class="rc-icon">🎯</div>
+          <h3>Profilazione Cliente Ideale</h3>
+          <p>Identifichiamo il profilo ottimale per ciascuna soluzione: comuni, operatori privati, centri commerciali, aeroporti, ospedali, università.</p>
+          <div class="rc-steps">
+            <div class="rc-step"><div class="rc-step-num">1</div><p>Segmentazione per dimensione (posti auto gestiti)</p></div>
+            <div class="rc-step"><div class="rc-step-num">2</div><p>Budget e capacità di investimento tecnologico</p></div>
+            <div class="rc-step"><div class="rc-step-num">3</div><p>Livello di maturità digitale dell'organizzazione</p></div>
+          </div>
+        </div>
+        <div class="rc-card">
+          <div class="rc-icon">📐</div>
+          <h3>Progettazione su Misura</h3>
+          <p>In base al profilo emerso, il nostro team tecnico progetta la configurazione hardware/software ottimale con un piano di deployment dettagliato.</p>
+          <div class="rc-steps">
+            <div class="rc-step"><div class="rc-step-num">1</div><p>Scelta del mix di sensori e infrastruttura</p></div>
+            <div class="rc-step"><div class="rc-step-num">2</div><p>Configurazione piattaforma cloud e integrazioni</p></div>
+            <div class="rc-step"><div class="rc-step-num">3</div><p>Presentazione proposta tecnico-economica</p></div>
+          </div>
+        </div>
+        <div class="rc-card">
+          <div class="rc-icon">📈</div>
+          <h3>Monitoraggio e Ottimizzazione</h3>
+          <p>Il nostro rapporto non finisce all'installazione. Monitoriamo le performance in continuo e ottimizziamo la soluzione nel tempo con aggiornamenti periodici.</p>
+          <div class="rc-steps">
+            <div class="rc-step"><div class="rc-step-num">1</div><p>KPI tracking mensile e quarterly review</p></div>
+            <div class="rc-step"><div class="rc-step-num">2</div><p>Aggiornamenti firmware e software automatici</p></div>
+            <div class="rc-step"><div class="rc-step-num">3</div><p>Espansione graduale della rete sensori</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- contact form -->
+      <div class="rc-form-wrapper">
+        <h3>Inizia la Tua Ricerca</h3>
+        <p>Compila il modulo per ricevere una consulenza gratuita dal nostro team di esperti in mobilità urbana.</p>
+        <form onsubmit="event.preventDefault(); alert('Grazie! Ti contatteremo entro 24 ore.');">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nome">Nome e Cognome *</label>
+              <input type="text" id="nome" placeholder="Es. Mario Rossi" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" placeholder="mario@comune.it" required />
+            </div>
+            <div class="form-group">
+              <label for="org">Organizzazione</label>
+              <input type="text" id="org" placeholder="Es. Comune di Roma" />
+            </div>
+            <div class="form-group">
+              <label for="ruolo">Ruolo</label>
+              <input type="text" id="ruolo" placeholder="Es. Responsabile Mobilità" />
+            </div>
+            <div class="form-group">
+              <label for="tipo">Tipo di Organizzazione</label>
+              <select id="tipo">
+                <option value="">— Seleziona —</option>
+                <option>Comune / Ente Pubblico</option>
+                <option>Operatore Privato</option>
+                <option>Centro Commerciale</option>
+                <option>Aeroporto / Hub</option>
+                <option>Università / Ospedale</option>
+                <option>Altro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="posti">N° Posti da Gestire (stimato)</label>
+              <select id="posti">
+                <option value="">— Seleziona —</option>
+                <option>Meno di 100</option>
+                <option>100 – 500</option>
+                <option>500 – 2.000</option>
+                <option>2.000 – 10.000</option>
+                <option>Oltre 10.000</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="msg">Descrivici la tua sfida o progetto</label>
+              <textarea id="msg" placeholder="Es. Vogliamo digitalizzare il parcheggio del centro storico per ridurre il traffico di ricerca posto..."></textarea>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-primary">Invia la Richiesta →</button>
+            <span class="form-note">🔒 I tuoi dati sono trattati nel rispetto del GDPR. Risposta garantita entro 24h.</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- testimonials -->
+      <div class="testimonials">
+        <h3>Cosa Dicono i Nostri Clienti</h3>
+        <div class="testi-grid">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Abbiamo ridotto del 35% il traffico di ricerca posto nel centro storico. La piattaforma è intuitiva e il supporto è eccellente."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">MR</div>
+              <div><div class="testi-name">Marco Ricci</div><div class="testi-role">Comune di Bergamo — Mob. Urbana</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"L'integrazione con il nostro sistema ERP è stata completata in soli 5 giorni. Il ROI si è materializzato già nel quarto mese."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SF</div>
+              <div><div class="testi-name">Sofia Ferrari</div><div class="testi-role">ParkingPlus Srl — Direttore Ops</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★☆</div>
+            <p class="testi-text">"I dati predittivi ci hanno permesso di riallocare il personale in modo molto più efficiente. Siamo molto soddisfatti della partnership."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">AL</div>
+              <div><div class="testi-name">Andrea Longo</div><div class="testi-role">Aeroporto di Napoli — IT Manager</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Banner -->
+      <div class="rc-cta-banner">
+        <div>
+          <h2>Pronto a Trasformare la Mobilità della Tua Città?</h2>
+          <p>Prenota una demo gratuita di 30 minuti con un nostro esperto — senza impegno.</p>
+        </div>
+        <div class="cta-buttons">
+          <a href="#" class="btn-white">Prenota Demo</a>
+          <a href="tel:+39000000000" class="btn-ghost">📞 Chiamaci ora</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-brand">
+          <h3>WisdomEP</h3>
+          <p>Soluzioni IoT di nuova generazione per parcheggi intelligenti e mobilità urbana sostenibile. Presente in oltre 500 città nel mondo.</p>
+          <div class="social-links">
+            <div class="social-btn" title="LinkedIn">in</div>
+            <div class="social-btn" title="Twitter">𝕏</div>
+            <div class="social-btn" title="YouTube">▶</div>
+            <div class="social-btn" title="WeChat">💬</div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Azienda</h4>
+          <ul>
+            <li><a href="#chi-siamo">Chi Siamo</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press & Media</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Prodotti</h4>
+          <ul>
+            <li><a href="#prodotti">P-IOTEYE Sensor</a></li>
+            <li><a href="#prodotti">Cloud Platform</a></li>
+            <li><a href="#prodotti">mPark App</a></li>
+            <li><a href="#prodotti">AI Traffic Engine</a></li>
+            <li><a href="#prodotti">Integration Gateway</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Supporto</h4>
+          <ul>
+            <li><a href="#">Documentazione</a></li>
+            <li><a href="#">Developer SDK</a></li>
+            <li><a href="#">Status System</a></li>
+            <li><a href="#ricerca-clienti">Contattaci</a></li>
+            <li><a href="#">Partner Program</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 WisdomEP Technology Co., Ltd. — Tutti i diritti riservati.</p>
+        <p><a href="#" style="color:rgba(255,255,255,0.4);margin-right:16px;">Privacy Policy</a><a href="#" style="color:rgba(255,255,255,0.4);">Cookie Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
