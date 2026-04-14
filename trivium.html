@@ -253,9 +253,10 @@
     /* Globe active presence pill */
     .globe-active-pill {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 14px 20px;
+      gap: 0;
+      padding: 14px 20px 16px;
       background: var(--bg-deep);
       border-top: 1px solid rgba(0,212,232,.1);
     }
@@ -1602,15 +1603,12 @@
     #globe-wrap { height: clamp(260px, 94vw, 360px); }
   }
   #globe-hint {
-    position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
-    background:rgba(0,212,232,.12); border:1px solid rgba(0,212,232,.3);
-    color:rgba(0,212,232,.8); font-size:.72rem; font-weight:600;
-    letter-spacing:.08em; padding:5px 14px; border-radius:20px;
-    pointer-events:none; opacity:0; transition:opacity .3s; z-index:10;
-    white-space:nowrap;
+    background:rgba(0,212,232,.10); border:1px solid rgba(0,212,232,.25);
+    color:rgba(0,212,232,.75); font-size:.7rem; font-weight:600;
+    letter-spacing:.08em; padding:5px 16px; border-radius:20px;
+    white-space:nowrap; margin-top:8px;
+    display:inline-block;
   }
-  #globe-wrap:hover #globe-hint { opacity:1; }
-  #globe-wrap.wheel-ready #globe-hint { opacity:0; }
   #globe-wrap:active { cursor:grabbing; }
   #globe-canvas { display:block; width:100%!important; height:100%!important; }
   #globe-tooltip {
@@ -1703,7 +1701,6 @@
 
   <div id="globe-wrap">
     <canvas id="globe-canvas"></canvas>
-    <div id="globe-hint" id="globe-hint-text">Hover 1s · Scroll to zoom · Touch to rotate</div>
     <div id="globe-tooltip"><span id="tt-city">City</span><div class="tt-sub" id="tt-sub"></div></div>
     <div class="globe-zoom">
       <div class="gz-btn" id="gzIn">+</div>
@@ -1727,6 +1724,7 @@
       <span class="gap-dot"></span>
       <span data-i18n="where_leg_pre">Active Presence</span>
     </div>
+    <div id="globe-hint">Hover 1s · Scroll to zoom · Touch to rotate</div>
   </div>
 
   <div class="where-stats">
