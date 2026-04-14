@@ -1024,13 +1024,13 @@
     @media(max-width: 768px) {
       .container { padding: 0 18px; }
 
-      /* Hero — single column, fully centered */
+      /* Hero — single column, fully centered, tight gap */
       .hero .container {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 32px;
-        padding-top: 56px;
-        padding-bottom: 36px;
+        gap: 6px;
+        padding-top: 44px;
+        padding-bottom: 28px;
       }
       .hero-left {
         display: flex;
@@ -1071,14 +1071,25 @@
       .t-ring:nth-child(4) { display: none; }
       .orbit-wrap  { width: 220px; height: 220px; }
       .orbit-wrap2 { width: 175px; height: 175px; }
-      .logo-tagline { text-align: center !important; width: 100%; margin-top: -10px !important; }
-      .logo-tagline .lt-sub { color: #ffffff !important; }
+      .logo-tagline { text-align: center !important; width: 100%; margin-top: -8px !important; }
+      .logo-tagline .lt-name { font-size: 1.55rem !important; }
+      .logo-tagline .lt-sub { color: #7dd3fc !important; font-size: .72rem !important; letter-spacing: .22em !important; }
 
-      /* Title smaller in proportion to the bigger logo */
-      .hero h1 { font-size: clamp(1.6rem, 6.5vw, 2.1rem) !important; }
+      /* Title and description */
+      .hero h1 { font-size: clamp(1.55rem, 6.5vw, 2rem) !important; margin-bottom: 14px; }
+      .hero p { color: #ffffff !important; }
 
       /* Section description text: white on mobile */
       .lead, .sec-sub { color: #ffffff !important; }
+
+      /* Videos: remove dark overlay on mobile */
+      .vcard-overlay { background: linear-gradient(to bottom, rgba(26,30,36,.04) 0%, rgba(26,30,36,.18) 100%) !important; }
+
+      /* Product cards: shorter media so title shows below */
+      .vcard-media { height: clamp(110px, 32vw, 150px) !important; }
+
+      /* No horizontal overflow anywhere */
+      html, body, section, .container { max-width: 100%; overflow-x: hidden; }
       .hstat .n { font-size: 1.55rem; }
       .hstat .l { font-size: .72rem; }
 
@@ -1315,6 +1326,18 @@
   <!-- ===== CANVAS PARTICLES ===== -->
   <canvas id="particles"></canvas>
 
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-left">📞 +39 02 XXXX XXXX &nbsp;·&nbsp; ✉ <a href="mailto:hello@trivium.io">hello@trivium.io</a></div>
+      <div class="topbar-right">
+        <a href="#" onclick="switchLang('it');return false;">IT</a>
+        <a href="#" onclick="switchLang('en');return false;" class="active">EN</a>
+        <a href="#" onclick="switchLang('es');return false;">ES</a>
+        <a href="booking.html">Portal Partner →</a>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar">
