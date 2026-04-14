@@ -208,6 +208,20 @@
     .topbar-lang span:hover  { color: var(--white); }
     .tb-sep { color: var(--border) !important; cursor: default !important; }
 
+    .tb-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .tb-title {
+      font-size: .95rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: .12em;
+    }
+
     /* Hamburger nel topbar */
     .tb-hamburger {
       display: flex;
@@ -1367,13 +1381,24 @@
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
     <div class="container">
-      <div class="topbar-lang">
-        <span onclick="switchLang('it')" id="tb-it">ITA</span>
-        <span class="tb-sep">|</span>
-        <span onclick="switchLang('en')" id="tb-en" class="active">ENG</span>
-        <span class="tb-sep">|</span>
-        <span onclick="switchLang('es')" id="tb-es">ESP</span>
+      <!-- Logo a sinistra -->
+      <div class="tb-logo" onclick="scrollTo(0,0)">
+        <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tblg" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#0090a8"/><stop offset="100%" stop-color="#00d4e8"/>
+            </linearGradient>
+          </defs>
+          <polygon points="50,8 95,82 5,82" stroke="url(#tblg)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+          <polygon points="50,22 82,74 18,74" stroke="url(#tblg)" stroke-width="2.5" fill="none" stroke-linejoin="round" opacity=".7"/>
+          <line x1="50" y1="22" x2="50" y2="50" stroke="url(#tblg)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="18" y1="74" x2="50" y2="50" stroke="url(#tblg)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="82" y1="74" x2="50" y2="50" stroke="url(#tblg)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
+        </svg>
+        <span class="tb-title">TRIVIUM</span>
       </div>
+      <!-- Hamburger a destra -->
       <div class="tb-hamburger" id="hamburgerBtn" role="button" aria-label="Menu">
         <span></span><span></span><span></span>
       </div>
