@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1e24" />
   <title>Trivium — Where Paths Converge</title>
   <style>
     /* ========== RESET & VARIABLES ========== */
@@ -225,8 +226,11 @@
       top: 0;
       z-index: 99;
       background: rgba(22, 27, 34, 0.92);
+      -webkit-backdrop-filter: blur(16px);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
 
     .navbar .container {
@@ -337,6 +341,7 @@
     /* ========== HERO ========== */
     .hero {
       min-height: 100vh;
+      min-height: -webkit-fill-available;
       display: flex;
       align-items: center;
       padding: 100px 0 80px;
@@ -891,8 +896,6 @@
         grid-template-columns: 1fr;
       }
 
-      /* .hero-visual { display: none; } */
-
       .nav-links,
       .nav-actions {
         display: none;
@@ -900,36 +903,222 @@
 
       .hamburger {
         display: flex;
+        padding: 10px;
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
       }
 
-      .products-panel.active {
-        grid-template-columns: 1fr;
+      /* HERO: stack logo under text, scale down */
+      .hero .container {
+        gap: 36px;
+        padding: 60px 20px 40px;
       }
-
-      .testi-track {
-        grid-template-columns: 1fr;
+      .hero-visual {
+        min-width: unset;
+        width: 100%;
+        order: -1;
       }
+      .logo-scene {
+        width: 260px;
+        height: 260px;
+        margin: 0 auto;
+      }
+      .trivium-logo-hero {
+        width: 230px;
+        height: 230px;
+      }
+      .t-ring:nth-child(1){width:150px;height:150px;}
+      .t-ring:nth-child(2){width:195px;height:195px;}
+      .t-ring:nth-child(3){width:235px;height:235px;}
+      .t-ring:nth-child(4){width:260px;height:260px;}
+      .orbit-wrap{width:195px;height:195px;}
+      .orbit-wrap2{width:150px;height:150px;}
+      .logo-tagline{margin-top:-24px;}
+      .logo-tagline .lt-name{font-size:1.4rem;}
+      .logo-tagline .lt-sub{font-size:.75rem;letter-spacing:.18em;}
 
-      .process-steps {
+      .hero h1 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+      .hero p { font-size: .95rem; }
+      .hero-cta { gap: 10px; }
+      .hero-cta .btn { padding: 12px 20px; font-size: .88rem; min-height: 44px; }
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+      .hstat .n { font-size: 1.6rem; }
+
+      /* PROBLEM section */
+      .problem-grid { grid-template-columns: 1fr; gap: 36px; }
+      .prob-stats { grid-template-columns: 1fr 1fr; }
+      .problem-content { padding: 70px 0; }
+
+      /* TECHNOLOGY / SCHEMA */
+      .schema-cards { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .sc-card .icon { width: 100px; height: 100px; }
+
+      /* PRODUCTS */
+      .prod-intro { grid-template-columns: 1fr; gap: 36px; }
+      .prod-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .vcard-media { height: 200px; }
+
+      /* HOW IT WORKS */
+      .steps-flow {
         grid-template-columns: 1fr 1fr;
+        gap: 24px;
       }
+      .steps-flow::before { display: none; }
+      .step { padding: 0 8px; }
 
-      .footer-main .container {
-        grid-template-columns: 1fr;
+      /* DATA */
+      .data-grid { grid-template-columns: 1fr; gap: 28px; }
+
+      /* STATS BAR */
+      #statsbar .container { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .stb .n { font-size: 2rem; }
+
+      /* PLANS */
+      .plans-row { grid-template-columns: 1fr; gap: 16px; }
+
+      /* CONTACT */
+      .contact-grid { grid-template-columns: 1fr; gap: 28px; }
+      .fgrow { grid-template-columns: 1fr; }
+
+      /* GLOBE */
+      #globe-wrap { height: 380px; }
+      #city-panel { width: 180px; padding: 14px 12px; }
+
+      /* WHERE STATS */
+      .where-stats { gap: 28px; padding: 36px 20px; }
+
+      /* FOOTER */
+      .products-panel.active { grid-template-columns: 1fr; }
+      .testi-track { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .footer-main .container { grid-template-columns: 1fr; }
+      .cta-banner { padding: 36px 28px; }
+      .form-row { grid-template-columns: 1fr; }
+      #stats .container { grid-template-columns: 1fr 1fr; }
+
+      /* CTA BAND */
+      .cta-content { padding: 60px 20px; }
+      .cta-btns { flex-direction: column; align-items: center; }
+      .cta-btns .btn { width: 100%; max-width: 320px; justify-content: center; min-height: 44px; }
+    }
+
+    /* ===== EXTRA SMALL PHONES (max 480px) ===== */
+    @media(max-width:480px) {
+      .container { padding: 0 16px; }
+
+      .logo-scene { width: 200px; height: 200px; }
+      .trivium-logo-hero { width: 180px; height: 180px; }
+      .t-ring:nth-child(1){width:115px;height:115px;}
+      .t-ring:nth-child(2){width:148px;height:148px;}
+      .t-ring:nth-child(3){width:180px;height:180px;}
+      .t-ring:nth-child(4){width:200px;height:200px;}
+      .orbit-wrap{width:148px;height:148px;}
+      .orbit-wrap2{width:115px;height:115px;}
+
+      .hero h1 { font-size: clamp(1.6rem, 8vw, 2rem); }
+      .hero-stats { gap: 12px; }
+      .hstat .n { font-size: 1.4rem; }
+
+      .schema-cards { grid-template-columns: 1fr; }
+      .prod-grid { grid-template-columns: 1fr; }
+      .prob-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pstat { padding: 16px; }
+      .pstat .sn { font-size: 1.8rem; }
+
+      .steps-flow { grid-template-columns: 1fr; }
+      .step-num { width: 56px; height: 56px; font-size: 1.2rem; }
+
+      #statsbar .container { grid-template-columns: 1fr 1fr; }
+
+      #globe-wrap { height: 300px; }
+      .globe-zoom { top: 10px; right: 10px; }
+      .gz-btn { width: 30px; height: 30px; font-size: 1rem; }
+      #city-panel { display: none; }
+
+      .plans-row { grid-template-columns: 1fr; }
+      .plan { padding: 24px 20px; }
+      .plan .price { font-size: 2rem; }
+
+      .sc-card .icon { width: 80px; height: 80px; }
+
+      footer .footer-btm .container { flex-direction: column; text-align: center; gap: 8px; }
+    }
+
+    /* ===== IOS SAFE AREA ===== */
+    @supports(padding: env(safe-area-inset-bottom)) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom);
       }
-
-      .cta-banner {
-        padding: 36px 28px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      #stats .container {
-        grid-template-columns: 1fr 1fr;
+      footer {
+        padding-bottom: env(safe-area-inset-bottom);
       }
     }
+
+    /* ===== MOBILE NAV OVERLAY ===== */
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,14,22,.97);
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+    }
+    .mobile-nav-overlay.open { display: flex; }
+    .mobile-nav-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: rgba(0,212,232,.12);
+      border: 1px solid rgba(0,212,232,.3);
+      border-radius: 50%;
+      color: var(--cyan);
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .mobile-nav-overlay a {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--white);
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(0,212,232,.12);
+      width: 80%;
+      text-align: center;
+      transition: color .2s;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mobile-nav-overlay a:hover { color: var(--cyan); }
+    .mobile-nav-lang {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .mobile-nav-lang span {
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.4);
+      cursor: pointer;
+      padding: 8px 14px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      transition: color .2s;
+    }
+    .mobile-nav-lang span.active { color: var(--cyan); }
 
     /* ===== LOGO HERO — stile pioteye ===== */
     .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;z-index:5;min-width:400px;}
@@ -1068,9 +1257,25 @@
           <span class="lang-btn" onclick="switchLang('es')">ESP</span>
         </div>
       </div>
-      <div class="hamburger"><span></span><span></span><span></span></div>
+      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span></span><span></span><span></span></div>
     </div>
   </nav>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <a href="#problem" onclick="closeMobileNav()" data-i18n="nav_problem">The Problem</a>
+    <a href="#schema" onclick="closeMobileNav()" data-i18n="nav_tech">Technology</a>
+    <a href="#products" onclick="closeMobileNav()" data-i18n="nav_solutions">Solutions</a>
+    <a href="#data" onclick="closeMobileNav()">Analytics</a>
+    <a href="#where-we-are" onclick="closeMobileNav()" data-i18n="nav_where">Where We Are</a>
+    <a href="booking.html" data-i18n="nav_contact">Contact</a>
+    <div class="mobile-nav-lang">
+      <span class="active" onclick="switchLang('en');closeMobileNav()">ENG</span>
+      <span onclick="switchLang('it');closeMobileNav()">ITA</span>
+      <span onclick="switchLang('es');closeMobileNav()">ESP</span>
+    </div>
+  </div>
 
   <!-- ===== HERO ===== -->
   <section class="hero">
@@ -2277,7 +2482,9 @@
     window.addEventListener('resize', resize);
 
     function randBetween(a, b) { return Math.random() * (b - a) + a; }
-    for (let i = 0; i < 80; i++) {
+    const isMobile = window.innerWidth <= 768;
+    const dotCount = isMobile ? 30 : 80;
+    for (let i = 0; i < dotCount; i++) {
       dots.push({
         x: randBetween(0, W), y: randBetween(0, H),
         vx: randBetween(-.3, .3), vy: randBetween(-.3, .3),
@@ -2846,6 +3053,21 @@ function togBill(){
 
     // Init language after all functions defined
     switchLang('en');
+
+    // ===== HAMBURGER MENU =====
+    function openMobileNav() {
+      document.getElementById('mobileNav').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('hamburgerBtn').addEventListener('click', openMobileNav);
+    document.getElementById('mobileNavClose').addEventListener('click', closeMobileNav);
+    document.getElementById('mobileNav').addEventListener('click', function(e) {
+      if (e.target === this) closeMobileNav();
+    });
   </script>
 
 <!-- ===== 3D SCHEMA ICONS ===== -->
