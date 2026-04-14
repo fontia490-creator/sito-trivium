@@ -1310,6 +1310,9 @@
     .vcard-link:active { transform: scale(1.07); gap: 10px; box-shadow: 0 4px 18px rgba(0,212,232,.35); }
     .pstat:active { transform: scale(1.04); background: rgba(0,212,232,.22); }
     .metric-card:active { border-color: var(--cyan); background: rgba(0,212,232,.08); }
+    .hstat:active { transform: scale(1.07); }
+    .stb:active { transform: scale(1.04); background: rgba(200,200,200,.18); }
+    .where-stats > div:active { transform: scale(1.06); }
     .sc-card:active .icon { box-shadow: 0 0 0 2px rgba(0,212,232,.55), 0 0 55px rgba(0,212,232,.35); }
     .gz-btn:active { background: rgba(0,212,232,.3) !important; }
     .soc { cursor: pointer; }
@@ -1371,10 +1374,8 @@
       .fg input, .fg select, .fg textarea { font-size: .9rem !important; }
     }
 
-    /* Globe: always show hint on touch devices */
-    @media (hover: none) {
-      #globe-hint { opacity: 1 !important; transition: none; }
-    }
+    /* Globe hint: always visible on all devices */
+    #globe-hint { opacity: 1; }
 
     /* Minimum touch targets */
     .gz-btn { min-width: 44px; min-height: 44px; width: 44px; height: 44px; }
@@ -3167,6 +3168,37 @@ const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
 },{threshold:.3});
 document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid').forEach(s=>cObs.observe(s));
+
+// ===== TAP-TO-REPLAY COUNTERS (mobile interactive stats) =====
+(function(){
+  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if(!isTouchDevice) return;
+
+  // Seleziona tutti i contenitori di statistiche
+  const statContainers = document.querySelectorAll(
+    '.hstat, .pstat, .stb, .metric-card, .where-stats > div'
+  );
+
+  statContainers.forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function() {
+      // Flash glow
+      el.style.transition = 'box-shadow .15s, transform .15s';
+      el.style.boxShadow = '0 0 0 2px var(--cyan), 0 0 22px rgba(0,212,232,.4)';
+      el.style.transform = 'scale(1.06)';
+      setTimeout(() => {
+        el.style.boxShadow = '';
+        el.style.transform = '';
+      }, 320);
+
+      // Ri-anima i numeri dentro questo contenitore
+      el.querySelectorAll('[data-count]').forEach(num => {
+        num.textContent = '0';
+        animNum(num);
+      });
+    });
+  });
+})();
 
 // ===== PERF-BOX BAR + VALUE ANIMATION =====
 function animPerfBox() {
