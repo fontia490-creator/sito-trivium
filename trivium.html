@@ -176,7 +176,7 @@
     /* ========== TOPBAR ========== */
     .topbar {
       background: rgba(15, 18, 24, 0.95);
-      padding: 7px 0;
+      padding: 6px 0;
       border-bottom: 1px solid var(--border);
       position: relative;
       z-index: 100;
@@ -184,40 +184,48 @@
 
     .topbar .container {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .topbar-left {
-      font-size: .82rem;
-      color: var(--gray);
-    }
-
-    .topbar-left a {
-      color: var(--cyan);
-      margin: 0 6px;
     }
 
     .topbar-right {
       display: flex;
-      gap: 16px;
+      gap: 12px;
       align-items: center;
-      font-size: .82rem;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .06em;
     }
 
-    .topbar-right a {
+    .topbar-right span {
       color: var(--gray);
+      cursor: pointer;
+      transition: color .2s;
     }
 
-    .topbar-right a.active {
-      color: var(--cyan);
-      font-weight: 700;
-    }
+    .topbar-right span.active { color: var(--cyan); }
+    .topbar-right span:hover { color: var(--white); }
 
-    .topbar-right a:hover {
-      color: var(--white);
+    /* Globe active presence pill */
+    .globe-active-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-deep);
+      font-size: .82rem;
+      font-weight: 600;
+      color: #4ade80;
+      border-top: 1px solid rgba(74,222,128,.15);
+    }
+    .gap-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px #4ade80;
+      animation: pulse 1.5s infinite;
     }
 
     /* ========== NAVBAR ========== */
@@ -329,14 +337,15 @@
       padding: 6px;
     }
 
-    .hamburger span {
+    .hamburger span.hdot {
       display: block;
-      width: 24px;
-      height: 2px;
+      width: 6px;
+      height: 6px;
       background: var(--white);
-      border-radius: 2px;
-      transition: .3s;
+      border-radius: 50%;
+      transition: background .2s, transform .2s;
     }
+    .hamburger { gap: 4px; }
 
     /* ========== HERO ========== */
     .hero {
@@ -1085,8 +1094,8 @@
       /* Videos: remove dark overlay on mobile */
       .vcard-overlay { background: linear-gradient(to bottom, rgba(26,30,36,.04) 0%, rgba(26,30,36,.18) 100%) !important; }
 
-      /* Product cards: shorter media so title shows below */
-      .vcard-media { height: clamp(110px, 32vw, 150px) !important; }
+      /* Product cards: restore original video height */
+      .vcard-media { height: clamp(150px, 42vw, 220px) !important; }
 
       /* No horizontal overflow anywhere */
       html, body, section, .container { max-width: 100%; overflow-x: hidden; }
@@ -1259,10 +1268,8 @@
     .citem:active { border-color: var(--cyan); }
 
     /* Hamburger → X animation */
-    .hamburger span { transition: transform .3s ease, opacity .3s ease, background .2s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
+    .hamburger span.hdot { transition: background .2s, transform .2s; }
+    .hamburger.open span.hdot { background: var(--cyan); transform: scale(1.3); }
 
     /* Video mute button */
     .vid-mute-btn {
@@ -1328,13 +1335,13 @@
 
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
-    <div class="container">
-      <div class="topbar-left">📞 +39 02 XXXX XXXX &nbsp;·&nbsp; ✉ <a href="mailto:hello@trivium.io">hello@trivium.io</a></div>
+    <div class="container" style="justify-content:center;">
       <div class="topbar-right">
-        <a href="#" onclick="switchLang('it');return false;">IT</a>
-        <a href="#" onclick="switchLang('en');return false;" class="active">EN</a>
-        <a href="#" onclick="switchLang('es');return false;">ES</a>
-        <a href="booking.html">Portal Partner →</a>
+        <span onclick="switchLang('it')" style="cursor:pointer;" id="tb-it">ITA</span>
+        <span style="color:var(--border);">|</span>
+        <span onclick="switchLang('en')" style="cursor:pointer;" id="tb-en" class="active">ENG</span>
+        <span style="color:var(--border);">|</span>
+        <span onclick="switchLang('es')" style="cursor:pointer;" id="tb-es">ESP</span>
       </div>
     </div>
   </div>
@@ -1390,7 +1397,7 @@
           <span class="lang-btn" onclick="switchLang('es')">ESP</span>
         </div>
       </div>
-      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span></span><span></span><span></span></div>
+      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span class="hdot"></span><span class="hdot"></span><span class="hdot"></span></div>
     </div>
   </nav>
 
@@ -1647,6 +1654,13 @@
       <div class="cp-desc" id="cp-desc">Trivium operational headquarters. Smart parking and IoT deployment hub for Southern Europe.</div>
       <span class="cp-tag" id="cp-tag" style="color:#4ade80;border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.08);">Active Presence</span>
     </div>
+  </div>
+
+  <div class="globe-active-pill">
+    <span class="gap-dot"></span>
+    <span data-i18n="where_leg_pre">Active Presence</span>
+    <span style="color:var(--gray);margin:0 6px;">·</span>
+    <span style="color:var(--cyan);font-weight:700;">50+ Countries</span>
   </div>
 
   <div class="where-stats">
