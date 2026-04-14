@@ -982,8 +982,7 @@
       .contact-grid { grid-template-columns: 1fr; gap: 28px; }
       .fgrow { grid-template-columns: 1fr; }
 
-      /* GLOBE */
-      #globe-wrap { height: 380px; }
+      /* GLOBE — height gestita da clamp nel blocco globe */
       #city-panel { width: 180px; padding: 14px 12px; }
 
       /* WHERE STATS */
@@ -1032,10 +1031,8 @@
 
       #statsbar .container { grid-template-columns: 1fr 1fr; }
 
-      #globe-wrap { height: 300px; }
-      .globe-zoom { top: 10px; right: 10px; }
-      .gz-btn { width: 30px; height: 30px; font-size: 1rem; }
-      #city-panel { display: none; }
+      /* heights gestite da clamp */
+      #city-panel { max-width: 300px; }
 
       .plans-row { grid-template-columns: 1fr; }
       .plan { padding: 24px 20px; }
@@ -1497,9 +1494,28 @@
   }
   .where-header { max-width:700px;margin:0 auto 50px;text-align:center;padding:0 28px; }
   #globe-wrap {
-    position:relative; width:100%; height:640px;
+    position:relative; width:100%;
+    height: clamp(300px, 90vw, 640px);
     background: transparent;
     overflow:hidden; cursor:grab;
+  }
+  @media(max-width: 768px) {
+    #globe-wrap { height: clamp(280px, 92vw, 480px); }
+    #globe-wrap .globe-zoom { top: 10px; right: 10px; gap: 4px; }
+    #globe-wrap .gz-btn { width: 40px; height: 40px; font-size: 1.1rem; }
+    #city-panel {
+      top: auto !important; left: 50% !important;
+      bottom: 12px !important; right: auto !important;
+      transform: translateX(-50%) translateY(10px) !important;
+      width: calc(100% - 32px) !important;
+      max-width: 340px !important;
+    }
+    #city-panel.visible {
+      transform: translateX(-50%) translateY(0) !important;
+    }
+  }
+  @media(max-width: 480px) {
+    #globe-wrap { height: clamp(260px, 94vw, 360px); }
   }
   #globe-hint {
     position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
