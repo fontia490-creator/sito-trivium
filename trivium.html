@@ -245,9 +245,10 @@
     .tb-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .tb-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
 
-    /* Su desktop nascondi hamburger nel topbar */
+    /* Su desktop nascondi hamburger e topbar-lang (usano la navbar) */
     @media(min-width: 769px) {
       .tb-hamburger { display: none; }
+      .topbar-lang  { display: none; }
     }
 
     /* Globe active presence pill */
@@ -769,6 +770,8 @@
 /* ========== CONTACT ========== */
 #contact{padding:clamp(52px,8vw,110px) 0;background:var(--bg-deep);}
 .contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(20px,3.5vw,50px);align-items:start;margin-top:clamp(28px,4vw,50px);}
+.contact-video-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.contact-video-wrap video{width:100%;display:block;max-height:260px;object-fit:cover;}
 .ci-list{display:flex;flex-direction:column;gap:16px;margin-top:28px;}
 .citem{display:flex;gap:14px;align-items:flex-start;padding:18px;
   background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;transition:all .2s;}
@@ -1224,6 +1227,7 @@
 
       /* Contact */
       .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+      .contact-video-wrap video { max-height: 200px; }
       .fgrow { grid-template-columns: 1fr; gap: 0; }
       .form-card { padding: 24px 20px; border-radius: 16px; }
       .form-card h3 { font-size: 1.05rem; }
@@ -1415,6 +1419,14 @@
           <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
         </svg>
         <span class="tb-title">TRIVIUM</span>
+      </div>
+      <!-- Language switcher -->
+      <div class="topbar-lang" id="topbarLang">
+        <span class="active" onclick="switchLang('en')">ENG</span>
+        <span class="tb-sep">|</span>
+        <span onclick="switchLang('it')">ITA</span>
+        <span class="tb-sep">|</span>
+        <span onclick="switchLang('es')">ESP</span>
       </div>
       <!-- Hamburger a destra -->
       <div class="tb-hamburger" id="hamburgerBtn" role="button" aria-label="Menu">
@@ -2572,8 +2584,14 @@
 
     <div class="contact-grid">
       <div class="rv">
+        <!-- Demo video -->
+        <div class="contact-video-wrap">
+          <video autoplay muted loop playsinline>
+            <source src="uploads/demo_contact.mp4" type="video/mp4"/>
+          </video>
+        </div>
         <!-- Mini testimonials -->
-        <div style="margin-top:32px;display:flex;flex-direction:column;gap:14px;">
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:14px;">
           <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;padding:16px;border-left:4px solid var(--cyan);">
             <p style="font-size:.84rem;color:var(--gray);font-style:italic;line-height:1.65;margin-bottom:10px;">"Revenue increased 34% in the first quarter. Best infrastructure investment the city has made."</p>
             <span style="font-size:.8rem;font-weight:700;color:var(--cyan);">— City of Chengdu, Traffic Director</span>
@@ -3140,10 +3158,14 @@
       const ftb=$$('.footer-btm a'); ftb.forEach(a=>{ if(a.textContent.includes('Terms')||a.textContent.includes('Termini')||a.textContent.includes('Términos')) a.textContent=t.footer_terms;});
       txt('.footer-btm p','footer_copy');
 
-      // 11. lang button active state
+      // 11. lang button active state (navbar + topbar)
       $$('.lang-btn').forEach(b=>b.classList.remove('active'));
       const ab=document.querySelector(`.lang-btn[onclick="switchLang('${lang}')"]`);
       if(ab) ab.classList.add('active');
+      // topbar-lang
+      $$('#topbarLang span:not(.tb-sep)').forEach(s=>s.classList.remove('active'));
+      const tbs=document.querySelector(`#topbarLang span[onclick="switchLang('${lang}')"]`);
+      if(tbs) tbs.classList.add('active');
     }
 
     // ---- TYPED HERO (from Pioteye) ----
