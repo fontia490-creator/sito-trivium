@@ -1313,6 +1313,11 @@
     .hstat:active { transform: scale(1.07); }
     .stb:active { transform: scale(1.04); background: rgba(200,200,200,.18); }
     .where-stats > div:active { transform: scale(1.06); }
+    .stat-flash {
+      box-shadow: 0 0 0 2px var(--cyan), 0 0 24px rgba(0,212,232,.45) !important;
+      transform: scale(1.07) !important;
+      transition: box-shadow .15s, transform .15s !important;
+    }
     .sc-card:active .icon { box-shadow: 0 0 0 2px rgba(0,212,232,.55), 0 0 55px rgba(0,212,232,.35); }
     .gz-btn:active { background: rgba(0,212,232,.3) !important; }
     .soc { cursor: pointer; }
@@ -3169,36 +3174,33 @@ const cObs=new IntersectionObserver(es=>{
 },{threshold:.3});
 document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid').forEach(s=>cObs.observe(s));
 
-// ===== TAP-TO-REPLAY COUNTERS (mobile interactive stats) =====
-(function(){
-  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  if(!isTouchDevice) return;
+// ===== TAP-TO-REPLAY COUNTERS =====
+document.querySelectorAll('.hstat, .pstat, .stb, .metric-card, .where-stats > div').forEach(function(el) {
+  el.style.cursor = 'pointer';
+  el.style.userSelect = 'none';
+  el.style.webkitUserSelect = 'none';
 
-  // Seleziona tutti i contenitori di statistiche
-  const statContainers = document.querySelectorAll(
-    '.hstat, .pstat, .stb, .metric-card, .where-stats > div'
-  );
+  function triggerAnim() {
+    // Flash visivo
+    el.classList.add('stat-flash');
+    setTimeout(function(){ el.classList.remove('stat-flash'); }, 400);
 
-  statContainers.forEach(el => {
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', function() {
-      // Flash glow
-      el.style.transition = 'box-shadow .15s, transform .15s';
-      el.style.boxShadow = '0 0 0 2px var(--cyan), 0 0 22px rgba(0,212,232,.4)';
-      el.style.transform = 'scale(1.06)';
-      setTimeout(() => {
-        el.style.boxShadow = '';
-        el.style.transform = '';
-      }, 320);
-
-      // Ri-anima i numeri dentro questo contenitore
-      el.querySelectorAll('[data-count]').forEach(num => {
-        num.textContent = '0';
-        animNum(num);
-      });
+    // Ri-parte contatore
+    el.querySelectorAll('[data-count]').forEach(function(num) {
+      num.textContent = '0';
+      animNum(num);
     });
-  });
-})();
+  }
+
+  // touchstart per risposta immediata su mobile
+  el.addEventListener('touchstart', function(e) {
+    e.stopPropagation();
+    triggerAnim();
+  }, { passive: true });
+
+  // click per desktop
+  el.addEventListener('click', triggerAnim);
+});
 
 // ===== PERF-BOX BAR + VALUE ANIMATION =====
 function animPerfBox() {
