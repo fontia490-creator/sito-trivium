@@ -337,15 +337,14 @@
       padding: 6px;
     }
 
-    .hamburger span.hdot {
+    .hamburger span {
       display: block;
-      width: 6px;
-      height: 6px;
+      width: 24px;
+      height: 2px;
       background: var(--white);
-      border-radius: 50%;
-      transition: background .2s, transform .2s;
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease, background .2s;
     }
-    .hamburger { gap: 4px; }
 
     /* ========== HERO ========== */
     .hero {
@@ -1033,11 +1032,11 @@
     @media(max-width: 768px) {
       .container { padding: 0 18px; }
 
-      /* Hero — single column, fully centered, tight gap */
+      /* Hero — single column, fully centered */
       .hero .container {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 6px;
+        gap: 28px;
         padding-top: 44px;
         padding-bottom: 28px;
       }
@@ -1120,10 +1119,11 @@
       .sc-card h4 { font-size: .82rem; padding: 6px 14px; }
       .sc-card p { font-size: .82rem; }
 
-      /* Products */
+      /* Products: 1 column full-width, videos bigger and centered */
       .prod-intro { grid-template-columns: 1fr; gap: 24px; margin-bottom: 28px; }
-      .prod-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .vcard-media { height: clamp(150px, 42vw, 220px); }
+      .prod-grid { grid-template-columns: 1fr; gap: 18px; }
+      .vcard { max-width: 480px; margin: 0 auto; width: 100%; }
+      .vcard-media { height: clamp(200px, 55vw, 260px); }
       .vcard-body { padding: 16px; }
       .vcard-body h3 { font-size: .9rem; }
       .vcard-body p { font-size: .8rem; line-height: 1.55; }
@@ -1268,8 +1268,10 @@
     .citem:active { border-color: var(--cyan); }
 
     /* Hamburger → X animation */
-    .hamburger span.hdot { transition: background .2s, transform .2s; }
-    .hamburger.open span.hdot { background: var(--cyan); transform: scale(1.3); }
+    .hamburger span { transition: transform .3s ease, opacity .3s ease, background .2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
 
     /* Video mute button */
     .vid-mute-btn {
@@ -1397,7 +1399,7 @@
           <span class="lang-btn" onclick="switchLang('es')">ESP</span>
         </div>
       </div>
-      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span class="hdot"></span><span class="hdot"></span><span class="hdot"></span></div>
+      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span></span><span></span><span></span></div>
     </div>
   </nav>
 
@@ -2237,9 +2239,6 @@
   <div class="problem-overlay"></div>
   <div class="problem-content">
     <div class="container">
-      <div class="chip" style="background:rgba(0,212,232,.15);border-color:rgba(0,212,232,.3);color:#7dd3fc;">
-        <span class="blink"></span> The Urban Parking Crisis — A Trivium Analysis
-      </div>
       <h2 class="h2" style="color:white;max-width:600px;">The High Cost of <em style="color:var(--cyan);">Circling</em></h2>
       <div class="bar" style="background:linear-gradient(90deg,var(--cyan),transparent);"></div>
 
