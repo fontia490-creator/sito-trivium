@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PaveSense Nano — Trivium</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--cyan:#00d4e8;--bg:#1a1e24;--card:#1e2330;--border:rgba(0,212,232,.18);--white:#f0f4f8;--gray:#8090a8;}
+    body{background:var(--bg);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+    nav{position:sticky;top:0;z-index:99;background:rgba(26,30,36,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .nav-right{display:flex;align-items:center;gap:14px;}
+    .lang-switch{display:flex;gap:4px;}
+    .lang-btn{font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 11px;border-radius:20px;border:1px solid rgba(0,212,232,.25);color:var(--gray);cursor:pointer;transition:all .2s;background:transparent;user-select:none;}
+    .lang-btn:hover{color:var(--cyan);border-color:rgba(0,212,232,.5);}
+    .lang-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,212,232,.1);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);text-decoration:none;font-size:.88rem;font-weight:600;border:1px solid rgba(0,212,232,.3);border-radius:20px;padding:6px 16px;transition:all .2s;white-space:nowrap;}
+    .nav-back:hover{background:rgba(0,212,232,.1);}
+    /* CAROUSEL */
+    .carousel-wrap{position:relative;width:100%;background:#0a0e14;overflow:hidden;min-height:60vh;}
+    .carousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+    .carousel-slide{min-width:100%;position:relative;height:70vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#ffffff;}
+    .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
+    .carousel-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:48px;height:48px;border-radius:50%;background:rgba(6,14,26,.8);border:1px solid rgba(0,212,232,.4);color:var(--cyan);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;backdrop-filter:blur(8px);}
+    .carousel-btn:hover{background:rgba(0,212,232,.2);transform:translateY(-50%) scale(1.08);}
+    .carousel-btn.prev{left:18px;}
+    .carousel-btn.next{right:18px;}
+    .carousel-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:background .2s,transform .2s;padding:0;}
+    .carousel-dot.active{background:var(--cyan);transform:scale(1.3);}
+    .slide-counter{position:absolute;top:16px;right:18px;z-index:10;background:rgba(6,14,26,.7);border:1px solid rgba(0,212,232,.25);border-radius:20px;padding:4px 14px;font-size:.78rem;color:var(--cyan);font-weight:700;backdrop-filter:blur(6px);}
+    /* HERO INFO */
+    .hero-info{background:var(--bg);padding:40px 28px 0;}
+    .hero-info-inner{max-width:1200px;margin:0 auto;}
+    .badge{display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+    .model-tag{display:inline-block;background:rgba(0,212,232,.08);border:1px solid rgba(0,212,232,.2);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.1em;padding:4px 12px;border-radius:20px;margin-left:10px;vertical-align:middle;}
+    .hero-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;margin-bottom:10px;}
+    .hero-sub{font-size:1.05rem;color:#ffffff;max-width:680px;line-height:1.75;margin-bottom:24px;}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+    .tag{background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);color:var(--cyan);font-size:.74rem;font-weight:700;padding:5px 14px;border-radius:20px;}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+    .btn-cyan{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#0a1628;font-weight:800;font-size:.9rem;padding:12px 28px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,232,.4);}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:.9rem;padding:11px 26px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-outline:hover{background:rgba(0,212,232,.1);}
+    /* SECTIONS */
+    .container{max-width:1200px;margin:0 auto;padding:0 28px;}
+    section{padding:80px 0;}
+    .section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;margin-bottom:10px;}
+    .section-title em{color:var(--cyan);font-style:normal;}
+    .bar{width:48px;height:4px;background:linear-gradient(90deg,var(--cyan),transparent);border-radius:2px;margin-bottom:28px;}
+    .lead{font-size:1.05rem;color:#ffffff;line-height:1.85;margin-bottom:40px;max-width:780px;}
+    /* HIGHLIGHTS */
+    .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:60px;}
+    .hl{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;}
+    .hl-val{font-size:2rem;font-weight:900;color:var(--cyan);margin-bottom:6px;}
+    .hl-lab{font-size:.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;}
+    /* FEATURES */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-bottom:60px;}
+    .feat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color .2s;}
+    .feat:hover{border-color:rgba(0,212,232,.4);}
+    .feat-icon{width:44px;height:44px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);}
+    .feat-icon svg{width:22px;height:22px;stroke:#ffffff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .feat h3{font-size:.72rem;font-weight:800;margin-bottom:12px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;}
+    .feat p{font-size:.88rem;color:#ffffff;line-height:1.65;}
+    /* SPECS */
+    .specs-table{width:100%;border-collapse:collapse;margin-bottom:60px;}
+    .specs-table tr{border-bottom:1px solid rgba(0,212,232,.1);}
+    .specs-table tr:first-child{border-top:1px solid rgba(0,212,232,.1);}
+    .specs-table td{padding:14px 18px;font-size:.9rem;}
+    .specs-table td:first-child{color:var(--cyan);font-weight:600;width:35%;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;}
+    .specs-table td:last-child{color:var(--white);font-weight:500;}
+    .specs-table tr:nth-child(odd){background:rgba(0,212,232,.03);}
+    /* CTA */
+    .cta-strip{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:52px;text-align:center;margin-top:20px;}
+    .cta-strip h2{font-size:1.9rem;font-weight:900;margin-bottom:12px;}
+    .cta-strip p{color:#ffffff;margin-bottom:28px;font-size:1.02rem;}
+    footer{border-top:1px solid var(--border);padding:32px 28px;text-align:center;color:var(--gray);font-size:.82rem;}
+    footer a{color:var(--cyan);text-decoration:none;}
+    .inst-photo{aspect-ratio:4/3;cursor:zoom-in;background-size:cover;background-position:center;background-repeat:no-repeat;transition:transform .35s,filter .35s;position:relative;}
+    .inst-photo:hover{transform:scale(1.04);filter:brightness(1.1);z-index:1;}
+    #lightbox{animation:lbFadeIn .2s ease;}
+    @keyframes lbFadeIn{from{opacity:0;}to{opacity:1;}}
+    div[onclick*="openLightbox"]:hover img.lightbox-img{transform:scale(1.04);filter:brightness(1.08);}
+    div[onclick*="openLightbox"]:hover .lightbox-overlay-hint{opacity:1!important;}
+  
+  /* CONSTELLATION BACKGROUND */
+  #particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../../trivium.html" style="text-decoration:none;">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0090a8"/>
+            <stop offset="100%" stop-color="#00d4e8"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00eeff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <polygon points="50,8 95,82 5,82" stroke="url(#lg1)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+        <polygon points="50,22 82,74 18,74" stroke="url(#lg1)" stroke-width="2.5" fill="none" stroke-linejoin="round" opacity=".7"/>
+        <line x1="50" y1="22" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="82" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
+        <circle cx="50" cy="50" r="10" fill="url(#glow)" opacity=".5"/>
+      </svg>
+      <div>
+        <div style="font-size:1.35rem;font-weight:900;letter-spacing:.03em;color:#f0f4f8;">TRIVIUM</div>
+        <div style="font-size:.65rem;color:#00d4e8;letter-spacing:.12em;text-transform:uppercase;margin-top:1px;">Where Paths Converge</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <span class="lang-btn active" onclick="setLang('en')">ENG</span>
+        <span class="lang-btn" onclick="setLang('it')">ITA</span>
+        <span class="lang-btn" onclick="setLang('es')">ESP</span>
+      </div>
+      <a class="nav-back" href="../../trivium.html#products" data-i18n="nav_back">← Back to Solutions</a>
+    </div>
+  </div>
+</nav>
+
+<!-- CAROUSEL -->
+<div class="carousel-wrap" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep01-top.png" alt="WEP01 Top View">
+    </div>
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep01-side.png" alt="WEP01 Side View">
+    </div>
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep01-angle.png" alt="WEP01 Angle View">
+    </div>
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep01-flat.png" alt="WEP01 Bottom View">
+    </div>
+  </div>
+  <button class="carousel-btn prev" id="prevBtn">&#8249;</button>
+  <button class="carousel-btn next" id="nextBtn">&#8250;</button>
+  <div class="carousel-dots" id="carouselDots"></div>
+  <div class="slide-counter"><span id="slideNum">1</span> / <span id="slideTotal">4</span></div>
+</div>
+
+<!-- HERO INFO -->
+<div class="hero-info">
+  <div class="hero-info-inner">
+    <div class="badge" data-i18n="badge">IN-GROUND · DUAL SENSOR · 5YR BATTERY</div>
+    <h1 class="hero-title"><em style="color:var(--cyan);">WEP01</em></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Ultra-flat in-ground sensor — invisible to traffic, immune to weather. Magnetic + ultrasonic dual mode. Zero infrastructure change required.</p>
+    <div class="tags">
+      <span class="tag" data-i18n="tag1">Dual Sensor</span>
+      <span class="tag" data-i18n="tag2">Magnetic + Ultrasonic</span>
+      <span class="tag">LoRaWAN / NB-IoT</span>
+      <span class="tag" data-i18n="tag3">5-Year Battery</span>
+      <span class="tag">IP67</span>
+      <span class="tag" data-i18n="tag4">Zero Ground Works</span>
+    </div>
+    <div class="hero-btns">
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="demo_btn">Request a Demo →</a>
+      <a href="../../trivium.html#contact" class="btn-outline" data-i18n="mfr_btn">Technical Datasheet ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="container">
+    <h2 class="section-title" data-i18n="overview_title">Product <em>Overview</em></h2>
+    <div class="bar"></div>
+    <p class="lead" data-i18n="overview_lead">The PaveSense Nano is an ultra-low-profile in-ground parking sensor that combines magnetic field detection with ultrasonic ranging for class-leading accuracy. Installed flush with the pavement surface, it is invisible to drivers and impervious to weather, vandalism, and vehicle impact. No trenching, no power cabling — simply drill, drop, and connect.</p>
+
+    <div class="highlights">
+      <div class="hl"><div class="hl-val">&gt;99%</div><div class="hl-lab" data-i18n="hl1">LPR Accuracy</div></div>
+      <div class="hl"><div class="hl-val">120°</div><div class="hl-lab" data-i18n="hl2">Camera Angle</div></div>
+      <div class="hl"><div class="hl-val">IP67</div><div class="hl-lab" data-i18n="hl3">Weather Rating</div></div>
+      <div class="hl"><div class="hl-val">4G</div><div class="hl-lab" data-i18n="hl4">Transmission</div></div>
+      <div class="hl"><div class="hl-val">15min</div><div class="hl-lab" data-i18n="hl5">Installation Time</div></div>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3 data-i18n="f1_title">HD Camera + LPR &gt;99%</h3>
+        <p data-i18n="f1_desc">2MP sensor with 120° field of view. Automatically switches day/night modes, supports low-light capture, and uses ultrasonic feedback triggering for precise shot timing. License plate recognition accuracy exceeds 99%.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0M5 12a10 10 0 0 1 14 0M8.5 15.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="#ffffff"/></svg></div>
+        <h3 data-i18n="f2_title">4G Real-Time Transmission</h3>
+        <p data-i18n="f2_desc">Vehicle entry/exit events, images, and session data are automatically uploaded over 4G to the Trivium City Command Platform in real time. Device status is monitored and reported continuously.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <h3 data-i18n="f3_title">Smart Alarm System</h3>
+        <p data-i18n="f3_desc">Automatically detects and alerts for over-positioning violations, non-motor vehicle occupation (bicycles, tricycles), and low battery conditions — enabling proactive enforcement and maintenance.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3 data-i18n="f4_title">15-Minute Installation</h3>
+        <p data-i18n="f4_desc">No road breaking, no wiring, no cables. The WEP01 is installed directly on the road surface without disrupting traffic or requiring civil works — fully operational in just 15 minutes per space.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3 data-i18n="f5_title">Full Metal IP67 Body</h3>
+        <p data-i18n="f5_desc">Streamlined full-metal enclosure rated IP67 for dust and waterproofing, plus impact resistance. Designed to prevent tire scraping and blowout even under direct vehicle contact. Operates from −20°C to +70°C.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="11" rx="2"/><path d="M22 11v3"/><path d="M7 7V4"/><path d="M11 7V4"/></svg></div>
+        <h3 data-i18n="f6_title">Solar-Ready Battery</h3>
+        <p data-i18n="f6_desc">Equipped with 18650 lithium battery pack supporting both standard charging and optional solar panel integration. Remote management allows firmware upgrades and factory resets without on-site visits.</p>
+      </div>
+    </div>
+
+    <!-- VISUALIZED OUTPUT -->
+    <div style="background:var(--card);border-radius:20px;padding:60px 40px;margin-bottom:60px;border:1px solid rgba(0,212,232,.12);">
+      <div style="text-align:center;max-width:720px;margin:0 auto 48px;">
+        <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="vis_badge">PRODUCT ADVANTAGES · WEP01</div>
+        <h2 class="section-title" data-i18n="vis_title">Visualized Output of Full-Process <em>Parking Information</em></h2>
+        <div class="bar" style="margin:12px auto 24px;"></div>
+        <p style="font-size:1.05rem;color:#ffffff;line-height:1.85;" data-i18n="vis_lead">Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:32px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+          <div style="height:260px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep01-vis-1.jpg','WEP01 — Night Detection')">
+            <img src="wep01-vis-1.jpg" alt="WEP01 Night Detection" style="width:100%;height:100%;object-fit:cover;transition:transform .35s,filter .35s;">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.4);pointer-events:none;">
+              <span style="font-size:2rem;color:#fff;">&#128269;</span>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
+            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f1_desc">Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.</p>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+          <div style="height:260px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep01-vis-2.jpg','WEP01 — Vehicle Exit Process')">
+            <img src="wep01-vis-2.jpg" alt="WEP01 Vehicle Exit" style="width:100%;height:100%;object-fit:cover;transition:transform .35s,filter .35s;">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.4);pointer-events:none;">
+              <span style="font-size:2rem;color:#fff;">&#128269;</span>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f2_title">HD Evidence Collection</h3>
+            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HD EVIDENCE SECTION -->
+<section style="background:var(--card);padding:80px 0;border-top:1px solid rgba(0,212,232,.12);">
+  <div class="container">
+    <div style="text-align:center;max-width:720px;margin:0 auto 52px;">
+      <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="hd_badge">EVIDENCE · WEP01</div>
+      <h2 class="section-title" data-i18n="hd_title">High-Definition Evidence Collection, <em>Unaffected by Weather</em></h2>
+      <div class="bar" style="margin:12px auto 0;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-1.png','WEP01 — HD Evidence 1')">
+        <div style="height:220px;overflow:hidden;">
+          <img src="wep01-hd-1.png" alt="HD Evidence 1" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap1_title">Adverse Weather Performance</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap1_desc">LPR capture in heavy rain — plate clearly readable at >99% accuracy.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-2.png','WEP01 — HD Evidence 2')">
+        <div style="height:220px;overflow:hidden;">
+          <img src="wep01-hd-2.png" alt="HD Evidence 2" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap2_title">Night Vision Capability</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap2_desc">Full plate recognition at night with headlight glare — no false reads.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-3.png','WEP01 — HD Evidence 3')">
+        <div style="height:220px;overflow:hidden;">
+          <img src="wep01-hd-3.png" alt="HD Evidence 3" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap3_title">Daytime Precision</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap3_desc">Accurate capture under direct sunlight — sharp detail, zero overexposure.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section style="padding:80px 0;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span class="badge" data-i18n="an_badge">ANALYTICS AT A GLANCE · WEP01</span>
+      <h2 class="section-title" data-i18n="an_title">Key Performance <em>Metrics</em></h2>
+      <div class="bar" style="margin:12px auto 0;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">&gt;99%</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_acc_l">LPR Recognition Rate</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_acc_d">Day, night &amp; adverse weather</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">120°</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_cam_l">Camera Field of View</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_cam_d">2MP sensor · auto day/night switch</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">15'</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_inst_l">Installation Time</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_inst_d">No road breaking · no wiring</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">IP67</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_ip_l">Protection Rating</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_ip_d">Waterproof · dustproof · impact-resistant</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">4G</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_conn_l">Network Transmission</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_conn_d">Real-time upload · remote management</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">90°</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_hum_l">Max Operating Humidity</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_hum_d">10% – 90% RH range</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">−20°</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_temp_l">Min Operating Temp.</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_temp_d">Range: −20°C to +70°C</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">4,500m</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_alt_l">Max Altitude</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_alt_d">Fully operational below 4,500 m</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL SPECIFICATIONS -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:10px;" data-i18n="specs_title">Technical <em>Specifications</em></h2>
+    <div class="bar"></div>
+    <table class="specs-table">
+      <tr><td data-i18n="sp_model_l">Model</td><td>WEP01</td></tr>
+      <tr><td data-i18n="sp_name_l">Product Name</td><td data-i18n="sp_name_v">Low-Position Smart Parking Sensor</td></tr>
+      <tr><td data-i18n="sp_config_l">Configuration</td><td data-i18n="sp_config_v">One device per parking space for precise monitoring</td></tr>
+      <tr><td data-i18n="sp_cam_l">Camera</td><td data-i18n="sp_cam_v">120° shooting angle · 2MP image sensor</td></tr>
+      <tr><td data-i18n="sp_vision_l">Vision System</td><td data-i18n="sp_vision_v">Low-light night capture · auto day/night switching · ultrasonic feedback trigger · indicator light</td></tr>
+      <tr><td data-i18n="sp_acc_l">LPR Recognition Rate</td><td>&gt; 99%</td></tr>
+      <tr><td data-i18n="sp_alarm_l">Alarm</td><td data-i18n="sp_alarm_v">Over-positioning · non-motor vehicle occupation (tricycle/bicycle) · low battery</td></tr>
+      <tr><td data-i18n="sp_conn_l">Transmission</td><td>4G Network</td></tr>
+      <tr><td data-i18n="sp_pwr_l">Power Supply</td><td data-i18n="sp_pwr_v">18650 battery pack (solar charging supported) · Charge limit: 4.2V</td></tr>
+      <tr><td data-i18n="sp_ip_l">Protection Rating</td><td>IP67 — waterproof, dustproof, impact-resistant</td></tr>
+      <tr><td data-i18n="sp_appearance_l">Appearance</td><td data-i18n="sp_appearance_v">Full metal · streamlined structure · anti-scraping / tire-blowout design</td></tr>
+      <tr><td data-i18n="sp_temp_l">Operating Temperature</td><td>−20°C to +70°C</td></tr>
+      <tr><td data-i18n="sp_hum_l">Operating Humidity</td><td>10% – 90%</td></tr>
+      <tr><td data-i18n="sp_alt_l">Altitude</td><td data-i18n="sp_alt_v">Below 4,500 m</td></tr>
+      <tr><td data-i18n="sp_stor_l">Storage Temperature</td><td>−40°C to +75°C</td></tr>
+      <tr><td data-i18n="sp_upload_l">Data Upload</td><td data-i18n="sp_upload_v">Vehicle entry/exit, images — auto-uploaded to platform</td></tr>
+      <tr><td data-i18n="sp_remote_l">Remote Management</td><td data-i18n="sp_remote_v">Remote upgrade · restore factory settings · status monitoring</td></tr>
+      <tr><td data-i18n="sp_inst_l">Installation</td><td data-i18n="sp_inst_v">No road breaking · no wiring · completed in 15 minutes</td></tr>
+      <tr><td data-i18n="sp_mfr_l">Manufacturer</td><td>Shenzhen P-IOTEYE Technology Co., Ltd</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-strip">
+      <h2 data-i18n="cta_title">Interested in <em style="color:var(--cyan);">PaveSense Nano</em>?</h2>
+      <p data-i18n="cta_sub">Contact our team for a live demo, site assessment, or volume pricing quote.</p>
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="cta_btn">Get in Touch →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Trivium — Where Paths Converge &nbsp;·&nbsp;
+  <a href="../../trivium.html" data-i18n="footer_link">Back to main site</a>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeLightbox()">
+  <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:20px;right:28px;background:none;border:none;color:#fff;font-size:2.2rem;cursor:pointer;line-height:1;opacity:.8;">&times;</button>
+  <img id="lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;border-radius:12px;box-shadow:0 8px 60px rgba(0,0,0,.8);object-fit:contain;user-select:none;" onclick="event.stopPropagation()">
+  <p id="lightbox-caption" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:.88rem;pointer-events:none;"></p>
+</div>
+
+<script>
+function openLightbox(src, caption) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-caption').textContent = caption || '';
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(); });
+
+(function(){
+  /* ── CAROUSEL ── */
+  const track=document.getElementById('carouselTrack');
+  const total=track.children.length;
+  const dotsWrap=document.getElementById('carouselDots');
+  const slideNum=document.getElementById('slideNum');
+  document.getElementById('slideTotal').textContent=total;
+  let cur=0;
+  for(let i=0;i<total;i++){const d=document.createElement('button');d.className='carousel-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsWrap.appendChild(d);}
+  function goTo(n){cur=(n+total)%total;track.style.transform=`translateX(-${cur*100}%)`;document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));slideNum.textContent=cur+1;}
+  document.getElementById('prevBtn').onclick=()=>goTo(cur-1);
+  document.getElementById('nextBtn').onclick=()=>goTo(cur+1);
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')goTo(cur-1);if(e.key==='ArrowRight')goTo(cur+1);});
+  let tx=0;
+  track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+  if(total>0) setInterval(()=>goTo(cur+1),5000);
+
+  /* ── TRANSLATIONS ── */
+  const T = {
+    en: {
+      nav_back:"← Back to Solutions",
+      badge:"IN-GROUND · DUAL SENSOR · 5YR BATTERY",
+      hero_sub:"Ultra-flat in-ground sensor — invisible to traffic, immune to weather. Magnetic + ultrasonic dual mode. Zero infrastructure change required.",
+      tag1:"Dual Sensor", tag2:"Magnetic + Ultrasonic", tag3:"5-Year Battery", tag4:"Zero Ground Works",
+      demo_btn:"Request a Demo →", mfr_btn:"Technical Datasheet ↗",
+      overview_title:"Product <em>Overview</em>",
+      overview_lead:"The PaveSense Nano is an ultra-low-profile in-ground parking sensor that combines magnetic field detection with ultrasonic ranging for class-leading accuracy. Installed flush with the pavement surface, it is invisible to drivers and impervious to weather, vandalism, and vehicle impact. No trenching, no power cabling — simply drill, drop, and connect.",
+      hl1:"LPR Accuracy", hl2:"Camera Angle", hl3:"Weather Rating", hl4:"Transmission", hl5:"Installation Time",
+      f1_title:"HD Camera + LPR >99%", f1_desc:"2MP sensor with 120° field of view. Automatically switches day/night modes, supports low-light capture, and uses ultrasonic feedback triggering for precise shot timing. License plate recognition accuracy exceeds 99%.",
+      f2_title:"4G Real-Time Transmission", f2_desc:"Vehicle entry/exit events, images, and session data are automatically uploaded over 4G to the Trivium City Command Platform in real time. Device status is monitored and reported continuously.",
+      f3_title:"Smart Alarm System", f3_desc:"Automatically detects and alerts for over-positioning violations, non-motor vehicle occupation (bicycles, tricycles), and low battery conditions — enabling proactive enforcement and maintenance.",
+      f4_title:"15-Minute Installation", f4_desc:"No road breaking, no wiring, no cables. The WEP01 is installed directly on the road surface without disrupting traffic or requiring civil works — fully operational in just 15 minutes per space.",
+      f5_title:"Full Metal IP67 Body", f5_desc:"Streamlined full-metal enclosure rated IP67 for dust and waterproofing, plus impact resistance. Designed to prevent tire scraping and blowout even under direct vehicle contact. Operates from −20°C to +70°C.",
+      f6_title:"Solar-Ready Battery", f6_desc:"Equipped with 18650 lithium battery pack supporting both standard charging and optional solar panel integration. Remote management allows firmware upgrades and factory resets without on-site visits.",
+      specs_title:"Technical <em>Specifications</em>",
+      sp_model_l:"Model", sp_name_l:"Product Name", sp_name_v:"Low-Position Smart Parking Sensor",
+      sp_config_l:"Configuration", sp_config_v:"One device per parking space for precise monitoring",
+      sp_cam_l:"Camera", sp_cam_v:"120° shooting angle · 2MP image sensor",
+      sp_vision_l:"Vision System", sp_vision_v:"Low-light night capture · auto day/night switching · ultrasonic feedback trigger · indicator light",
+      sp_acc_l:"LPR Recognition Rate",
+      sp_alarm_l:"Alarm", sp_alarm_v:"Over-positioning · non-motor vehicle occupation (tricycle/bicycle) · low battery",
+      sp_conn_l:"Transmission",
+      sp_pwr_l:"Power Supply", sp_pwr_v:"18650 battery pack (solar charging supported) · Charge limit: 4.2V",
+      sp_ip_l:"Protection Rating",
+      sp_appearance_l:"Appearance", sp_appearance_v:"Full metal · streamlined structure · anti-scraping / tire-blowout design",
+      sp_temp_l:"Operating Temperature", sp_hum_l:"Operating Humidity",
+      sp_alt_l:"Altitude", sp_alt_v:"Below 4,500 m",
+      sp_stor_l:"Storage Temperature",
+      sp_upload_l:"Data Upload", sp_upload_v:"Vehicle entry/exit, images — auto-uploaded to platform",
+      sp_remote_l:"Remote Management", sp_remote_v:"Remote upgrade · restore factory settings · status monitoring",
+      sp_inst_l:"Installation", sp_inst_v:"No road breaking · no wiring · completed in 15 minutes",
+      sp_mfr_l:"Manufacturer",
+      cta_title:"Interested in <em style=\"color:var(--cyan);\">PaveSense Nano</em>?",
+      cta_sub:"Contact our team for a live demo, site assessment, or volume pricing quote.",
+      cta_btn:"Get in Touch →", footer_link:"Back to main site",
+      vis_badge:"PRODUCT ADVANTAGES · WEP01",
+      vis_title:"Visualized Output of Full-Process <em>Parking Information</em>",
+      vis_lead:"Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.",
+      vis_ph1:"Add photo here", vis_ph2:"Add photo here",
+      vis_f1_title:"Real-Time Space Status Monitoring", vis_f1_desc:"Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.",
+      vis_f2_title:"HD Evidence Collection", vis_f2_desc:"High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.",
+      hd_badge:"EVIDENCE · WEP01", hd_title:"High-Definition Evidence Collection, <em>Unaffected by Weather</em>",
+      hd_ph1:"Add photo here", hd_ph2:"Add photo here", hd_ph3:"Add photo here",
+      an_badge:"ANALYTICS AT A GLANCE · WEP01", an_title:"Key Performance <em>Metrics</em>",
+      an_acc_l:"LPR Recognition Rate", an_acc_d:"Day, night &amp; adverse weather",
+      an_cam_l:"Camera Field of View", an_cam_d:"2MP sensor · auto day/night switch",
+      an_inst_l:"Installation Time", an_inst_d:"No road breaking · no wiring",
+      an_ip_l:"Protection Rating", an_ip_d:"Waterproof · dustproof · impact-resistant",
+      an_conn_l:"Network Transmission", an_conn_d:"Real-time upload · remote management",
+      an_hum_l:"Max Operating Humidity", an_hum_d:"10% – 90% RH range",
+      an_temp_l:"Min Operating Temp.", an_temp_d:"Range: −20°C to +70°C",
+      an_alt_l:"Max Altitude", an_alt_d:"Fully operational below 4,500 m",
+    },
+    it: {
+      nav_back:"← Torna alle Soluzioni",
+      badge:"A TERRA · DOPPIO SENSORE · 5 ANNI BATTERIA",
+      hero_sub:"Sensore a terra ultra-piatto — invisibile al traffico, resistente alle intemperie. Doppia modalità magnetica + ultrasonica. Nessun intervento sull'infrastruttura richiesto.",
+      tag1:"Doppio Sensore", tag2:"Magnetico + Ultrasonico", tag3:"5 Anni Batteria", tag4:"Nessuno Scavo",
+      demo_btn:"Richiedi una Demo →", mfr_btn:"Scheda Tecnica ↗",
+      overview_title:"Panoramica <em>Prodotto</em>",
+      overview_lead:"Il PaveSense Nano è un sensore di parcheggio a terra ultra-piatto che combina il rilevamento del campo magnetico con il telerilevamento ultrasonico per un'accuratezza ai massimi livelli. Installato a filo con la superficie del marciapiede, è invisibile agli automobilisti e impermeabile a pioggia, vandalismi e impatti dei veicoli. Nessuno scavo, nessun cavo — basta forare, inserire e connettere.",
+      hl1:"Accuratezza LPR", hl2:"Angolo Telecamera", hl3:"Protezione Meteo", hl4:"Trasmissione", hl5:"Tempo Installazione",
+      f1_title:"Telecamera HD + LPR >99%", f1_desc:"Sensore 2MP con campo visivo 120°. Cambia automaticamente modalità giorno/notte, supporta la cattura in condizioni di scarsa luminosità e utilizza il trigger ultrasonico per una tempistica di scatto precisa. Accuratezza riconoscimento targa superiore al 99%.",
+      f2_title:"Trasmissione 4G in Tempo Reale", f2_desc:"Gli eventi di ingresso/uscita dei veicoli, le immagini e i dati di sessione vengono caricati automaticamente via 4G sulla piattaforma Trivium City Command in tempo reale. Lo stato del dispositivo è monitorato e comunicato continuamente.",
+      f3_title:"Sistema di Allarme Intelligente", f3_desc:"Rileva e segnala automaticamente violazioni di sovra-posizionamento, occupazione da veicoli non motorizzati (biciclette, tricicli) e batteria scarica — consentendo interventi di enforcement e manutenzione proattivi.",
+      f4_title:"Installazione in 15 Minuti", f4_desc:"Nessuno scavo, nessun cablaggio, nessun cavo. Il WEP01 si installa direttamente sulla superficie stradale senza interrompere il traffico o richiedere lavori civili — operativo in soli 15 minuti per posto auto.",
+      f5_title:"Corpo in Metallo Pieno IP67", f5_desc:"Involucro in metallo pieno a struttura aerodinamica con grado IP67 per impermeabilità a polvere e acqua, più resistenza agli urti. Progettato per prevenire lo sfregamento dei pneumatici anche in caso di contatto diretto con il veicolo. Funziona da −20°C a +70°C.",
+      f6_title:"Batteria Solar-Ready", f6_desc:"Dotato di pacco batterie 18650 che supporta sia la ricarica standard che l'integrazione opzionale con pannello solare. La gestione remota consente aggiornamenti firmware e ripristino alle impostazioni di fabbrica senza visite sul posto.",
+      specs_title:"Specifiche <em>Tecniche</em>",
+      sp_model_l:"Modello", sp_name_l:"Nome Prodotto", sp_name_v:"Sensore di Parcheggio Smart a Bassa Posizione",
+      sp_config_l:"Configurazione", sp_config_v:"Un dispositivo per posto auto per il monitoraggio preciso",
+      sp_cam_l:"Telecamera", sp_cam_v:"Angolo di ripresa 120° · sensore immagine 2MP",
+      sp_vision_l:"Sistema Visivo", sp_vision_v:"Cattura notturna in bassa luce · commutazione automatica giorno/notte · trigger ultrasonico · luce indicatore",
+      sp_acc_l:"Tasso di Riconoscimento LPR",
+      sp_alarm_l:"Allarme", sp_alarm_v:"Sovra-posizionamento · occupazione veicoli non motorizzati (triciclo/bici) · batteria scarica",
+      sp_conn_l:"Trasmissione",
+      sp_pwr_l:"Alimentazione", sp_pwr_v:"Pacco batterie 18650 (ricarica solare supportata) · Tensione limite: 4,2V",
+      sp_ip_l:"Grado di Protezione",
+      sp_appearance_l:"Aspetto", sp_appearance_v:"Metallo pieno · struttura aerodinamica · design anti-sfregamento / foratura pneumatici",
+      sp_temp_l:"Temperatura Operativa", sp_hum_l:"Umidità Operativa",
+      sp_alt_l:"Altitudine", sp_alt_v:"Sotto i 4.500 m",
+      sp_stor_l:"Temperatura di Stoccaggio",
+      sp_upload_l:"Caricamento Dati", sp_upload_v:"Ingresso/uscita veicoli, immagini — caricati automaticamente alla piattaforma",
+      sp_remote_l:"Gestione Remota", sp_remote_v:"Aggiornamento remoto · ripristino impostazioni · monitoraggio stato",
+      sp_inst_l:"Installazione", sp_inst_v:"Nessuno scavo · nessun cablaggio · completato in 15 minuti",
+      sp_mfr_l:"Produttore",
+      cta_title:"Interessato a <em style=\"color:var(--cyan);\">PaveSense Nano</em>?",
+      cta_sub:"Contatta il nostro team per una demo dal vivo, valutazione del sito o preventivo volume.",
+      cta_btn:"Contattaci →", footer_link:"Torna al sito principale",
+      vis_badge:"VANTAGGI PRODOTTO · WEP01",
+      vis_title:"Output Visuale dell'Intero Processo di <em>Parcheggio</em>",
+      vis_lead:"Rilevamento ultrasonico combinato con collegamento telecamera per il monitoraggio in tempo reale dello stato di ogni posto auto. Raccolta prove ad alta definizione, impermeabile alle condizioni meteo.",
+      vis_ph1:"Aggiungi foto qui", vis_ph2:"Aggiungi foto qui",
+      vis_f1_title:"Monitoraggio Stato in Tempo Reale", vis_f1_desc:"Il rilevamento ultrasonico combinato con la telecamera fornisce visibilità continua e in tempo reale di ogni posto auto — occupato, libero o riservato — con frequenza di aggiornamento inferiore a 2 secondi.",
+      vis_f2_title:"Raccolta Prove in HD", vis_f2_desc:"Raccolta prove ad alta definizione, indipendente dalle condizioni meteo. Ogni ingresso, uscita e violazione è acquisita con foto HD con timestamp per enforcement, risoluzione controversie e reportistica.",
+      hd_badge:"PROVE · WEP01", hd_title:"Raccolta Prove ad Alta Definizione, <em>Impermeabile alle Condizioni Meteo</em>",
+      hd_ph1:"Aggiungi foto qui", hd_ph2:"Aggiungi foto qui", hd_ph3:"Aggiungi foto qui",
+      an_badge:"DATI ANALITICI · WEP01", an_title:"Metriche di <em>Performance</em>",
+      an_acc_l:"Tasso Riconoscimento LPR", an_acc_d:"Giorno, notte e condizioni avverse",
+      an_cam_l:"Campo Visivo Telecamera", an_cam_d:"Sensore 2MP · cambio auto giorno/notte",
+      an_inst_l:"Tempo di Installazione", an_inst_d:"Nessuno scavo · nessun cablaggio",
+      an_ip_l:"Grado di Protezione", an_ip_d:"Impermeabile · antipolvere · resistente agli urti",
+      an_conn_l:"Trasmissione Rete", an_conn_d:"Caricamento in tempo reale · gestione remota",
+      an_hum_l:"Umidità Max Operativa", an_hum_d:"Intervallo 10% – 90% UR",
+      an_temp_l:"Temp. Min Operativa", an_temp_d:"Intervallo: −20°C a +70°C",
+      an_alt_l:"Altitudine Max", an_alt_d:"Completamente operativo sotto i 4.500 m",
+    },
+    es: {
+      nav_back:"← Volver a Soluciones",
+      badge:"EMPOTRADO · SENSOR DUAL · 5 AÑOS BATERÍA",
+      hero_sub:"Sensor empotrado ultraplano — invisible al tráfico, inmune a la climatología. Modo dual magnético + ultrasónico. Sin cambios en la infraestructura.",
+      tag1:"Sensor Dual", tag2:"Magnético + Ultrasónico", tag3:"5 Años Batería", tag4:"Sin Obras",
+      demo_btn:"Solicitar Demo →", mfr_btn:"Ficha Técnica ↗",
+      overview_title:"Descripción <em>del Producto</em>",
+      overview_lead:"El PaveSense Nano es un sensor de aparcamiento empotrado de perfil ultrabajo que combina detección de campo magnético con telémetro ultrasónico para una precisión líder en su clase. Instalado a ras de la superficie del pavimento, es invisible para los conductores e impermeable a la climatología, el vandalismo y el impacto de vehículos. Sin zanjas, sin cables — simplemente perfora, inserta y conecta.",
+      hl1:"Precisión LPR", hl2:"Ángulo Cámara", hl3:"Protección Climática", hl4:"Transmisión", hl5:"Tiempo Instalación",
+      f1_title:"Cámara HD + LPR >99%", f1_desc:"Sensor 2MP con campo visual de 120°. Cambia automáticamente entre modos día/noche, admite captura con poca luz y usa disparador ultrasónico para una temporización precisa. Precisión de reconocimiento de matrículas superior al 99%.",
+      f2_title:"Transmisión 4G en Tiempo Real", f2_desc:"Los eventos de entrada/salida de vehículos, imágenes y datos de sesión se cargan automáticamente por 4G a la plataforma Trivium City Command en tiempo real. El estado del dispositivo se monitorea y notifica continuamente.",
+      f3_title:"Sistema de Alarma Inteligente", f3_desc:"Detecta y alerta automáticamente sobre violaciones de sobre-posicionamiento, ocupación por vehículos no motorizados (bicicletas, triciclos) y batería baja — permitiendo acciones de control y mantenimiento proactivas.",
+      f4_title:"Instalación en 15 Minutos", f4_desc:"Sin rotura de pavimento, sin cableado, sin cables. El WEP01 se instala directamente sobre la superficie de la vía sin interrumpir el tráfico ni requerir obras civiles — completamente operativo en solo 15 minutos por plaza.",
+      f5_title:"Cuerpo Metálico IP67", f5_desc:"Carcasa de metal completo con diseño aerodinámico y clasificación IP67 para impermeabilidad al polvo y al agua, más resistencia a impactos. Diseñada para evitar el roce de neumáticos incluso en contacto directo con el vehículo. Opera de −20°C a +70°C.",
+      f6_title:"Batería Solar-Ready", f6_desc:"Equipada con batería 18650 que admite tanto carga estándar como integración opcional de panel solar. La gestión remota permite actualizaciones de firmware y restablecimiento de fábrica sin visitas al sitio.",
+      specs_title:"Especificaciones <em>Técnicas</em>",
+      sp_model_l:"Modelo", sp_name_l:"Nombre del Producto", sp_name_v:"Sensor de Aparcamiento Inteligente de Baja Posición",
+      sp_config_l:"Configuración", sp_config_v:"Un dispositivo por plaza para monitorización precisa",
+      sp_cam_l:"Cámara", sp_cam_v:"Ángulo de disparo 120° · sensor de imagen 2MP",
+      sp_vision_l:"Sistema Visual", sp_vision_v:"Captura nocturna con poca luz · cambio automático día/noche · disparador ultrasónico · luz indicadora",
+      sp_acc_l:"Tasa de Reconocimiento LPR",
+      sp_alarm_l:"Alarma", sp_alarm_v:"Sobre-posicionamiento · ocupación de vehículos no motorizados (triciclo/bicicleta) · batería baja",
+      sp_conn_l:"Transmisión",
+      sp_pwr_l:"Alimentación", sp_pwr_v:"Batería 18650 (carga solar compatible) · Tensión límite: 4,2V",
+      sp_ip_l:"Grado de Protección",
+      sp_appearance_l:"Apariencia", sp_appearance_v:"Metal completo · estructura aerodinámica · diseño antirroce / antireviento",
+      sp_temp_l:"Temperatura de Operación", sp_hum_l:"Humedad de Operación",
+      sp_alt_l:"Altitud", sp_alt_v:"Por debajo de 4.500 m",
+      sp_stor_l:"Temperatura de Almacenamiento",
+      sp_upload_l:"Carga de Datos", sp_upload_v:"Entrada/salida de vehículos, imágenes — cargados automáticamente a la plataforma",
+      sp_remote_l:"Gestión Remota", sp_remote_v:"Actualización remota · restaurar configuración de fábrica · monitorización de estado",
+      sp_inst_l:"Instalación", sp_inst_v:"Sin rotura de pavimento · sin cableado · completado en 15 minutos",
+      sp_mfr_l:"Fabricante",
+      cta_title:"¿Interesado en <em style=\"color:var(--cyan);\">PaveSense Nano</em>?",
+      cta_sub:"Contacta con nuestro equipo para una demo en directo, evaluación del emplazamiento o presupuesto.",
+      cta_btn:"Contáctanos →", footer_link:"Volver al sitio principal",
+      vis_badge:"VENTAJAS DEL PRODUCTO · WEP01",
+      vis_title:"Salida Visualizada del Proceso Completo de <em>Aparcamiento</em>",
+      vis_lead:"Detección ultrasónica combinada con enlace de cámara para la monitorización en tiempo real del estado de cada plaza. Recogida de evidencias en alta definición, sin verse afectada por las condiciones meteorológicas.",
+      vis_ph1:"Añade foto aquí", vis_ph2:"Añade foto aquí",
+      vis_f1_title:"Monitorización de Estado en Tiempo Real", vis_f1_desc:"La detección ultrasónica combinada con la cámara proporciona visibilidad continua y en tiempo real de cada plaza — ocupada, libre o reservada — con frecuencia de actualización inferior a 2 segundos.",
+      vis_f2_title:"Recogida de Evidencias en HD", vis_f2_desc:"Recogida de evidencias en alta definición, sin verse afectada por el clima. Cada entrada, salida e infracción se captura con fotos HD con marca de tiempo para control, resolución de disputas e informes.",
+      hd_badge:"EVIDENCIAS · WEP01", hd_title:"Recogida de Evidencias en Alta Definición, <em>Sin Verse Afectada por el Clima</em>",
+      hd_ph1:"Añade foto aquí", hd_ph2:"Añade foto aquí", hd_ph3:"Añade foto aquí",
+      an_badge:"ANALÍTICA · WEP01", an_title:"Métricas de <em>Rendimiento</em>",
+      an_acc_l:"Tasa de Reconocimiento LPR", an_acc_d:"Día, noche y condiciones adversas",
+      an_cam_l:"Campo Visual de la Cámara", an_cam_d:"Sensor 2MP · cambio auto día/noche",
+      an_inst_l:"Tiempo de Instalación", an_inst_d:"Sin rotura de pavimento · sin cableado",
+      an_ip_l:"Grado de Protección", an_ip_d:"Impermeable · antipolvo · resistente a impactos",
+      an_conn_l:"Transmisión de Red", an_conn_d:"Carga en tiempo real · gestión remota",
+      an_hum_l:"Humedad Máx. Operativa", an_hum_d:"Rango 10% – 90% HR",
+      an_temp_l:"Temp. Mín. Operativa", an_temp_d:"Rango: −20°C a +70°C",
+      an_alt_l:"Altitud Máxima", an_alt_d:"Completamente operativo por debajo de 4.500 m",
+    }
+  };
+
+  function setLang(lang){
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().startsWith(lang)));
+    const t=T[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+    localStorage.setItem('trivium_lang',lang);
+  }
+  window.setLang=setLang;
+  const saved=localStorage.getItem('trivium_lang')||'en';
+  setLang(saved);
+})();
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function rand(a,b){ return Math.random()*(b-a)+a; }
+  for(let i=0;i<80;i++){
+    dots.push({x:rand(0,W),y:rand(0,H),vx:rand(-.3,.3),vy:rand(-.3,.3),r:rand(1,2.5),o:rand(.15,.5)});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<dots.length;i++){
+      for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(0,212,232,${.12*(1-d/140)})`;
+          ctx.lineWidth=.8;
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    dots.forEach(d=>{
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,232,${d.o})`;
+      ctx.fill();
+      d.x+=d.vx; d.y+=d.vy;
+      if(d.x<0||d.x>W) d.vx*=-1;
+      if(d.y<0||d.y>H) d.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

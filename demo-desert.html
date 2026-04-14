@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DESERT — 3D Interactive</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; background: #0c0200; overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; }
+
+#loading {
+  position: fixed; inset: 0;
+  background: #0c0200;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 20;
+  transition: opacity 1.2s ease;
+}
+#loading h1 {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(36px, 7vw, 80px);
+  font-weight: 100;
+  letter-spacing: 0.5em;
+  color: #d4a855;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+#loading p {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(212,168,85,0.35);
+  text-transform: uppercase;
+}
+.load-bar { width: 160px; height: 1px; background: rgba(212,168,85,0.12); margin-top: 28px; border-radius: 2px; overflow: hidden; }
+.load-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#d4a855,#ffdd99); transition: width 0.5s ease; }
+
+#hud {
+  position: fixed; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Courier New', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(220,190,120,0.7);
+  text-transform: uppercase; pointer-events: none;
+  text-align: center;
+}
+#hud span {
+  display: inline-block; padding: 8px 20px;
+  border: 1px solid rgba(220,190,120,0.18);
+  border-radius: 40px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+</style>
+</head>
+<body>
+<div id="loading">
+  <h1>DESERT</h1>
+  <p>Interactive 3D Experience</p>
+  <div class="load-bar"><div class="load-fill" id="lf"></div></div>
+</div>
+<canvas id="c"></canvas>
+<div id="hud"><span>Move mouse over sand to displace it &nbsp;·&nbsp; Watch him tumble</span></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass }      from 'three/addons/postprocessing/OutputPass.js';
+
+// ── progress ─────────────────────────────────────────────
+function prog(p) { document.getElementById('lf').style.width = p + '%'; }
+
+// ── noise ────────────────────────────────────────────────
+function fract(n) { return n - Math.floor(n); }
+function h2(x, y) { return fract(Math.sin(x * 127.1 + y * 311.7) * 43758.5453); }
+function ss(a, b, x) { const t = Math.max(0, Math.min(1,(x-a)/(b-a))); return t*t*(3-2*t); }
+function vnoise(x, y) {
+  const ix=Math.floor(x), iy=Math.floor(y), fx=x-ix, fy=y-iy;
+  const ux=ss(0,1,fx), uy=ss(0,1,fy);
+  return h2(ix,iy)*(1-ux)*(1-uy)+h2(ix+1,iy)*ux*(1-uy)+h2(ix,iy+1)*(1-ux)*uy+h2(ix+1,iy+1)*ux*uy;
+}
+function fbm(x, y, o=6) {
+  let v=0, a=0.5, f=1;
+  for(let i=0;i<o;i++){v+=vnoise(x*f,y*f)*a;a*=0.5;f*=2.1;}
+  return v;
+}
+
+// ── renderer ─────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.3;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x6b3a1f, 0.007);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 600);
+camera.position.set(0, 22, 65);
+camera.lookAt(0, 3, 0);
+
+prog(10);
+
+// ── post-processing ───────────────────────────────────────
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.55, 0.7, 0.78);
+composer.addPass(bloomPass);
+composer.addPass(new OutputPass());
+
+// ── lights ───────────────────────────────────────────────
+const sunLight = new THREE.DirectionalLight(0xffc060, 3.5);
+sunLight.position.set(80, 60, -100);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(2048, 2048);
+sunLight.shadow.camera.near = 0.5; sunLight.shadow.camera.far = 350;
+sunLight.shadow.camera.left = sunLight.shadow.camera.bottom = -100;
+sunLight.shadow.camera.right = sunLight.shadow.camera.top = 100;
+sunLight.shadow.bias = -0.0005;
+scene.add(sunLight);
+scene.add(new THREE.AmbientLight(0xff5522, 0.38));
+const fill = new THREE.DirectionalLight(0x4060c0, 0.28);
+fill.position.set(-80, 40, 60); scene.add(fill);
+
+// ── sky dome ─────────────────────────────────────────────
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide,
+  uniforms: {
+    uTop:  { value: new THREE.Color(0x09031f) },
+    uMid:  { value: new THREE.Color(0x8b1e00) },
+    uHorz: { value: new THREE.Color(0xff5818) },
+  },
+  vertexShader: `varying vec3 vP; void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader: `
+    uniform vec3 uTop,uMid,uHorz; varying vec3 vP;
+    void main(){
+      float h=normalize(vP).y;
+      vec3 c=h>0.12?mix(uMid,uTop,smoothstep(0.12,0.85,h)):mix(uHorz,uMid,smoothstep(-0.1,0.12,h));
+      gl_FragColor=vec4(c,1.);
+    }`
+});
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(450,32,16), skyMat));
+
+// sun disc (blooms)
+const sunSphere = new THREE.Mesh(
+  new THREE.SphereGeometry(7, 16, 12),
+  new THREE.MeshBasicMaterial({ color: 0xfffce0 })
+);
+sunSphere.position.copy(sunLight.position).normalize().multiplyScalar(260);
+scene.add(sunSphere);
+
+prog(22);
+
+// ── terrain ───────────────────────────────────────────────
+const T_SIZE = 200, T_SEGS = 200, T_N = T_SEGS + 1;
+const tGeo = new THREE.PlaneGeometry(T_SIZE, T_SIZE, T_SEGS, T_SEGS);
+tGeo.rotateX(-Math.PI / 2);
+
+const tPos  = tGeo.attributes.position;
+const NVERT = tPos.count; // 201*201 = 40401
+const baseH = new Float32Array(NVERT);
+
+for (let i = 0; i < NVERT; i++) {
+  const x = tPos.getX(i), z = tPos.getZ(i);
+  let h  = fbm(x*0.022+0.5,  z*0.016+1.3, 5) * 20;
+      h += fbm(x*0.007+2.1,  z*0.009+0.7, 3) * 12;
+      h += fbm(x*0.042+5.0,  z*0.042+3.0, 2) * 3.5;
+  // fade edges
+  const ef = 1 - Math.max(0, (Math.sqrt(x*x*0.7+z*z*0.5) - 58) / 40);
+  h *= Math.max(0, Math.min(1, ef));
+  h  = Math.max(0, h);
+  baseH[i] = h;
+  tPos.setY(i, h);
+}
+tPos.needsUpdate = true;
+tGeo.computeVertexNormals();
+
+prog(42);
+
+// vertex colors — sand variation by height
+const tColArr = new Float32Array(NVERT * 3);
+for (let i = 0; i < NVERT; i++) {
+  const t = baseH[i] / 30;
+  tColArr[i*3  ] = 0.60 + t*0.30;
+  tColArr[i*3+1] = 0.44 + t*0.25;
+  tColArr[i*3+2] = 0.18 + t*0.08;
+}
+tGeo.setAttribute('color', new THREE.BufferAttribute(tColArr, 3));
+
+const tMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.93, metalness: 0 });
+const terrain = new THREE.Mesh(tGeo, tMat);
+terrain.receiveShadow = true;
+scene.add(terrain);
+
+// height lookup (bilinear)
+function getH(wx, wz) {
+  const u = (wx + T_SIZE/2) / T_SIZE * T_SEGS;
+  const v = (wz + T_SIZE/2) / T_SIZE * T_SEGS;
+  const iu = Math.max(0, Math.min(T_SEGS-1, Math.floor(u)));
+  const iv = Math.max(0, Math.min(T_SEGS-1, Math.floor(v)));
+  const fu = u-iu, fv = v-iv;
+  return baseH[iv*T_N+iu]*(1-fu)*(1-fv)
+       + baseH[iv*T_N+iu+1]*fu*(1-fv)
+       + baseH[(iv+1)*T_N+iu]*(1-fu)*fv
+       + baseH[(iv+1)*T_N+iu+1]*fu*fv;
+}
+
+function getSlope(wx, wz, d=1.5) {
+  return new THREE.Vector2(
+    getH(wx+d,wz)-getH(wx-d,wz),
+    getH(wx,wz+d)-getH(wx,wz-d)
+  );
+}
+
+// terrain deformation
+const deformD = new Float32Array(NVERT);
+let deformDirty = false, lastNR = 0;
+
+function deformAt(wx, wz, R, maxD) {
+  const u0 = Math.max(0, Math.floor((wx-R+T_SIZE/2)/T_SIZE*T_SEGS)-1);
+  const u1 = Math.min(T_SEGS, Math.ceil((wx+R+T_SIZE/2)/T_SIZE*T_SEGS)+1);
+  const v0 = Math.max(0, Math.floor((wz-R+T_SIZE/2)/T_SIZE*T_SEGS)-1);
+  const v1 = Math.min(T_SEGS, Math.ceil((wz+R+T_SIZE/2)/T_SIZE*T_SEGS)+1);
+  for (let v=v0; v<=v1; v++) {
+    for (let u=u0; u<=u1; u++) {
+      const i = v*T_N+u;
+      const vx=tPos.getX(i), vz=tPos.getZ(i);
+      const d=Math.sqrt((vx-wx)**2+(vz-wz)**2);
+      if (d < R) {
+        const s = (1-d/R)**2 * maxD;
+        if (deformD[i] < s) deformD[i] = Math.min(deformD[i]+0.14, s);
+      }
+    }
+  }
+}
+
+prog(58);
+
+// ── wind particles ────────────────────────────────────────
+const NW = 10000;
+const wGeo = new THREE.BufferGeometry();
+const wPos2 = new Float32Array(NW*3), wVel = new Float32Array(NW*3), wLife = new Float32Array(NW);
+function resetW(i) {
+  const x=(Math.random()-0.5)*180, z=(Math.random()-0.5)*180;
+  wPos2[i*3]=x; wPos2[i*3+1]=getH(x,z)+Math.random()*12+0.3; wPos2[i*3+2]=z;
+  wVel[i*3]=2.5+Math.random()*5; wVel[i*3+1]=(Math.random()-0.5)*0.4; wVel[i*3+2]=(Math.random()-0.4)*1.5;
+  wLife[i]=Math.random();
+}
+for(let i=0;i<NW;i++) resetW(i);
+wGeo.setAttribute('position', new THREE.BufferAttribute(wPos2, 3));
+scene.add(new THREE.Points(wGeo, new THREE.PointsMaterial({color:0xd4b57a,size:0.07,transparent:true,opacity:0.55,sizeAttenuation:true,depthWrite:false})));
+
+// ── spray particles ───────────────────────────────────────
+const NS = 600;
+const sGeo = new THREE.BufferGeometry();
+const sPos2 = new Float32Array(NS*3), sVel2 = new Float32Array(NS*3), sLife2 = new Float32Array(NS).fill(-1);
+sGeo.setAttribute('position', new THREE.BufferAttribute(sPos2, 3));
+const sMat = new THREE.PointsMaterial({color:0xeece95,size:0.22,transparent:true,opacity:0.9,sizeAttenuation:true,depthWrite:false});
+scene.add(new THREE.Points(sGeo, sMat));
+let sIdx = 0;
+
+function spawnSpray(x, y, z, n) {
+  for (let k=0;k<n;k++) {
+    const i = sIdx++ % NS;
+    sPos2[i*3]=x; sPos2[i*3+1]=y+0.1; sPos2[i*3+2]=z;
+    const a=Math.random()*Math.PI*2, sp=Math.random()*4+1;
+    sVel2[i*3]=Math.cos(a)*sp*0.7; sVel2[i*3+1]=Math.random()*7+2; sVel2[i*3+2]=Math.sin(a)*sp*0.7;
+    sLife2[i]=0;
+  }
+}
+
+prog(70);
+
+// ── rolling man ───────────────────────────────────────────
+function limb(rx, ry, color, rz=0) {
+  const m = new THREE.Mesh(
+    new THREE.CapsuleGeometry(rx, ry, 4, 8),
+    new THREE.MeshStandardMaterial({color, roughness:0.85})
+  );
+  m.rotation.z = rz; m.castShadow = true;
+  return m;
+}
+
+const man = new THREE.Group();
+const SKIN=0xf2c090, SHIRT=0x2255cc, PANTS=0x8b3300;
+
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.3,14,10), new THREE.MeshStandardMaterial({color:SKIN,roughness:0.8}));
+head.position.y = 1.8; head.castShadow = true; man.add(head);
+
+const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.24,0.55,4,8), new THREE.MeshStandardMaterial({color:SHIRT,roughness:0.9}));
+torso.position.y = 1.05; torso.castShadow = true; man.add(torso);
+
+const armL = limb(0.09, 0.42, SHIRT, 0.45); armL.position.set(-0.44,1.1,0); man.add(armL);
+const armR = limb(0.09, 0.42, SHIRT,-0.45); armR.position.set( 0.44,1.1,0); man.add(armR);
+const legL = limb(0.11, 0.50, PANTS, 0.15); legL.position.set(-0.2,0.35,0); man.add(legL);
+const legR = limb(0.11, 0.50, PANTS,-0.15); legR.position.set( 0.2,0.35,0); man.add(legR);
+
+const footG = new THREE.BoxGeometry(0.18,0.1,0.3);
+const footM = new THREE.MeshStandardMaterial({color:0x222222,roughness:1});
+const fL = new THREE.Mesh(footG,footM); fL.position.set(-0.2,0.04,0.05); fL.castShadow=true; man.add(fL);
+const fR = fL.clone(); fR.position.set(0.2,0.04,0.05); man.add(fR);
+
+man.scale.setScalar(1.45);
+scene.add(man);
+
+// find highest dune start
+let sx=0, sz=-35;
+{ let topH=0;
+  for(let x=-35;x<=35;x+=4) for(let z=-60;z<=-15;z+=4) {
+    const h=getH(x,z); if(h>topH){topH=h;sx=x;sz=z;}
+  }
+}
+const MR = 1.45 * 1.3;
+man.position.set(sx, getH(sx,sz)+MR, sz);
+
+let mvx=0.06, mvz=0.3, manActive=true, manStopT=-999, prevSpeed=0;
+
+prog(85);
+
+// ── mouse ─────────────────────────────────────────────────
+const mouse = new THREE.Vector2(-999,-999);
+const ray   = new THREE.Raycaster();
+let hitPt = null;
+document.addEventListener('mousemove', e => {
+  mouse.x = (e.clientX/window.innerWidth)*2-1;
+  mouse.y = -(e.clientY/window.innerHeight)*2+1;
+});
+
+// ── resize ────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  const w=window.innerWidth, h=window.innerHeight;
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  renderer.setSize(w,h); composer.setSize(w,h);
+  bloomPass.resolution.set(w,h);
+});
+
+// ── loading done ──────────────────────────────────────────
+prog(100);
+setTimeout(() => {
+  const el = document.getElementById('loading');
+  el.style.opacity = '0';
+  setTimeout(()=>el.style.display='none', 1200);
+}, 400);
+
+// ── main loop ─────────────────────────────────────────────
+let prevT = 0;
+
+function animate(nowMs) {
+  requestAnimationFrame(animate);
+  const t  = nowMs * 0.001;
+  const dt = Math.min(t - prevT, 0.05);
+  prevT = t;
+
+  // raycasting
+  ray.setFromCamera(mouse, camera);
+  const hits = ray.intersectObject(terrain);
+  hitPt = hits.length ? hits[0].point : null;
+
+  if (hitPt) {
+    deformAt(hitPt.x, hitPt.z, 4.5, 0.75);
+    deformDirty = true;
+    if (Math.random() < 0.65) spawnSpray(hitPt.x, hitPt.y, hitPt.z, 5);
+  }
+
+  // apply deformation
+  if (deformDirty) {
+    for (let i=0; i<NVERT; i++) tPos.setY(i, baseH[i]-deformD[i]);
+    tPos.needsUpdate = true;
+    if (t - lastNR > 0.04) { tGeo.computeVertexNormals(); lastNR=t; }
+    deformDirty = false;
+  }
+
+  // wind
+  for (let i=0;i<NW;i++) {
+    wPos2[i*3]  +=wVel[i*3  ]*dt;
+    wPos2[i*3+1]+=wVel[i*3+1]*dt;
+    wPos2[i*3+2]+=wVel[i*3+2]*dt;
+    wLife[i]+=dt*0.2;
+    if (wLife[i]>1||Math.abs(wPos2[i*3])>96) resetW(i);
+  }
+  wGeo.attributes.position.needsUpdate = true;
+
+  // spray
+  for (let i=0;i<NS;i++) {
+    if (sLife2[i]<0) continue;
+    sPos2[i*3  ]+=sVel2[i*3  ]*dt;
+    sPos2[i*3+1]+=sVel2[i*3+1]*dt;
+    sPos2[i*3+2]+=sVel2[i*3+2]*dt;
+    sVel2[i*3+1]-=12*dt;
+    sLife2[i]+=dt*1.5;
+    if (sLife2[i]>1){ sLife2[i]=-1; sPos2[i*3+1]=-999; }
+  }
+  sGeo.attributes.position.needsUpdate = true;
+
+  // rolling man
+  if (manActive) {
+    const slope = getSlope(man.position.x, man.position.z);
+    mvx += slope.x * 9 * 0.28 * dt;
+    mvz += slope.y * 9 * 0.28 * dt;
+    mvx *= Math.pow(0.55, dt);
+    mvz *= Math.pow(0.55, dt);
+
+    man.position.x = Math.max(-84, Math.min(84, man.position.x + mvx*dt));
+    man.position.z = Math.max(-84, Math.min(84, man.position.z + mvz*dt));
+    man.position.y = getH(man.position.x, man.position.z) + MR;
+
+    const speed = Math.sqrt(mvx*mvx+mvz*mvz);
+
+    // tumble
+    man.rotation.x += speed * 2.8 * dt;
+    man.rotation.z += speed * 2.0 * dt + Math.sin(t*1.9)*0.04;
+    man.rotation.y += Math.sin(t*0.8) * 0.07 * dt;
+
+    // dust trail
+    if (speed>0.6 && Math.random()<speed*0.15)
+      spawnSpray(man.position.x, man.position.y-MR*0.7, man.position.z, 2);
+
+    // landing splash
+    if (speed < 0.1 && prevSpeed > 2) spawnSpray(man.position.x, man.position.y-MR*0.7, man.position.z, 55);
+
+    prevSpeed = speed;
+    if (speed < 0.07) { manActive=false; manStopT=t; }
+
+  } else {
+    man.rotation.x += Math.sin(t*1.1)*0.007;
+    man.rotation.z += Math.cos(t*0.9)*0.006;
+
+    if (t - manStopT > 3.5) {
+      let topH2=0; let nx=0, nz=-30;
+      for(let x=-40;x<=40;x+=4) for(let z=-65;z<=-10;z+=4) {
+        const h=getH(x,z); if(h>topH2){topH2=h;nx=x+(Math.random()-0.5)*8;nz=z;}
+      }
+      man.position.set(nx, getH(nx,nz)+MR, nz);
+      man.rotation.set(Math.random()*6, Math.random()*6, Math.random()*6);
+      mvx=(Math.random()-0.5)*0.3; mvz=Math.random()*0.5+0.1;
+      prevSpeed=0; manActive=true;
+    }
+  }
+
+  // camera follow man
+  const cx = man.position.x*0.22 + Math.sin(t*0.04)*5;
+  const cy = man.position.y + 20;
+  const cz = man.position.z + 62;
+  camera.position.x += (cx - camera.position.x) * 0.018;
+  camera.position.y += (cy - camera.position.y) * 0.014;
+  camera.position.z += (cz - camera.position.z) * 0.018;
+  camera.lookAt(man.position.x*0.3, man.position.y+1, man.position.z);
+
+  composer.render();
+}
+
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

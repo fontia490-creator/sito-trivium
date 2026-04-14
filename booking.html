@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Trivium</title>
+<style>
+:root {
+  --bg: #060d1a; --bg-card: #0d1829; --cyan: #00d4e8; --white: #ffffff;
+  --border: rgba(0,212,232,.18);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--white); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+/* NAV */
+nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; border-bottom: 1px solid var(--border); background: rgba(6,13,26,.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo svg { width: 26px; height: 26px; }
+.nav-logo span { font-size: 1.1rem; font-weight: 900; color: var(--white); letter-spacing: .08em; text-transform: uppercase; }
+.nav-back { font-size: .85rem; color: var(--cyan); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+.nav-back:hover { gap: 10px; }
+
+/* HERO */
+.hero { text-align: center; padding: 70px 24px 50px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,212,232,.12) 0%, transparent 70%); pointer-events: none; }
+.hero-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,212,232,.1); border: 1px solid rgba(0,212,232,.3); border-radius: 50px; padding: 6px 16px; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 24px; }
+.hero-chip span { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); animation: blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; margin-bottom: 14px; line-height: 1.15; }
+.hero h1 em { color: var(--cyan); font-style: normal; }
+.hero p { font-size: 1rem; color: #ffffff; max-width: 540px; margin: 0 auto; line-height: 1.75; }
+
+/* LAYOUT: info left, form right on same row; then testimonials below */
+.main-wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+
+.top-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 28px; align-items: stretch; }
+
+/* INFO CARD */
+.info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
+
+.section-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(0,212,232,.12); border: 2px solid rgba(0,212,232,.6);
+  border-radius: 50px; padding: 6px 20px;
+  font-size: .78rem; font-weight: 900; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 4px; width: fit-content;
+  text-shadow: 0 0 10px rgba(0,212,232,.5);
+}
+
+.info-item { display: flex; align-items: flex-start; gap: 14px; }
+.info-ico { width: 40px; height: 40px; border-radius: 50%; background: rgba(0,212,232,.1); border: 1.5px solid rgba(0,212,232,.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.info-ico svg { width: 17px; height: 17px; stroke: #00d4e8; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 4px rgba(0,212,232,.6)); }
+.info-txt h4 { font-size: .9rem; font-weight: 700; color: #00d4e8; margin-bottom: 3px; }
+.info-txt p { font-size: .82rem; color: #ffffff; line-height: 1.5; }
+
+/* VIDEO PLACEHOLDER */
+.video-placeholder { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: block; position: relative; }
+.video-placeholder video { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; display: block; }
+.video-placeholder-inner { text-align: center; color: rgba(255,255,255,.3); z-index: 1; }
+.video-placeholder-inner svg { width: 48px; height: 48px; stroke: rgba(0,212,232,.4); fill: none; stroke-width: 1.5; margin-bottom: 12px; }
+.video-placeholder-inner p { font-size: .85rem; letter-spacing: .06em; }
+
+/* FORM CARD */
+.form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; }
+.demo-badge { display: inline-flex; align-items: center; justify-content: center; background: rgba(0,212,232,.12); border: 2px solid rgba(0,212,232,.6); border-radius: 50px; padding: 7px 22px; font-size: .8rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; text-shadow: 0 0 10px rgba(0,212,232,.5); }
+.form-card > p { font-size: .88rem; color: #ffffff; margin-bottom: 24px; line-height: 1.6; }
+.fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.fg label { font-size: .75rem; font-weight: 700; color: var(--cyan); letter-spacing: .06em; text-transform: uppercase; }
+.fg input, .fg select, .fg textarea { background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; color: #ffffff; font-size: .88rem; font-family: inherit; width: 100%; transition: border-color .2s, box-shadow .2s; outline: none; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,212,232,.1); }
+.fg select option { background: #0d1829; color: #ffffff; }
+.fg textarea { resize: vertical; min-height: 100px; }
+.fgrow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.btn-submit { width: 100%; padding: 14px; background: var(--cyan); color: #060d1a; font-weight: 900; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer; margin-top: 8px; transition: transform .2s, box-shadow .2s; letter-spacing: .04em; }
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,232,.4); }
+
+/* TESTIMONIALS ROW */
+.testi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.testi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; border-left: 3px solid var(--cyan); }
+.testi-card p { font-size: .88rem; color: #ffffff; font-style: italic; line-height: 1.65; margin-bottom: 10px; }
+.testi-card span { font-size: .8rem; font-weight: 700; color: var(--cyan); }
+
+/* SUCCESS */
+#success { display: none; text-align: center; padding: 48px 24px; }
+#success svg { width: 60px; height: 60px; stroke: var(--cyan); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 20px; }
+#success h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 12px; }
+#success p { color: #ffffff; font-size: 1rem; max-width: 400px; margin: 0 auto 28px; line-height: 1.7; }
+
+@media(max-width: 768px) {
+  .top-row { grid-template-columns: 1fr; }
+  .testi-row { grid-template-columns: 1fr; }
+  .fgrow { grid-template-columns: 1fr; }
+  nav { padding: 14px 20px; }
+}
+
+  /* CONSTELLATION BACKGROUND */
+  #particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+
+<nav>
+  <a href="trivium.html" class="nav-logo">
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0090a8"/><stop offset="100%" stop-color="#00d4e8"/></linearGradient></defs>
+      <polygon points="50,8 95,82 5,82" stroke="url(#lg)" stroke-width="5" fill="none" stroke-linejoin="round"/>
+      <polygon points="50,22 82,74 18,74" stroke="url(#lg)" stroke-width="3" fill="none" stroke-linejoin="round" opacity=".6"/>
+      <circle cx="50" cy="50" r="7" fill="#00eeff"/>
+    </svg>
+    <div>
+      <div style="font-size:1.1rem;font-weight:900;color:#ffffff;letter-spacing:.08em;text-transform:uppercase;">TRIVIUM</div>
+      <div style="font-size:.62rem;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;font-weight:600;">Where Paths Converge</div>
+    </div>
+  </a>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;letter-spacing:.06em;">
+      <span id="l-en" style="color:var(--cyan);cursor:pointer;" onclick="setLang('en')">ENG</span>
+      <span style="color:rgba(255,255,255,.2);">|</span>
+      <span id="l-it" style="color:rgba(255,255,255,.4);cursor:pointer;" onclick="setLang('it')">ITA</span>
+      <span style="color:rgba(255,255,255,.2);">|</span>
+      <span id="l-es" style="color:rgba(255,255,255,.4);cursor:pointer;" onclick="setLang('es')">ESP</span>
+    </div>
+    <a href="trivium.html" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-chip"><span></span> No Commitment Required</div>
+  <h1>Book Your <em>Free</em> Demo</h1>
+  <p>See Trivium live in 30 minutes. Our team will walk you through a real deployment scenario tailored to your city or facility.</p>
+</div>
+
+<div class="main-wrap">
+
+  <div class="top-row">
+
+    <!-- LEFT: CONTACT INFO -->
+    <div class="info-card">
+      <div class="section-badge" data-i18n="badge">CONTACT &amp; INFO</div>
+
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/></svg></div>
+        <div class="info-txt"><h4 data-i18n="lCompany">Company Name</h4><p>Trivium Technology Ltd</p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="info-txt"><h4 data-i18n="lEmail">Company Email</h4><p>info@triviumholding.com</p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="info-txt"><h4 data-i18n="lEmailMkt">Marketing Email</h4><p>marketing@triviumholding.com</p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="info-txt"><h4 data-i18n="lHQ">Headquarters</h4><p>Shenzhen Technology Park, Nanshan District</p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="info-txt"><h4 data-i18n="lEU">EU Office</h4><p>Via Smart City 12, Milano, Italy</p></div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:20px;display:flex;flex-direction:column;gap:12px;">
+        <div class="info-item">
+          <div class="info-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="info-txt"><h4 data-i18n="lSession">30-Minute Live Session</h4><p data-i18n="lSessionSub">Live data, real sensors, real dashboards.</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="info-txt"><h4 data-i18n="lROI">ROI Projection</h4><p data-i18n="lROISub">Custom revenue estimate based on your spaces.</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="info-txt"><h4 data-i18n="lExpert">Dedicated Expert</h4><p data-i18n="lExpertSub">No scripts, no junior reps — just your account manager.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: VIDEO -->
+    <div class="video-placeholder">
+      <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        <source src="uploads/demo_contact.mp4" type="video/mp4"/>
+      </video>
+    </div>
+
+  </div>
+
+  <!-- FORM BELOW FULL WIDTH -->
+  <div class="form-card" id="formWrap">
+    <div class="demo-badge" data-i18n="formBadge">REQUEST A DEMO</div>
+    <p data-i18n="formSub">Fill in the details and we'll get back within 4 business hours.</p>
+
+    <form id="demoForm" onsubmit="submitForm(event)">
+      <div class="fgrow">
+        <div class="fg"><label data-i18n="fName">Full Name *</label><input type="text" placeholder="John Smith" required></div>
+        <div class="fg"><label data-i18n="fEmail">Work Email *</label><input type="email" placeholder="john@city.gov" required></div>
+      </div>
+      <div class="fgrow">
+        <div class="fg"><label data-i18n="fOrg">Organisation</label><input type="text" placeholder="City of Rome"></div>
+        <div class="fg"><label data-i18n="fRole">Role</label><input type="text" placeholder="Head of Mobility"></div>
+      </div>
+      <div class="fgrow">
+        <div class="fg"><label data-i18n="fType">Organisation Type</label>
+          <select><option>— Select —</option><option>Municipal Authority</option><option>Private Operator</option><option>Airport / Transport Hub</option><option>Shopping Centre / Retail</option><option>University / Hospital</option><option>Other</option></select>
+        </div>
+        <div class="fg"><label data-i18n="fSpaces">Spaces to Manage</label>
+          <select><option>— Estimate —</option><option>Under 100</option><option>100 – 500</option><option>500 – 2,000</option><option>2,000 – 10,000</option><option>10,000+</option></select>
+        </div>
+      </div>
+      <div class="fg"><label data-i18n="fDate">Preferred Demo Date</label><input type="date"></div>
+      <div class="fg"><label data-i18n="fDesc">Describe Your Project</label>
+        <textarea placeholder="E.g. We need to digitise our on-street parking across 3 zones..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit" data-i18n="btn">Request My Free Demo →</button>
+    </form>
+
+    <div id="success">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+      <h2 data-i18n="successTitle">Request Sent!</h2>
+      <p data-i18n="successSub">Our team will contact you within 4 business hours to confirm your demo slot.</p>
+      <a href="trivium.html" style="display:inline-block;padding:12px 28px;background:var(--cyan);color:#060d1a;font-weight:900;border-radius:50px;text-decoration:none;margin-top:8px;" data-i18n="backHome">← Back to Trivium</a>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS BELOW -->
+  <div class="testi-row">
+    <div class="testi-card">
+      <p>"Revenue increased 34% in the first quarter. Best infrastructure investment the city has made."</p>
+      <span>— City of Chengdu, Traffic Director</span>
+    </div>
+    <div class="testi-card">
+      <p>"Deployment was complete in 18 days. The system paid for itself within 6 months."</p>
+      <span>— MallGroup Operations, Bangkok</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('demoForm').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+}
+
+const tr = {
+  en: {
+    title: 'Book Your <em>Free</em> Demo',
+    sub: 'See Trivium live in 30 minutes. Our team will walk you through a real deployment scenario tailored to your city or facility.',
+    badge: 'CONTACT & INFO',
+    formBadge: 'REQUEST A DEMO',
+    formSub: "Fill in the details and we'll get back within 4 business hours.",
+    btn: 'Request My Free Demo →',
+    back: '← Back',
+    lCompany: 'Company Name', lEmail: 'Company Email', lEmailMkt: 'Marketing Email',
+    lHQ: 'Headquarters', lEU: 'EU Office',
+    lSession: '30-Minute Live Session', lSessionSub: 'Live data, real sensors, real dashboards.',
+    lROI: 'ROI Projection', lROISub: 'Custom revenue estimate based on your spaces.',
+    lExpert: 'Dedicated Expert', lExpertSub: 'No scripts, no junior reps — just your account manager.',
+    fName: 'Full Name *', fEmail: 'Work Email *', fOrg: 'Organisation', fRole: 'Role',
+    fType: 'Organisation Type', fSpaces: 'Spaces to Manage', fDate: 'Preferred Demo Date', fDesc: 'Describe Your Project',
+    successTitle: 'Request Sent!', successSub: 'Our team will contact you within 4 business hours to confirm your demo slot.',
+    backHome: '← Back to Trivium'
+  },
+  it: {
+    title: 'Prenota la Tua <em>Demo Gratuita</em>',
+    sub: 'Vedi Trivium dal vivo in 30 minuti. Il nostro team ti guiderà attraverso uno scenario reale su misura per la tua città.',
+    badge: 'CONTATTI & INFO',
+    formBadge: 'RICHIEDI UNA DEMO',
+    formSub: 'Compila il modulo e ti risponderemo entro 4 ore lavorative.',
+    btn: 'Richiedi la Mia Demo Gratuita →',
+    back: '← Indietro',
+    lCompany: 'Nome Azienda', lEmail: 'Email Aziendale', lEmailMkt: 'Email Marketing',
+    lHQ: 'Sede Principale', lEU: 'Ufficio Europa',
+    lSession: 'Sessione Live 30 Minuti', lSessionSub: 'Dati live, sensori reali, dashboard reali.',
+    lROI: 'Proiezione ROI', lROISub: 'Stima personalizzata dei ricavi in base ai tuoi spazi.',
+    lExpert: 'Esperto Dedicato', lExpertSub: 'Nessuno script, nessun junior — solo il tuo account manager.',
+    fName: 'Nome Completo *', fEmail: 'Email Lavoro *', fOrg: 'Organizzazione', fRole: 'Ruolo',
+    fType: 'Tipo di Organizzazione', fSpaces: 'Spazi da Gestire', fDate: 'Data Demo Preferita', fDesc: 'Descrivi il Tuo Progetto',
+    successTitle: 'Richiesta Inviata!', successSub: 'Il nostro team ti contatterà entro 4 ore lavorative per confermare il tuo slot.',
+    backHome: '← Torna a Trivium'
+  },
+  es: {
+    title: 'Reserva Tu <em>Demo Gratis</em>',
+    sub: 'Ve Trivium en vivo en 30 minutos. Nuestro equipo te guiará a través de un escenario real adaptado a tu ciudad.',
+    badge: 'CONTACTO & INFO',
+    formBadge: 'SOLICITAR DEMO',
+    formSub: 'Rellena el formulario y te responderemos en 4 horas hábiles.',
+    btn: 'Solicitar Mi Demo Gratuita →',
+    back: '← Volver',
+    lCompany: 'Nombre Empresa', lEmail: 'Email Corporativo', lEmailMkt: 'Email de Marketing',
+    lHQ: 'Sede Principal', lEU: 'Oficina Europa',
+    lSession: 'Sesión en Vivo 30 Min', lSessionSub: 'Datos en vivo, sensores reales, dashboards reales.',
+    lROI: 'Proyección ROI', lROISub: 'Estimación de ingresos personalizada para tus espacios.',
+    lExpert: 'Experto Dedicado', lExpertSub: 'Sin guiones, sin juniors — solo tu account manager.',
+    fName: 'Nombre Completo *', fEmail: 'Email Trabajo *', fOrg: 'Organización', fRole: 'Cargo',
+    fType: 'Tipo de Organización', fSpaces: 'Plazas a Gestionar', fDate: 'Fecha Demo Preferida', fDesc: 'Describe Tu Proyecto',
+    successTitle: '¡Solicitud Enviada!', successSub: 'Nuestro equipo te contactará en 4 horas hábiles para confirmar tu slot.',
+    backHome: '← Volver a Trivium'
+  }
+};
+
+function setLang(l) {
+  const t = tr[l];
+  document.querySelector('.hero h1').innerHTML = t.title;
+  document.querySelector('.hero p').textContent = t.sub;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll('.nav-back').forEach(el => el.textContent = t.back);
+  ['en','it','es'].forEach(code => {
+    document.getElementById('l-'+code).style.color = code===l ? 'var(--cyan)' : 'rgba(255,255,255,.4)';
+  });
+}
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function rand(a,b){ return Math.random()*(b-a)+a; }
+  for(let i=0;i<80;i++){
+    dots.push({x:rand(0,W),y:rand(0,H),vx:rand(-.3,.3),vy:rand(-.3,.3),r:rand(1,2.5),o:rand(.15,.5)});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<dots.length;i++){
+      for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(0,212,232,${.12*(1-d/140)})`;
+          ctx.lineWidth=.8;
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    dots.forEach(d=>{
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,232,${d.o})`;
+      ctx.fill();
+      d.x+=d.vx; d.y+=d.vy;
+      if(d.x<0||d.x>W) d.vx*=-1;
+      if(d.y<0||d.y>H) d.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

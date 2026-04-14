@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>In Ground Version WEP03 — Trivium</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--cyan:#00d4e8;--bg:#1a1e24;--card:#1e2330;--border:rgba(0,212,232,.18);--white:#f0f4f8;--gray:#8090a8;}
+    body{background:var(--bg);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+    nav{position:sticky;top:0;z-index:99;background:rgba(26,30,36,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .nav-right{display:flex;align-items:center;gap:14px;}
+    .lang-switch{display:flex;gap:4px;}
+    .lang-btn{font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 11px;border-radius:20px;border:1px solid rgba(0,212,232,.25);color:var(--gray);cursor:pointer;transition:all .2s;background:transparent;user-select:none;}
+    .lang-btn:hover{color:var(--cyan);border-color:rgba(0,212,232,.5);}
+    .lang-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,212,232,.1);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);text-decoration:none;font-size:.88rem;font-weight:600;border:1px solid rgba(0,212,232,.3);border-radius:20px;padding:6px 16px;transition:all .2s;white-space:nowrap;}
+    .nav-back:hover{background:rgba(0,212,232,.1);}
+    /* CAROUSEL */
+    .carousel-wrap{position:relative;width:100%;background:#0a0e14;overflow:hidden;min-height:60vh;}
+    .carousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+    .carousel-slide{min-width:100%;position:relative;height:70vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#ffffff;}
+    .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:48px;height:48px;border-radius:50%;background:rgba(6,14,26,.8);border:1px solid rgba(0,212,232,.4);color:var(--cyan);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;backdrop-filter:blur(8px);}
+    .carousel-btn:hover{background:rgba(0,212,232,.2);transform:translateY(-50%) scale(1.08);}
+    .carousel-btn.prev{left:18px;}
+    .carousel-btn.next{right:18px;}
+    .carousel-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:background .2s,transform .2s;padding:0;}
+    .carousel-dot.active{background:var(--cyan);transform:scale(1.3);}
+    .slide-counter{position:absolute;top:16px;right:18px;z-index:10;background:rgba(6,14,26,.7);border:1px solid rgba(0,212,232,.25);border-radius:20px;padding:4px 14px;font-size:.78rem;color:var(--cyan);font-weight:700;backdrop-filter:blur(6px);}
+    /* HERO INFO */
+    .hero-info{background:var(--bg);padding:40px 28px 0;}
+    .hero-info-inner{max-width:1200px;margin:0 auto;}
+    .badge{display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+    .hero-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;margin-bottom:10px;}
+    .hero-sub{font-size:1.05rem;color:#ffffff;max-width:680px;line-height:1.75;margin-bottom:24px;}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+    .tag{background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);color:var(--cyan);font-size:.74rem;font-weight:700;padding:5px 14px;border-radius:20px;}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+    .btn-cyan{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#0a1628;font-weight:800;font-size:.9rem;padding:12px 28px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,232,.4);}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:.9rem;padding:11px 26px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-outline:hover{background:rgba(0,212,232,.1);}
+    /* SECTIONS */
+    .container{max-width:1200px;margin:0 auto;padding:0 28px;}
+    section{padding:80px 0;}
+    .section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;margin-bottom:10px;}
+    .section-title em{color:var(--cyan);font-style:normal;}
+    .bar{width:48px;height:4px;background:linear-gradient(90deg,var(--cyan),transparent);border-radius:2px;margin-bottom:28px;}
+    .lead{font-size:1.05rem;color:#ffffff;line-height:1.85;margin-bottom:40px;max-width:780px;}
+    /* HIGHLIGHTS */
+    .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:60px;}
+    .hl{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;}
+    .hl-val{font-size:2rem;font-weight:900;color:var(--cyan);margin-bottom:6px;}
+    .hl-lab{font-size:.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;}
+    /* FEATURES */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-bottom:60px;}
+    .feat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color .2s;}
+    .feat:hover{border-color:rgba(0,212,232,.4);}
+    .feat-icon{width:44px;height:44px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);}
+    .feat-icon svg{width:22px;height:22px;stroke:#ffffff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .feat h3{font-size:.72rem;font-weight:800;margin-bottom:12px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;}
+    .feat p{font-size:.88rem;color:#ffffff;line-height:1.65;}
+    /* SPECS */
+    .specs-table{width:100%;border-collapse:collapse;margin-bottom:60px;}
+    .specs-table tr{border-bottom:1px solid rgba(0,212,232,.1);}
+    .specs-table tr:first-child{border-top:1px solid rgba(0,212,232,.1);}
+    .specs-table td{padding:14px 18px;font-size:.9rem;}
+    .specs-table td:first-child{color:var(--cyan);font-weight:600;width:35%;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;}
+    .specs-table td:last-child{color:var(--white);font-weight:500;}
+    .specs-table tr:nth-child(odd){background:rgba(0,212,232,.03);}
+    /* CTA */
+    .cta-strip{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:52px;text-align:center;margin-top:20px;}
+    .cta-strip h2{font-size:1.9rem;font-weight:900;margin-bottom:12px;}
+    .cta-strip p{color:#ffffff;margin-bottom:28px;font-size:1.02rem;}
+    footer{border-top:1px solid var(--border);padding:32px 28px;text-align:center;color:var(--gray);font-size:.82rem;}
+    footer a{color:var(--cyan);text-decoration:none;}
+    #lightbox{animation:lbFadeIn .2s ease;}
+    @keyframes lbFadeIn{from{opacity:0;}to{opacity:1;}}
+    div[onclick*="openLightbox"]:hover img{transform:scale(1.04);filter:brightness(1.08);}
+  
+  /* CONSTELLATION BACKGROUND */
+  #particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../../trivium.html" style="text-decoration:none;">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0090a8"/>
+            <stop offset="100%" stop-color="#00d4e8"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00eeff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <polygon points="50,8 95,82 5,82" stroke="url(#lg1)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+        <polygon points="50,22 82,74 18,74" stroke="url(#lg1)" stroke-width="2.5" fill="none" stroke-linejoin="round" opacity=".7"/>
+        <line x1="50" y1="22" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="82" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
+        <circle cx="50" cy="50" r="10" fill="url(#glow)" opacity=".5"/>
+      </svg>
+      <div>
+        <div style="font-size:1.35rem;font-weight:900;letter-spacing:.03em;color:#f0f4f8;">TRIVIUM</div>
+        <div style="font-size:.65rem;color:#00d4e8;letter-spacing:.12em;text-transform:uppercase;margin-top:1px;">Where Paths Converge</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <span class="lang-btn active" onclick="setLang('en')">ENG</span>
+        <span class="lang-btn" onclick="setLang('it')">ITA</span>
+        <span class="lang-btn" onclick="setLang('es')">ESP</span>
+      </div>
+      <a class="nav-back" href="../../trivium.html#products" data-i18n="nav_back">← Back to Solutions</a>
+    </div>
+  </div>
+</nav>
+
+<!-- CAROUSEL -->
+<div class="carousel-wrap" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-slide" style="background:#0a0e14;">
+      <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+          <source src="../uploads/wep03-cover.mp4" type="video/mp4"/>
+        </video>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-btn prev" id="prevBtn">&#8249;</button>
+  <button class="carousel-btn next" id="nextBtn">&#8250;</button>
+  <div class="carousel-dots" id="carouselDots"></div>
+  <div class="slide-counter"><span id="slideNum">1</span> / <span id="slideTotal">1</span></div>
+</div>
+
+<!-- HERO INFO -->
+<div class="hero-info">
+  <div class="hero-info-inner">
+    <div class="badge" data-i18n="badge">IN-GROUND · 4G/5G · 180 DAYS BATTERY</div>
+    <h1 class="hero-title"><em style="color:var(--cyan);">WEP03</em></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Low-position smart parking sensor with wide-angle camera + ultrasonic/radar dual detection. 4G/5G full-network connectivity, IP68 protection, and up to 180 days battery life. Zero infrastructure change required.</p>
+    <div class="tags">
+      <span class="tag" data-i18n="tag1">In-Ground</span>
+      <span class="tag" data-i18n="tag2">Camera + Ultrasonic</span>
+      <span class="tag">4G / 5G</span>
+      <span class="tag" data-i18n="tag3">180 Days Battery</span>
+      <span class="tag">IP68</span>
+      <span class="tag" data-i18n="tag4">Zero Ground Works</span>
+    </div>
+    <div class="hero-btns">
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="demo_btn">Request a Demo →</a>
+      <a href="../../trivium.html#contact" class="btn-outline" data-i18n="mfr_btn">Technical Datasheet ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="container">
+    <h2 class="section-title" data-i18n="overview_title">Product <em>Overview</em></h2>
+    <div class="bar"></div>
+    <p class="lead" data-i18n="overview_lead">The WEP03 is a low-position smart parking sensor combining a wide-angle camera with ultrasonic/radar dual detection. Equipped with a 1/2.8" CMOS 2MP sensor, 4G/5G full-network connectivity, IP68 protection, and a solar-charged lithium battery lasting up to 180 days. Captures license plate, colour, images, date and time in real time — with full offline operation support.</p>
+
+    <div class="highlights">
+      <div class="hl"><div class="hl-val">≥97%</div><div class="hl-lab" data-i18n="hl1">LPR Day Accuracy</div></div>
+      <div class="hl"><div class="hl-val">≥94%</div><div class="hl-lab" data-i18n="hl2">LPR Night Accuracy</div></div>
+      <div class="hl"><div class="hl-val">IP68</div><div class="hl-lab" data-i18n="hl3">Protection Rating</div></div>
+      <div class="hl"><div class="hl-val">180d</div><div class="hl-lab" data-i18n="hl4">Battery Life</div></div>
+      <div class="hl"><div class="hl-val">4G/5G</div><div class="hl-lab" data-i18n="hl5">Connectivity</div></div>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3 data-i18n="f1_title">Wide-Angle Camera + Dual Detection</h3>
+        <p data-i18n="f1_desc">1/2.8-inch CMOS sensor with ≥2MP resolution. Wide-angle camera combined with ultrasonic/radar for cross-validated detection. LPR accuracy ≥97% by day and ≥94% by night. Collects plate number, colour, vehicle images, date and time.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0M5 12a10 10 0 0 1 14 0M8.5 15.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="#ffffff"/></svg></div>
+        <h3 data-i18n="f2_title">4G/5G Full-Network Transmission</h3>
+        <p data-i18n="f2_desc">Supports 4G/5G full-network communication via TCP/IP. Vehicle data, images and session records are automatically uploaded to the platform in real time. After network recovery, offline data is auto-synced seamlessly.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3 data-i18n="f3_title">Real-Time Data Collection</h3>
+        <p data-i18n="f3_desc">Detects vehicle information in real time: license plate number, plate colour, vehicle images, collection date and time. Stores data with integrity and security — storage capacity ≥8GB, retention ≥10 days.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 data-i18n="f4_title">Offline Operation + Auto-Recovery</h3>
+        <p data-i18n="f4_desc">Fully operational without network connectivity. Data is cached locally and automatically uploaded/downloaded once the network is restored. One-key automatic recovery function ensures continuity even after system faults.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3 data-i18n="f5_title">Fault Self-Diagnosis + Remote Upgrade</h3>
+        <p data-i18n="f5_desc">Built-in fault self-diagnosis, anti-interference protection, and remote software module control. Firmware upgrades are performed remotely — no on-site visits required. Automatic time synchronisation and calibration included.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <h3 data-i18n="f6_title">Solar-Ready Battery — 180 Days</h3>
+        <p data-i18n="f6_desc">Built-in lithium battery with solar charging support. Comprehensive battery life ≥180 days — industry-leading endurance for zero-maintenance deployment. IP68-rated body withstands submersion, dust and vehicle impact from −20°C to +60°C.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISUALIZED OUTPUT -->
+<section style="background:var(--card);padding:80px 0;border-top:1px solid rgba(0,212,232,.12);">
+  <div class="container">
+    <div style="background:var(--bg);border-radius:20px;padding:60px 40px;border:1px solid rgba(0,212,232,.12);">
+      <div style="text-align:center;max-width:720px;margin:0 auto 48px;">
+        <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="vis_badge">PRODUCT ADVANTAGES · WEP03</div>
+        <h2 class="section-title" data-i18n="vis_title">Visualized Output of Full-Process <em>Parking Information</em></h2>
+        <div class="bar" style="margin:12px auto 24px;"></div>
+        <p style="font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.85;" data-i18n="vis_lead">Wide-angle camera combined with ultrasonic/radar to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+          <div style="height:220px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,232,.04);border-bottom:1px dashed rgba(0,212,232,.2);cursor:zoom-in;" onclick="openLightbox('wep03-vis-1.jpg','WEP03 — Real-Time Monitoring')">
+            <div style="text-align:center;color:rgba(0,212,232,.4);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:.75rem;margin-top:8px;" data-i18n="vis_ph1">Add photo here</p>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
+            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f1_desc">Wide-angle camera combined with ultrasonic/radar linkage provides continuous, real-time visibility of every parking space — occupied, free, or reserved — with sub-2-second update frequency.</p>
+          </div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+          <div style="height:220px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,232,.04);border-bottom:1px dashed rgba(0,212,232,.2);cursor:zoom-in;" onclick="openLightbox('wep03-vis-2.jpg','WEP03 — HD Evidence Collection')">
+            <div style="text-align:center;color:rgba(0,212,232,.4);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:.75rem;margin-top:8px;" data-i18n="vis_ph2">Add photo here</p>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f2_title">HD Evidence Collection</h3>
+            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images — plate, colour, date and time — for enforcement and compliance reporting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HD EVIDENCE SECTION -->
+<section style="background:var(--card);padding:80px 0;border-top:1px solid rgba(0,212,232,.12);">
+  <div class="container">
+    <div style="text-align:center;max-width:720px;margin:0 auto 52px;">
+      <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="hd_badge">EVIDENCE · WEP03</div>
+      <h2 class="section-title" data-i18n="hd_title">High-Definition Evidence Collection, <em>Unaffected by Weather</em></h2>
+      <div class="bar" style="margin:12px auto 0;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep03-hd-1.jpg','WEP03 — HD Evidence 1')">
+        <div style="height:220px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,232,.04);border-bottom:1px dashed rgba(0,212,232,.2);">
+          <div style="text-align:center;color:rgba(0,212,232,.4);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:.75rem;margin-top:8px;" data-i18n="hd_ph1">Add photo here</p>
+          </div>
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap1_title">Adverse Weather Performance</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap1_desc">LPR capture in heavy rain — plate clearly readable at ≥97% day accuracy.</p>
+        </div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep03-hd-2.jpg','WEP03 — HD Evidence 2')">
+        <div style="height:220px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,232,.04);border-bottom:1px dashed rgba(0,212,232,.2);">
+          <div style="text-align:center;color:rgba(0,212,232,.4);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:.75rem;margin-top:8px;" data-i18n="hd_ph2">Add photo here</p>
+          </div>
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap2_title">Night Vision Capability</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap2_desc">Full plate recognition at night — ≥94% accuracy even with headlight glare.</p>
+        </div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep03-hd-3.jpg','WEP03 — HD Evidence 3')">
+        <div style="height:220px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,232,.04);border-bottom:1px dashed rgba(0,212,232,.2);">
+          <div style="text-align:center;color:rgba(0,212,232,.4);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:.75rem;margin-top:8px;" data-i18n="hd_ph3">Add photo here</p>
+          </div>
+        </div>
+        <div style="padding:16px 20px;">
+          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap3_title">Daytime Precision</p>
+          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap3_desc">Accurate capture under direct sunlight — sharp detail, zero overexposure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span class="badge" data-i18n="an_badge">ANALYTICS AT A GLANCE · WEP03</span>
+      <h2 class="section-title" data-i18n="an_title">Key Performance <em>Metrics</em></h2>
+      <div class="bar" style="margin:12px auto 0;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">≥97%</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_acc_l">LPR Day Accuracy</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_acc_d">Wide-angle camera · daytime</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">≥94%</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_cam_l">LPR Night Accuracy</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_cam_d">Infrared + low-light capture</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">IP68</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_inst_l">Protection Rating</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_inst_d">Fully submersible · dustproof</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">180d</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_ip_l">Battery Life</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_ip_d">Lithium + solar charging</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">4G/5G</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_conn_l">Connectivity</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_conn_d">Full-network · TCP/IP protocol</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">−20°</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_hum_l">Min. Temperature</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_hum_d">Range: −20°C to +60°C</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">8GB</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_temp_l">Local Storage</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_temp_d">≥10 days retention</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">10d</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_alt_l">Data Retention</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_alt_d">Auto-sync after reconnect</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL SPECIFICATIONS -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:10px;" data-i18n="specs_title">Technical <em>Specifications</em></h2>
+    <div class="bar"></div>
+    <table class="specs-table">
+      <tr><td data-i18n="sp_model_l">Model</td><td>WEP03</td></tr>
+      <tr><td data-i18n="sp_name_l">Product Name</td><td data-i18n="sp_name_v">Low-Position Smart Parking Sensor</td></tr>
+      <tr><td data-i18n="sp_cam_l">Image Sensor</td><td data-i18n="sp_cam_v">1/2.8-inch CMOS · ≥2MP resolution</td></tr>
+      <tr><td data-i18n="sp_conn_l">Communication</td><td>4G/5G full-network</td></tr>
+      <tr><td data-i18n="sp_proto_l">Network Protocol</td><td>TCP/IP</td></tr>
+      <tr><td data-i18n="sp_pwr_l">Power Supply</td><td data-i18n="sp_pwr_v">Built-in lithium battery + solar charging · ≥180 days battery life</td></tr>
+      <tr><td data-i18n="sp_detect_l">Recognition Method</td><td data-i18n="sp_detect_v">Wide-angle camera + ultrasonic/radar dual detection</td></tr>
+      <tr><td data-i18n="sp_acc_l">LPR Accuracy</td><td data-i18n="sp_acc_v">Day ≥97% · Night ≥94%</td></tr>
+      <tr><td data-i18n="sp_ip_l">Protection Rating</td><td>≥IP68</td></tr>
+      <tr><td data-i18n="sp_temp_l">Operating Temperature</td><td>−20°C to +60°C</td></tr>
+      <tr><td data-i18n="sp_stor_l">Local Storage</td><td data-i18n="sp_stor_v">≥8GB · data retention ≥10 days</td></tr>
+      <tr><td data-i18n="sp_upload_l">Data Capture</td><td data-i18n="sp_upload_v">License plate · colour · vehicle image · date &amp; time</td></tr>
+      <tr><td data-i18n="sp_remote_l">Remote Management</td><td data-i18n="sp_remote_v">Remote upgrade · fault self-diagnosis · auto time sync · one-key recovery</td></tr>
+      <tr><td data-i18n="sp_offline_l">Offline Operation</td><td data-i18n="sp_offline_v">Data cached locally · auto-uploaded when network restored</td></tr>
+      <tr><td data-i18n="sp_mfr_l">Manufacturer</td><td>Shenzhen P-IOTEYE Technology Co., Ltd</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+    <div class="cta-strip">
+      <h2 data-i18n="cta_title">Interested in <em style="color:var(--cyan);">In Ground Version WEP03</em>?</h2>
+      <p data-i18n="cta_sub">Contact our team for a live demo, site assessment, or volume pricing quote.</p>
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="cta_btn">Get in Touch →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Trivium — Where Paths Converge &nbsp;·&nbsp;
+  <a href="../../trivium.html" data-i18n="footer_link">Back to main site</a>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeLightbox()">
+  <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:20px;right:28px;background:none;border:none;color:#fff;font-size:2.2rem;cursor:pointer;line-height:1;opacity:.8;">&times;</button>
+  <img id="lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;border-radius:12px;box-shadow:0 8px 60px rgba(0,0,0,.8);object-fit:contain;user-select:none;" onclick="event.stopPropagation()">
+  <p id="lightbox-caption" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:.88rem;pointer-events:none;"></p>
+</div>
+
+<script>
+(function(){
+  /* ── CAROUSEL ── */
+  const track=document.getElementById('carouselTrack');
+  const total=track.children.length;
+  const dotsWrap=document.getElementById('carouselDots');
+  const slideNum=document.getElementById('slideNum');
+  document.getElementById('slideTotal').textContent=total;
+  let cur=0;
+  for(let i=0;i<total;i++){const d=document.createElement('button');d.className='carousel-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsWrap.appendChild(d);}
+  function goTo(n){cur=(n+total)%total;track.style.transform=`translateX(-${cur*100}%)`;document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));slideNum.textContent=cur+1;}
+  document.getElementById('prevBtn').onclick=()=>goTo(cur-1);
+  document.getElementById('nextBtn').onclick=()=>goTo(cur+1);
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')goTo(cur-1);if(e.key==='ArrowRight')goTo(cur+1);});
+  let tx=0;
+  track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+  if(total>1)setInterval(()=>goTo(cur+1),5000);
+
+  /* ── TRANSLATIONS ── */
+  const T = {
+    en: {
+      nav_back:"← Back to Solutions",
+      badge:"IN-GROUND · ADVANCED · DUAL SENSOR",
+      hero_sub:"Advanced in-ground parking sensor — enhanced detection capabilities with extended connectivity. Invisible to traffic, resilient in all environments. Zero infrastructure change required.",
+      tag1:"In-Ground", tag2:"Dual Sensor", tag3:"Extended Battery", tag4:"Zero Ground Works",
+      demo_btn:"Request a Demo →", mfr_btn:"Technical Datasheet ↗",
+      overview_title:"Product <em>Overview</em>",
+      overview_lead:"The WEP03 is the advanced evolution of the in-ground sensor lineup — combining magnetic field detection with ultrasonic ranging in a reinforced full-metal body. Designed for high-traffic urban environments, it delivers class-leading detection accuracy with enhanced connectivity options. No trenching, no power cabling — simply drill, drop, and connect.",
+      hl1:"LPR Day Accuracy", hl2:"LPR Night Accuracy", hl3:"Protection Rating", hl4:"Battery Life", hl5:"Connectivity",
+      f1_title:"Wide-Angle Camera + Dual Detection", f1_desc:"1/2.8-inch CMOS sensor with ≥2MP resolution. Wide-angle camera combined with ultrasonic/radar for cross-validated detection. LPR accuracy ≥97% by day and ≥94% by night. Collects plate number, colour, vehicle images, date and time.",
+      f2_title:"4G/5G Full-Network Transmission", f2_desc:"Supports 4G/5G full-network communication via TCP/IP. Vehicle data, images and session records are automatically uploaded to the platform in real time. After network recovery, offline data is auto-synced seamlessly.",
+      f3_title:"Real-Time Data Collection", f3_desc:"Captures license plate, colour, vehicle image, date and time for every entry and exit event. Data is instantly forwarded to the Trivium City Command Platform — enabling real-time occupancy visibility across all managed zones.",
+      f4_title:"Offline Operation + Auto-Recovery", f4_desc:"Fully operational without network connectivity. Data is cached locally (≥8GB, ≥10 days retention) and automatically uploaded once the network is restored. One-key automatic recovery ensures continuity even after system faults.",
+      f5_title:"Fault Self-Diagnosis + Remote Upgrade", f5_desc:"Built-in fault self-diagnosis, anti-interference protection, and remote software module control. Firmware upgrades are performed remotely — no on-site visits required. Automatic time synchronisation and calibration included.",
+      f6_title:"Solar-Ready Battery — 180 Days", f6_desc:"Built-in lithium battery with solar charging support. Comprehensive battery life ≥180 days — industry-leading endurance for zero-maintenance deployment. IP68-rated body withstands submersion, dust and vehicle impact from −20°C to +60°C.",
+      specs_title:"Technical <em>Specifications</em>",
+      sp_model_l:"Model", sp_name_l:"Product Name", sp_name_v:"Low-Position Smart Parking Sensor",
+      sp_cam_l:"Image Sensor", sp_cam_v:"1/2.8-inch CMOS · ≥2MP resolution",
+      sp_conn_l:"Communication",
+      sp_proto_l:"Network Protocol",
+      sp_pwr_l:"Power Supply", sp_pwr_v:"Built-in lithium battery + solar charging · ≥180 days battery life",
+      sp_detect_l:"Recognition Method", sp_detect_v:"Wide-angle camera + ultrasonic/radar dual detection",
+      sp_acc_l:"LPR Accuracy", sp_acc_v:"Day ≥97% · Night ≥94%",
+      sp_ip_l:"Protection Rating",
+      sp_temp_l:"Operating Temperature",
+      sp_stor_l:"Local Storage", sp_stor_v:"≥8GB · data retention ≥10 days",
+      sp_upload_l:"Data Capture", sp_upload_v:"License plate · colour · vehicle image · date &amp; time",
+      sp_remote_l:"Remote Management", sp_remote_v:"Remote upgrade · fault self-diagnosis · auto time sync · one-key recovery",
+      sp_offline_l:"Offline Operation", sp_offline_v:"Data cached locally · auto-uploaded when network restored",
+      sp_mfr_l:"Manufacturer",
+      an_badge:"ANALYTICS AT A GLANCE · WEP03", an_title:"Key Performance <em>Metrics</em>",
+      an_acc_l:"LPR Day Accuracy", an_acc_d:"Wide-angle camera · daytime",
+      an_cam_l:"LPR Night Accuracy", an_cam_d:"Infrared + low-light capture",
+      an_inst_l:"Protection Rating", an_inst_d:"Fully submersible · dustproof",
+      an_ip_l:"Battery Life", an_ip_d:"Lithium + solar charging",
+      an_conn_l:"Connectivity", an_conn_d:"Full-network · TCP/IP protocol",
+      an_hum_l:"Min. Temperature", an_hum_d:"Range: −20°C to +60°C",
+      an_temp_l:"Local Storage", an_temp_d:"≥10 days retention",
+      an_alt_l:"Data Retention", an_alt_d:"Auto-sync after reconnect",
+      cta_title:"Interested in <em style=\"color:var(--cyan);\">In Ground Version WEP03</em>?",
+      cta_sub:"Contact our team for a live demo, site assessment, or volume pricing quote.",
+      cta_btn:"Get in Touch →", footer_link:"Back to main site",
+    },
+    it: {
+      nav_back:"← Torna alle Soluzioni",
+      badge:"A TERRA · AVANZATO · DOPPIO SENSORE",
+      hero_sub:"Sensore a terra avanzato — capacità di rilevamento potenziate con connettività estesa. Invisibile al traffico, resistente in tutti gli ambienti. Nessun intervento sull'infrastruttura richiesto.",
+      tag1:"A Terra", tag2:"Doppio Sensore", tag3:"Batteria Estesa", tag4:"Nessuno Scavo",
+      demo_btn:"Richiedi una Demo →", mfr_btn:"Scheda Tecnica ↗",
+      overview_title:"Panoramica <em>Prodotto</em>",
+      overview_lead:"Il WEP03 è l'evoluzione avanzata della linea di sensori a terra — combina il rilevamento del campo magnetico con il telerilevamento ultrasonico in un corpo in metallo pieno rinforzato. Progettato per ambienti urbani ad alto traffico, offre un'accuratezza di rilevamento ai massimi livelli con opzioni di connettività potenziate. Nessuno scavo, nessun cavo — basta forare, inserire e connettere.",
+      hl1:"Accuratezza LPR Giorno", hl2:"Accuratezza LPR Notte", hl3:"Grado di Protezione", hl4:"Durata Batteria", hl5:"Connettività",
+      f1_title:"Telecamera Wide-Angle + Doppio Sensore", f1_desc:"Sensore CMOS 1/2.8\" con risoluzione ≥2MP. Telecamera grandangolare combinata con ultrasónico/radar per rilevamento incrociato. Accuratezza LPR ≥97% di giorno e ≥94% di notte. Acquisisce targa, colore, immagine veicolo, data e ora.",
+      f2_title:"Trasmissione 4G/5G Full-Network", f2_desc:"Supporta comunicazione 4G/5G full-network via TCP/IP. Dati veicolo, immagini e sessioni vengono caricati automaticamente sulla piattaforma in tempo reale. Dopo il ripristino della rete, i dati offline vengono sincronizzati automaticamente.",
+      f3_title:"Raccolta Dati in Tempo Reale", f3_desc:"Acquisisce targa, colore, immagine veicolo, data e ora per ogni evento di ingresso e uscita. I dati vengono immediatamente inviati alla Trivium City Command Platform — garantendo visibilità in tempo reale dell'occupazione in tutte le zone gestite.",
+      f4_title:"Operatività Offline + Auto-Recupero", f4_desc:"Completamente operativo senza rete. I dati vengono memorizzati localmente (≥8GB, ≥10 giorni di conservazione) e caricati automaticamente al ripristino della connessione. Il recupero automatico con un tasto garantisce la continuità anche dopo guasti.",
+      f5_title:"Auto-Diagnosi + Aggiornamento Remoto", f5_desc:"Auto-diagnosi integrata, protezione anti-interferenze e controllo remoto dei moduli software. Gli aggiornamenti firmware vengono eseguiti da remoto — nessuna visita in loco necessaria. Sincronizzazione automatica dell'orario inclusa.",
+      f6_title:"Batteria Solar-Ready — 180 Giorni", f6_desc:"Batteria al litio integrata con supporto di ricarica solare. Autonomia ≥180 giorni — la più longeva della categoria per un'installazione a zero manutenzione. Corpo IP68 resistente all'immersione, polvere e impatto veicolare da −20°C a +60°C.",
+      specs_title:"Specifiche <em>Tecniche</em>",
+      sp_model_l:"Modello", sp_name_l:"Nome Prodotto", sp_name_v:"Sensore di Parcheggio Smart a Basso Profilo",
+      sp_cam_l:"Sensore Immagine", sp_cam_v:"CMOS 1/2.8\" · risoluzione ≥2MP",
+      sp_conn_l:"Comunicazione",
+      sp_proto_l:"Protocollo di Rete",
+      sp_pwr_l:"Alimentazione", sp_pwr_v:"Batteria al litio integrata + ricarica solare · autonomia ≥180 giorni",
+      sp_detect_l:"Metodo di Riconoscimento", sp_detect_v:"Telecamera grandangolare + doppio sensore ultrasonico/radar",
+      sp_acc_l:"Accuratezza LPR", sp_acc_v:"Giorno ≥97% · Notte ≥94%",
+      sp_ip_l:"Grado di Protezione",
+      sp_temp_l:"Temperatura Operativa",
+      sp_stor_l:"Memoria Locale", sp_stor_v:"≥8GB · conservazione dati ≥10 giorni",
+      sp_upload_l:"Acquisizione Dati", sp_upload_v:"Targa · colore · immagine veicolo · data e ora",
+      sp_remote_l:"Gestione Remota", sp_remote_v:"Aggiornamento remoto · auto-diagnosi · sincronizzazione orario · recupero automatico",
+      sp_offline_l:"Operatività Offline", sp_offline_v:"Dati memorizzati localmente · caricati automaticamente al ripristino rete",
+      sp_mfr_l:"Produttore",
+      an_badge:"DATI ANALITICI · WEP03", an_title:"Metriche di <em>Performance</em>",
+      an_acc_l:"Accuratezza LPR Giorno", an_acc_d:"Telecamera grandangolare · diurna",
+      an_cam_l:"Accuratezza LPR Notte", an_cam_d:"Infrarosso + cattura scarsa luce",
+      an_inst_l:"Grado di Protezione", an_inst_d:"Completamente sommergibile · antipolvere",
+      an_ip_l:"Durata Batteria", an_ip_d:"Litio + ricarica solare",
+      an_conn_l:"Connettività", an_conn_d:"Full-network · protocollo TCP/IP",
+      an_hum_l:"Temp. Minima", an_hum_d:"Intervallo: −20°C a +60°C",
+      an_temp_l:"Memoria Locale", an_temp_d:"Conservazione ≥10 giorni",
+      an_alt_l:"Conservazione Dati", an_alt_d:"Sincronizzazione auto al ripristino",
+      cta_title:"Interessato a <em style=\"color:var(--cyan);\">In Ground Version WEP03</em>?",
+      cta_sub:"Contatta il nostro team per una demo dal vivo, valutazione del sito o preventivo volume.",
+      cta_btn:"Contattaci →", footer_link:"Torna al sito principale",
+    },
+    es: {
+      nav_back:"← Volver a Soluciones",
+      badge:"EMPOTRADO · AVANZADO · SENSOR DUAL",
+      hero_sub:"Sensor empotrado avanzado — capacidades de detección mejoradas con conectividad ampliada. Invisible al tráfico, resistente en todos los entornos. Sin cambios en la infraestructura.",
+      tag1:"Empotrado", tag2:"Sensor Dual", tag3:"Batería Ampliada", tag4:"Sin Obras",
+      demo_btn:"Solicitar Demo →", mfr_btn:"Ficha Técnica ↗",
+      overview_title:"Descripción <em>del Producto</em>",
+      overview_lead:"El WEP03 es la evolución avanzada de la línea de sensores empotrados — combina detección de campo magnético con telémetro ultrasónico en una carcasa de metal completo reforzado. Diseñado para entornos urbanos de alto tráfico, ofrece una precisión de detección líder con opciones de conectividad mejoradas. Sin zanjas, sin cables — simplemente perfora, inserta y conecta.",
+      hl1:"Precisión LPR Día", hl2:"Precisión LPR Noche", hl3:"Grado de Protección", hl4:"Duración Batería", hl5:"Conectividad",
+      f1_title:"Cámara Gran Angular + Detección Dual", f1_desc:"Sensor CMOS 1/2.8\" con resolución ≥2MP. Cámara gran angular combinada con ultrasónico/radar para detección cruzada. Precisión LPR ≥97% de día y ≥94% de noche. Captura matrícula, color, imagen del vehículo, fecha y hora.",
+      f2_title:"Transmisión 4G/5G Full-Network", f2_desc:"Admite comunicación 4G/5G full-network via TCP/IP. Los datos del vehículo, imágenes y registros de sesión se cargan automáticamente en la plataforma en tiempo real. Tras restaurar la red, los datos offline se sincronizan automáticamente.",
+      f3_title:"Recopilación de Datos en Tiempo Real", f3_desc:"Captura matrícula, color, imagen del vehículo, fecha y hora en cada evento de entrada y salida. Los datos se envían inmediatamente a la plataforma Trivium City Command — con visibilidad en tiempo real de la ocupación en todas las zonas gestionadas.",
+      f4_title:"Operación Offline + Auto-Recuperación", f4_desc:"Completamente operativo sin conectividad de red. Los datos se almacenan localmente (≥8GB, retención ≥10 días) y se cargan automáticamente al restaurar la conexión. La recuperación automática de un toque garantiza la continuidad incluso tras fallos del sistema.",
+      f5_title:"Auto-Diagnóstico + Actualización Remota", f5_desc:"Auto-diagnóstico integrado, protección anti-interferencias y control remoto de módulos de software. Las actualizaciones de firmware se realizan de forma remota — sin visitas al sitio necesarias. Sincronización horaria automática incluida.",
+      f6_title:"Batería Solar-Ready — 180 Días", f6_desc:"Batería de litio integrada con soporte de carga solar. Autonomía ≥180 días — la mayor duración del sector para un despliegue de cero mantenimiento. Cuerpo IP68 resistente a inmersión, polvo e impacto de vehículos de −20°C a +60°C.",
+      specs_title:"Especificaciones <em>Técnicas</em>",
+      sp_model_l:"Modelo", sp_name_l:"Nombre del Producto", sp_name_v:"Sensor de Aparcamiento Inteligente de Bajo Perfil",
+      sp_cam_l:"Sensor de Imagen", sp_cam_v:"CMOS 1/2.8\" · resolución ≥2MP",
+      sp_conn_l:"Comunicación",
+      sp_proto_l:"Protocolo de Red",
+      sp_pwr_l:"Alimentación", sp_pwr_v:"Batería de litio integrada + carga solar · autonomía ≥180 días",
+      sp_detect_l:"Método de Reconocimiento", sp_detect_v:"Cámara gran angular + detección dual ultrasónico/radar",
+      sp_acc_l:"Precisión LPR", sp_acc_v:"Día ≥97% · Noche ≥94%",
+      sp_ip_l:"Grado de Protección",
+      sp_temp_l:"Temperatura de Operación",
+      sp_stor_l:"Almacenamiento Local", sp_stor_v:"≥8GB · retención de datos ≥10 días",
+      sp_upload_l:"Captura de Datos", sp_upload_v:"Matrícula · color · imagen del vehículo · fecha y hora",
+      sp_remote_l:"Gestión Remota", sp_remote_v:"Actualización remota · auto-diagnóstico · sincronización horaria · recuperación automática",
+      sp_offline_l:"Operación Offline", sp_offline_v:"Datos almacenados localmente · cargados automáticamente al restaurar la red",
+      sp_mfr_l:"Fabricante",
+      an_badge:"ANALÍTICA · WEP03", an_title:"Métricas de <em>Rendimiento</em>",
+      an_acc_l:"Precisión LPR Día", an_acc_d:"Cámara gran angular · diurna",
+      an_cam_l:"Precisión LPR Noche", an_cam_d:"Infrarrojos + captura con poca luz",
+      an_inst_l:"Grado de Protección", an_inst_d:"Completamente sumergible · antipolvo",
+      an_ip_l:"Duración Batería", an_ip_d:"Litio + carga solar",
+      an_conn_l:"Conectividad", an_conn_d:"Full-network · protocolo TCP/IP",
+      an_hum_l:"Temp. Mínima", an_hum_d:"Rango: −20°C a +60°C",
+      an_temp_l:"Almacenamiento Local", an_temp_d:"Retención ≥10 días",
+      an_alt_l:"Retención de Datos", an_alt_d:"Sincronización auto al restaurar",
+      cta_title:"¿Interesado en <em style=\"color:var(--cyan);\">In Ground Version WEP03</em>?",
+      cta_sub:"Contacta con nuestro equipo para una demo en directo, evaluación del emplazamiento o presupuesto.",
+      cta_btn:"Contáctanos →", footer_link:"Volver al sitio principal",
+    }
+  };
+
+  function setLang(lang){
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().startsWith(lang)));
+    const t=T[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+  }
+  window.setLang=setLang;
+  setLang('en');
+
+  /* ── LIGHTBOX ── */
+  window.openLightbox=function(src,cap){
+    const lb=document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src=src;
+    document.getElementById('lightbox-caption').textContent=cap||'';
+    lb.style.display='flex';
+  };
+  window.closeLightbox=function(){
+    document.getElementById('lightbox').style.display='none';
+    document.getElementById('lightbox-img').src='';
+  };
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+})();
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function rand(a,b){ return Math.random()*(b-a)+a; }
+  for(let i=0;i<80;i++){
+    dots.push({x:rand(0,W),y:rand(0,H),vx:rand(-.3,.3),vy:rand(-.3,.3),r:rand(1,2.5),o:rand(.15,.5)});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<dots.length;i++){
+      for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(0,212,232,${.12*(1-d/140)})`;
+          ctx.lineWidth=.8;
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    dots.forEach(d=>{
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,232,${d.o})`;
+      ctx.fill();
+      d.x+=d.vx; d.y+=d.vy;
+      if(d.x<0||d.x>W) d.vx*=-1;
+      if(d.y<0||d.y>H) d.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

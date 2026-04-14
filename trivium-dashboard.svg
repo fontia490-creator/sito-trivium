@@ -1,0 +1,368 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060d1a"/>
+      <stop offset="100%" stop-color="#0a1628"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4e8"/>
+      <stop offset="100%" stop-color="#0099cc"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4e8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00d4e8" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4e8" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#00d4e8" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="donut1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#00d4e8"/>
+      <stop offset="100%" stop-color="#0066aa"/>
+    </linearGradient>
+    <linearGradient id="linegrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4e8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="card1clip"><rect x="0" y="0" width="340" height="200" rx="14"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="720" fill="url(#bg)"/>
+
+  <!-- Subtle grid lines -->
+  <g stroke="rgba(0,212,232,0.04)" stroke-width="1">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="0" y1="480" x2="1200" y2="480"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="720"/>
+    <line x1="400" y1="0" x2="400" y2="720"/>
+    <line x1="600" y1="0" x2="600" y2="720"/>
+    <line x1="800" y1="0" x2="800" y2="720"/>
+    <line x1="1000" y1="0" x2="1000" y2="720"/>
+  </g>
+
+  <!-- Glow orbs -->
+  <circle cx="100" cy="100" r="180" fill="rgba(0,212,232,0.04)"/>
+  <circle cx="1100" cy="620" r="220" fill="rgba(0,100,200,0.06)"/>
+
+  <!-- ===== TOP NAV BAR ===== -->
+  <rect x="0" y="0" width="1200" height="60" fill="rgba(6,13,26,0.95)"/>
+  <line x1="0" y1="60" x2="1200" y2="60" stroke="rgba(0,212,232,0.2)" stroke-width="1"/>
+
+  <!-- Logo -->
+  <g transform="translate(24,14)">
+    <!-- Triangle outer -->
+    <polygon points="16,2 30,28 2,28" fill="none" stroke="url(#cyan)" stroke-width="2.2" stroke-linejoin="round" filter="url(#glow)"/>
+    <!-- Triangle inner -->
+    <polygon points="16,20 22,10 10,10" fill="url(#cyan)" opacity="0.9"/>
+  </g>
+  <text x="60" y="34" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="3">TRIVIUM</text>
+  <text x="60" y="48" font-family="Segoe UI,system-ui,sans-serif" font-size="8" font-weight="600" fill="#00d4e8" letter-spacing="2.5">WHERE PATHS CONVERGE</text>
+
+  <!-- Nav items -->
+  <text x="280" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Dashboard</text>
+  <text x="370" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="#00d4e8">Live Map</text>
+  <line x1="370" y1="58" x2="415" y2="58" stroke="#00d4e8" stroke-width="2"/>
+  <text x="435" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Analytics</text>
+  <text x="520" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Revenue</text>
+  <text x="605" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Enforcement</text>
+  <text x="710" y="37" font-family="Segoe UI,sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Reports</text>
+
+  <!-- Nav right -->
+  <circle cx="1120" cy="30" r="16" fill="rgba(0,212,232,0.15)" stroke="rgba(0,212,232,0.4)" stroke-width="1.5"/>
+  <text x="1120" y="35" font-family="Segoe UI,sans-serif" font-size="11" fill="#00d4e8" text-anchor="middle">AK</text>
+  <rect x="1140" y="20" width="40" height="20" rx="10" fill="rgba(0,212,232,0.15)" stroke="rgba(0,212,232,0.3)" stroke-width="1"/>
+  <text x="1160" y="34" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle">LIVE</text>
+  <circle cx="1152" cy="30" r="3" fill="#00d4e8"><animate attributeName="opacity" values="1;0.2;1" dur="1.4s" repeatCount="indefinite"/></circle>
+
+  <!-- Date -->
+  <text x="790" y="34" font-family="Segoe UI,sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">Mon, 13 Apr 2026 · 09:42 AM</text>
+
+  <!-- ===== SIDEBAR ===== -->
+  <rect x="0" y="60" width="200" height="660" fill="rgba(8,16,30,0.8)"/>
+  <line x1="200" y1="60" x2="200" y2="720" stroke="rgba(0,212,232,0.12)" stroke-width="1"/>
+
+  <!-- Sidebar items -->
+  <g font-family="Segoe UI,sans-serif" font-size="12">
+    <!-- Active item -->
+    <rect x="10" y="76" width="180" height="36" rx="8" fill="rgba(0,212,232,0.12)"/>
+    <rect x="10" y="76" width="3" height="36" rx="2" fill="#00d4e8"/>
+    <text x="52" y="99" fill="#00d4e8" font-weight="700">Overview</text>
+    <!-- Icon circles -->
+    <circle cx="30" cy="94" r="10" fill="rgba(0,212,232,0.2)" stroke="rgba(0,212,232,0.4)" stroke-width="1"/>
+    <rect x="25" y="89" width="10" height="10" rx="1" fill="none" stroke="#00d4e8" stroke-width="1.5"/>
+
+    <text x="52" y="135" fill="rgba(255,255,255,0.5)">Parking Zones</text>
+    <circle cx="30" cy="130" r="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+    <text x="52" y="175" fill="rgba(255,255,255,0.5)">Sensor Network</text>
+    <circle cx="30" cy="170" r="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+    <text x="52" y="215" fill="rgba(255,255,255,0.5)">Revenue</text>
+    <circle cx="30" cy="210" r="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+    <text x="52" y="255" fill="rgba(255,255,255,0.5)">Enforcement</text>
+    <circle cx="30" cy="250" r="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+    <line x1="20" y1="278" x2="180" y2="278" stroke="rgba(255,255,255,0.07)"/>
+
+    <text x="52" y="305" fill="rgba(255,255,255,0.4)" font-size="11">Settings</text>
+    <text x="52" y="340" fill="rgba(255,255,255,0.4)" font-size="11">API Access</text>
+    <text x="52" y="375" fill="rgba(255,255,255,0.4)" font-size="11">Integrations</text>
+  </g>
+
+  <!-- Sidebar bottom status -->
+  <rect x="15" y="640" width="170" height="54" rx="10" fill="rgba(0,212,232,0.06)" stroke="rgba(0,212,232,0.15)" stroke-width="1"/>
+  <circle cx="28" cy="660" r="5" fill="#4ade80" filter="url(#glow)"/>
+  <text x="40" y="664" font-family="Segoe UI,sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">System Online</text>
+  <text x="28" y="681" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(0,212,232,0.7)">1,247 sensors active</text>
+
+  <!-- ===== MAIN CONTENT ===== -->
+
+  <!-- Page title -->
+  <text x="220" y="92" font-family="Segoe UI,sans-serif" font-size="18" font-weight="900" fill="white">City Overview</text>
+  <text x="220" y="110" font-family="Segoe UI,sans-serif" font-size="11" fill="rgba(0,212,232,0.7)">Real-time parking intelligence · Shenzhen Technology District</text>
+
+  <!-- ===== KPI CARDS (top row) ===== -->
+
+  <!-- Card 1: Occupancy -->
+  <rect x="220" y="122" width="220" height="100" rx="14" fill="rgba(13,24,41,0.9)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="238" y="148" font-family="Segoe UI,sans-serif" font-size="10" font-weight="700" fill="rgba(0,212,232,0.7)" letter-spacing="1">OCCUPANCY RATE</text>
+  <text x="238" y="185" font-family="Segoe UI,sans-serif" font-size="32" font-weight="900" fill="white">72<tspan font-size="18" fill="#00d4e8">%</tspan></text>
+  <text x="238" y="208" font-family="Segoe UI,sans-serif" font-size="10" fill="#4ade80">↑ +4.2% vs yesterday</text>
+  <rect x="390" y="130" width="38" height="38" rx="19" fill="rgba(0,212,232,0.12)" stroke="rgba(0,212,232,0.3)" stroke-width="1.5"/>
+  <text x="409" y="154" font-family="Segoe UI,sans-serif" font-size="16" fill="#00d4e8" text-anchor="middle">⊙</text>
+
+  <!-- Card 2: Revenue -->
+  <rect x="452" y="122" width="220" height="100" rx="14" fill="rgba(13,24,41,0.9)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="470" y="148" font-family="Segoe UI,sans-serif" font-size="10" font-weight="700" fill="rgba(0,212,232,0.7)" letter-spacing="1">TODAY'S REVENUE</text>
+  <text x="470" y="185" font-family="Segoe UI,sans-serif" font-size="28" font-weight="900" fill="white">€ 48,210</text>
+  <text x="470" y="208" font-family="Segoe UI,sans-serif" font-size="10" fill="#4ade80">↑ +12.7% vs avg</text>
+
+  <!-- Card 3: Active Sensors -->
+  <rect x="684" y="122" width="220" height="100" rx="14" fill="rgba(13,24,41,0.9)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="702" y="148" font-family="Segoe UI,sans-serif" font-size="10" font-weight="700" fill="rgba(0,212,232,0.7)" letter-spacing="1">ACTIVE SENSORS</text>
+  <text x="702" y="185" font-family="Segoe UI,sans-serif" font-size="32" font-weight="900" fill="white">1,247</text>
+  <text x="702" y="208" font-family="Segoe UI,sans-serif" font-size="10" fill="#4ade80">✓ All systems nominal</text>
+
+  <!-- Card 4: Alerts -->
+  <rect x="916" y="122" width="262" height="100" rx="14" fill="rgba(13,24,41,0.9)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="934" y="148" font-family="Segoe UI,sans-serif" font-size="10" font-weight="700" fill="rgba(0,212,232,0.7)" letter-spacing="1">VIOLATIONS TODAY</text>
+  <text x="934" y="185" font-family="Segoe UI,sans-serif" font-size="32" font-weight="900" fill="white">342</text>
+  <text x="934" y="208" font-family="Segoe UI,sans-serif" font-size="10" fill="rgba(255,200,0,0.8)">⚠ 18 unverified sessions</text>
+
+  <!-- ===== MAP PANEL ===== -->
+  <rect x="220" y="236" width="520" height="310" rx="14" fill="rgba(10,18,32,0.95)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="238" y="262" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="white">Live Zone Map</text>
+  <rect x="610" y="250" width="60" height="20" rx="10" fill="rgba(0,212,232,0.12)" stroke="rgba(0,212,232,0.3)" stroke-width="1"/>
+  <text x="640" y="264" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle">LIVE</text>
+  <circle cx="615" cy="260" r="3" fill="#00d4e8"/>
+
+  <!-- Map grid (simulated city blocks) -->
+  <g transform="translate(230,278)">
+    <!-- City block grid -->
+    <rect x="0" y="0" width="500" height="250" rx="4" fill="rgba(0,40,80,0.3)"/>
+    <!-- Roads -->
+    <rect x="0" y="80" width="500" height="12" fill="rgba(0,212,232,0.06)"/>
+    <rect x="0" y="160" width="500" height="12" fill="rgba(0,212,232,0.06)"/>
+    <rect x="120" y="0" width="12" height="250" fill="rgba(0,212,232,0.06)"/>
+    <rect x="260" y="0" width="12" height="250" fill="rgba(0,212,232,0.06)"/>
+    <rect x="390" y="0" width="12" height="250" fill="rgba(0,212,232,0.06)"/>
+
+    <!-- Zones (colored by occupancy) -->
+    <!-- Zone A - high -->
+    <rect x="10" y="10" width="100" height="62" rx="6" fill="rgba(0,212,232,0.25)" stroke="rgba(0,212,232,0.5)" stroke-width="1"/>
+    <text x="60" y="38" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE A</text>
+    <text x="60" y="52" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">87%</text>
+    <circle cx="60" cy="60" r="3" fill="#00d4e8"/>
+
+    <!-- Zone B - medium -->
+    <rect x="140" y="10" width="108" height="62" rx="6" fill="rgba(0,212,232,0.15)" stroke="rgba(0,212,232,0.35)" stroke-width="1"/>
+    <text x="194" y="38" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE B</text>
+    <text x="194" y="52" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">64%</text>
+
+    <!-- Zone C - low -->
+    <rect x="280" y="10" width="100" height="62" rx="6" fill="rgba(74,222,128,0.12)" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+    <text x="330" y="38" font-family="Segoe UI,sans-serif" font-size="9" fill="#4ade80" text-anchor="middle" font-weight="700">ZONE C</text>
+    <text x="330" y="52" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">31%</text>
+
+    <!-- Zone D -->
+    <rect x="410" y="10" width="82" height="62" rx="6" fill="rgba(0,212,232,0.18)" stroke="rgba(0,212,232,0.4)" stroke-width="1"/>
+    <text x="451" y="38" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE D</text>
+    <text x="451" y="52" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">72%</text>
+
+    <!-- Zone E -->
+    <rect x="10" y="100" width="100" height="52" rx="6" fill="rgba(255,200,0,0.12)" stroke="rgba(255,200,0,0.35)" stroke-width="1"/>
+    <text x="60" y="124" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,200,0,0.9)" text-anchor="middle" font-weight="700">ZONE E</text>
+    <text x="60" y="140" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">95%</text>
+
+    <!-- Zone F -->
+    <rect x="140" y="100" width="108" height="52" rx="6" fill="rgba(0,212,232,0.2)" stroke="rgba(0,212,232,0.45)" stroke-width="1"/>
+    <text x="194" y="124" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE F</text>
+    <text x="194" y="140" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">78%</text>
+
+    <!-- Zone G -->
+    <rect x="280" y="100" width="100" height="52" rx="6" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.35)" stroke-width="1"/>
+    <text x="330" y="124" font-family="Segoe UI,sans-serif" font-size="9" fill="#4ade80" text-anchor="middle" font-weight="700">ZONE G</text>
+    <text x="330" y="140" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">42%</text>
+
+    <!-- Zone H -->
+    <rect x="410" y="100" width="82" height="52" rx="6" fill="rgba(0,212,232,0.14)" stroke="rgba(0,212,232,0.3)" stroke-width="1"/>
+    <text x="451" y="124" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE H</text>
+    <text x="451" y="140" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">58%</text>
+
+    <!-- Bottom zones -->
+    <rect x="10" y="180" width="210" height="58" rx="6" fill="rgba(0,212,232,0.1)" stroke="rgba(0,212,232,0.25)" stroke-width="1"/>
+    <text x="115" y="205" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">ZONE I — CENTRAL DISTRICT</text>
+    <text x="115" y="225" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">69%  ·  2,340 spaces</text>
+
+    <rect x="240" y="180" width="252" height="58" rx="6" fill="rgba(0,100,200,0.12)" stroke="rgba(0,150,220,0.3)" stroke-width="1"/>
+    <text x="366" y="205" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(0,180,255,0.9)" text-anchor="middle" font-weight="700">ZONE J — TECH PARK</text>
+    <text x="366" y="225" font-family="Segoe UI,sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="900">81%  ·  1,800 spaces</text>
+
+    <!-- Sensor dots -->
+    <circle cx="60" cy="60" r="4" fill="#00d4e8" filter="url(#glow)" opacity="0.8"/>
+    <circle cx="194" cy="40" r="4" fill="#00d4e8" filter="url(#glow)" opacity="0.6"/>
+    <circle cx="330" cy="35" r="4" fill="#4ade80" filter="url(#glow)" opacity="0.7"/>
+    <circle cx="115" cy="208" r="4" fill="#00d4e8" filter="url(#glow)" opacity="0.7"/>
+    <circle cx="60" cy="126" r="4" fill="rgba(255,200,0,0.9)" filter="url(#glow)" opacity="0.8"/>
+  </g>
+
+  <!-- ===== REVENUE CHART ===== -->
+  <rect x="752" y="236" width="426" height="310" rx="14" fill="rgba(10,18,32,0.95)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="770" y="262" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="white">Revenue Trend — Last 7 Days</text>
+  <text x="1090" y="262" font-family="Segoe UI,sans-serif" font-size="10" fill="rgba(0,212,232,0.7)">€ 287,450 total</text>
+
+  <!-- Chart area -->
+  <g transform="translate(762,278)">
+    <!-- Y axis labels -->
+    <text x="0" y="15" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="end">60k</text>
+    <text x="0" y="65" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="end">40k</text>
+    <text x="0" y="115" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="end">20k</text>
+    <text x="0" y="155" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="end">0</text>
+
+    <!-- Horizontal guide lines -->
+    <line x1="8" y1="10" x2="400" y2="10" stroke="rgba(255,255,255,0.05)"/>
+    <line x1="8" y1="60" x2="400" y2="60" stroke="rgba(255,255,255,0.05)"/>
+    <line x1="8" y1="110" x2="400" y2="110" stroke="rgba(255,255,255,0.05)"/>
+    <line x1="8" y1="150" x2="400" y2="150" stroke="rgba(255,255,255,0.05)"/>
+
+    <!-- Area fill under line -->
+    <polygon points="18,130 72,95 126,110 180,55 234,75 288,40 342,20 396,30 396,150 18,150" fill="url(#linegrad)" opacity="0.6"/>
+    <!-- Line chart -->
+    <polyline points="18,130 72,95 126,110 180,55 234,75 288,40 342,20 396,30" fill="none" stroke="#00d4e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    <!-- Data dots -->
+    <circle cx="18" cy="130" r="4" fill="#00d4e8"/>
+    <circle cx="72" cy="95" r="4" fill="#00d4e8"/>
+    <circle cx="126" cy="110" r="4" fill="#00d4e8"/>
+    <circle cx="180" cy="55" r="4" fill="#00d4e8"/>
+    <circle cx="234" cy="75" r="4" fill="#00d4e8"/>
+    <circle cx="288" cy="40" r="4" fill="#00d4e8"/>
+    <circle cx="342" cy="20" r="5" fill="white" stroke="#00d4e8" stroke-width="2"/>
+    <circle cx="396" cy="30" r="4" fill="#00d4e8"/>
+
+    <!-- Tooltip on peak -->
+    <rect x="310" y="0" width="75" height="28" rx="6" fill="rgba(0,212,232,0.2)" stroke="rgba(0,212,232,0.5)" stroke-width="1"/>
+    <text x="347" y="12" font-family="Segoe UI,sans-serif" font-size="8" fill="#00d4e8" text-anchor="middle">PEAK</text>
+    <text x="347" y="24" font-family="Segoe UI,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="700">€ 58,200</text>
+
+    <!-- X axis day labels -->
+    <text x="18" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Mon</text>
+    <text x="72" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Tue</text>
+    <text x="126" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Wed</text>
+    <text x="180" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Thu</text>
+    <text x="234" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Fri</text>
+    <text x="288" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Sat</text>
+    <text x="342" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="#00d4e8" text-anchor="middle" font-weight="700">Sun</text>
+    <text x="396" y="165" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle">Mon</text>
+
+    <!-- Bar chart (secondary, occupancy bars below) -->
+    <g transform="translate(0,175)">
+      <text x="0" y="10" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Hourly occupancy (today)</text>
+      <rect x="18" y="20" width="20" height="40" rx="3" fill="url(#bar2)"/>
+      <rect x="46" y="15" width="20" height="45" rx="3" fill="url(#bar2)"/>
+      <rect x="74" y="5" width="20" height="55" rx="3" fill="url(#bar1)"/>
+      <rect x="102" y="10" width="20" height="50" rx="3" fill="url(#bar1)"/>
+      <rect x="130" y="18" width="20" height="42" rx="3" fill="url(#bar2)"/>
+      <rect x="158" y="12" width="20" height="48" rx="3" fill="url(#bar1)"/>
+      <rect x="186" y="8" width="20" height="52" rx="3" fill="url(#bar1)"/>
+      <rect x="214" y="20" width="20" height="40" rx="3" fill="url(#bar2)"/>
+      <rect x="242" y="3" width="20" height="57" rx="3" fill="url(#bar1)"/>
+      <rect x="270" y="14" width="20" height="46" rx="3" fill="url(#bar2)"/>
+      <rect x="298" y="22" width="20" height="38" rx="3" fill="url(#bar2)"/>
+      <rect x="326" y="10" width="20" height="50" rx="3" fill="url(#bar1)"/>
+      <rect x="354" y="16" width="20" height="44" rx="3" fill="url(#bar2)"/>
+    </g>
+  </g>
+
+  <!-- ===== BOTTOM ROW ===== -->
+
+  <!-- Sensor Status Card -->
+  <rect x="220" y="560" width="280" height="148" rx="14" fill="rgba(10,18,32,0.95)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="238" y="585" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="white">Sensor Health</text>
+
+  <!-- Donut chart (simplified) -->
+  <circle cx="300" cy="640" r="40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+  <circle cx="300" cy="640" r="40" fill="none" stroke="#00d4e8" stroke-width="14" stroke-dasharray="214 251" stroke-dashoffset="63" stroke-linecap="round"/>
+  <circle cx="300" cy="640" r="40" fill="none" stroke="#4ade80" stroke-width="14" stroke-dasharray="30 251" stroke-dashoffset="-151" stroke-linecap="round"/>
+  <circle cx="300" cy="640" r="40" fill="none" stroke="rgba(255,200,0,0.7)" stroke-width="14" stroke-dasharray="7 251" stroke-dashoffset="-181" stroke-linecap="round"/>
+  <text x="300" y="636" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="white" text-anchor="middle">96%</text>
+  <text x="300" y="650" font-family="Segoe UI,sans-serif" font-size="8" fill="rgba(0,212,232,0.7)" text-anchor="middle">online</text>
+
+  <!-- Legend -->
+  <circle cx="360" cy="615" r="4" fill="#00d4e8"/>
+  <text x="370" y="619" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active 1,197</text>
+  <circle cx="360" cy="633" r="4" fill="#4ade80"/>
+  <text x="370" y="637" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Standby 38</text>
+  <circle cx="360" cy="651" r="4" fill="rgba(255,200,0,0.8)"/>
+  <text x="370" y="655" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Alert 12</text>
+  <text x="238" y="695" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Last sync: 09:41:52 AM · NB-IoT</text>
+
+  <!-- Recent Events Card -->
+  <rect x="512" y="560" width="228" height="148" rx="14" fill="rgba(10,18,32,0.95)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <text x="530" y="585" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="white">Recent Events</text>
+  <g font-family="Segoe UI,sans-serif" font-size="10">
+    <circle cx="530" cy="604" r="3" fill="#4ade80"/>
+    <text x="540" y="608" fill="rgba(255,255,255,0.8)">Zone A · Space #114 Freed</text>
+    <text x="530" y="621" fill="rgba(255,255,255,0.25)" font-size="8">09:41:50 AM</text>
+    <circle cx="530" cy="634" r="3" fill="rgba(255,200,0,0.9)"/>
+    <text x="540" y="638" fill="rgba(255,255,255,0.8)">Zone E · Overstay Alert</text>
+    <text x="530" y="651" fill="rgba(255,255,255,0.25)" font-size="8">09:39:12 AM</text>
+    <circle cx="530" cy="664" r="3" fill="#00d4e8"/>
+    <text x="540" y="668" fill="rgba(255,255,255,0.8)">Zone J · 48 spaces occupied</text>
+    <text x="530" y="681" fill="rgba(255,255,255,0.25)" font-size="8">09:37:03 AM</text>
+    <circle cx="530" cy="694" r="3" fill="#4ade80"/>
+    <text x="540" y="698" fill="rgba(255,255,255,0.8)">Sensor #882 back online</text>
+  </g>
+
+  <!-- AI Insight Card -->
+  <rect x="752" y="560" width="426" height="148" rx="14" fill="rgba(10,18,32,0.95)" stroke="rgba(0,212,232,0.18)" stroke-width="1"/>
+  <rect x="752" y="560" width="426" height="148" rx="14" fill="rgba(0,212,232,0.03)"/>
+  <text x="770" y="585" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="white">AI Predictive Insight</text>
+  <rect x="1120" y="570" width="46" height="18" rx="9" fill="rgba(0,212,232,0.15)" stroke="rgba(0,212,232,0.4)" stroke-width="1"/>
+  <text x="1143" y="583" font-family="Segoe UI,sans-serif" font-size="8" fill="#00d4e8" text-anchor="middle" font-weight="700">AI · ON</text>
+
+  <text x="770" y="612" font-family="Segoe UI,sans-serif" font-size="11" fill="rgba(255,255,255,0.85)" font-style="italic">"Zone E predicted to reach 100% by 10:15 AM.</text>
+  <text x="770" y="630" font-family="Segoe UI,sans-serif" font-size="11" fill="rgba(255,255,255,0.85)" font-style="italic"> Recommend activating overflow routing to Zone C."</text>
+  <text x="770" y="655" font-family="Segoe UI,sans-serif" font-size="10" fill="rgba(0,212,232,0.7)">Confidence: 94.2%  ·  Model: TriviumAI v3.1  ·  Trained on 2.4B sessions</text>
+
+  <rect x="770" y="668" width="130" height="28" rx="14" fill="#00d4e8"/>
+  <text x="835" y="686" font-family="Segoe UI,sans-serif" font-size="11" fill="#060d1a" text-anchor="middle" font-weight="900">Apply Routing →</text>
+  <rect x="912" y="668" width="130" height="28" rx="14" fill="none" stroke="rgba(0,212,232,0.5)" stroke-width="1.5"/>
+  <text x="977" y="686" font-family="Segoe UI,sans-serif" font-size="11" fill="#00d4e8" text-anchor="middle">View Details</text>
+
+  <!-- ===== WATERMARK / BRAND ===== -->
+  <text x="1178" y="714" font-family="Segoe UI,sans-serif" font-size="9" fill="rgba(0,212,232,0.3)" text-anchor="end" letter-spacing="1">TRIVIUM TECHNOLOGY LTD · SMART CITY INTELLIGENCE PLATFORM</text>
+
+</svg>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CurbSight Tower WEP02 — Trivium</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--cyan:#00d4e8;--bg:#1a1e24;--card:#1e2330;--border:rgba(0,212,232,.18);--white:#f0f4f8;--gray:#8090a8;}
+    body{background:var(--bg);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+    nav{position:sticky;top:0;z-index:99;background:rgba(26,30,36,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .nav-logo span{font-size:1.1rem;font-weight:900;color:var(--white);}
+    .nav-logo span em{color:var(--cyan);font-style:normal;}
+    .nav-right{display:flex;align-items:center;gap:14px;}
+    .lang-switch{display:flex;gap:4px;}
+    .lang-btn{font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 11px;border-radius:20px;border:1px solid rgba(0,212,232,.25);color:var(--gray);cursor:pointer;transition:all .2s;background:transparent;user-select:none;}
+    .lang-btn:hover{color:var(--cyan);border-color:rgba(0,212,232,.5);}
+    .lang-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,212,232,.1);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);text-decoration:none;font-size:.88rem;font-weight:600;border:1px solid rgba(0,212,232,.3);border-radius:20px;padding:6px 16px;transition:all .2s;white-space:nowrap;}
+    .nav-back:hover{background:rgba(0,212,232,.1);}
+    /* CAROUSEL */
+    .carousel-wrap{position:relative;width:100%;background:#0a0e14;overflow:hidden;min-height:300px;}
+    .carousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+    .carousel-slide{min-width:100%;position:relative;}
+    .carousel-slide{min-width:100%;position:relative;height:70vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#ffffff;}
+    .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
+    .carousel-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+    .slide-placeholder{width:100%;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card);border:2px dashed rgba(0,212,232,.2);gap:12px;color:var(--gray);}
+    .slide-placeholder span{font-size:2.5rem;}
+    .slide-placeholder p{font-size:.85rem;text-align:center;max-width:260px;line-height:1.5;}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:48px;height:48px;border-radius:50%;background:rgba(6,14,26,.8);border:1px solid rgba(0,212,232,.4);color:var(--cyan);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;backdrop-filter:blur(8px);}
+    .carousel-btn:hover{background:rgba(0,212,232,.2);transform:translateY(-50%) scale(1.08);}
+    .carousel-btn.prev{left:18px;}
+    .carousel-btn.next{right:18px;}
+    .carousel-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;transition:background .2s,transform .2s;padding:0;}
+    .carousel-dot.active{background:var(--cyan);transform:scale(1.3);}
+    .slide-counter{position:absolute;top:16px;right:18px;z-index:10;background:rgba(6,14,26,.7);border:1px solid rgba(0,212,232,.25);border-radius:20px;padding:4px 14px;font-size:.78rem;color:var(--cyan);font-weight:700;backdrop-filter:blur(6px);}
+    /* HERO INFO */
+    .hero-info{background:var(--bg);padding:40px 28px 0;}
+    .hero-info-inner{max-width:1200px;margin:0 auto;}
+    .badge{display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+    .model-tag{display:inline-block;background:rgba(0,212,232,.08);border:1px solid rgba(0,212,232,.2);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.1em;padding:4px 12px;border-radius:20px;margin-left:10px;vertical-align:middle;}
+    .hero-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;margin-bottom:10px;}
+    .hero-sub{font-size:1.05rem;color:rgba(255,255,255,.82);max-width:680px;line-height:1.75;margin-bottom:24px;}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+    .tag{background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);color:var(--cyan);font-size:.74rem;font-weight:700;padding:5px 14px;border-radius:20px;}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+    .btn-cyan{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#0a1628;font-weight:800;font-size:.9rem;padding:12px 28px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,232,.4);}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:.9rem;padding:11px 26px;border-radius:30px;text-decoration:none;transition:all .2s;}
+    .btn-outline:hover{background:rgba(0,212,232,.1);}
+    /* SECTIONS */
+    .container{max-width:1200px;margin:0 auto;padding:0 28px;}
+    section{padding:80px 0;}
+    .section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;margin-bottom:10px;}
+    .section-title em{color:var(--cyan);font-style:normal;}
+    .bar{width:48px;height:4px;background:linear-gradient(90deg,var(--cyan),transparent);border-radius:2px;margin-bottom:28px;}
+    .lead{font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.85;margin-bottom:40px;max-width:780px;}
+    /* HIGHLIGHTS */
+    .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:60px;}
+    .hl{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;}
+    .hl-val{font-size:2rem;font-weight:900;color:var(--cyan);margin-bottom:6px;}
+    .hl-lab{font-size:.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;}
+    /* FEATURES */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-bottom:60px;}
+    .feat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color .2s;}
+    .feat:hover{border-color:rgba(0,212,232,.4);}
+    .feat-icon{width:44px;height:44px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(0,212,232,.1);border:1px solid rgba(0,212,232,.25);}
+    .feat-icon svg{width:22px;height:22px;stroke:#ffffff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .feat h3{font-size:.72rem;font-weight:800;margin-bottom:12px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;}
+    .feat p{font-size:.88rem;color:rgba(255,255,255,.72);line-height:1.65;}
+    /* SPECS */
+    .specs-table{width:100%;border-collapse:collapse;margin-bottom:60px;}
+    .specs-table tr{border-bottom:1px solid rgba(0,212,232,.1);}
+    .specs-table tr:first-child{border-top:1px solid rgba(0,212,232,.1);}
+    .specs-table td{padding:14px 18px;font-size:.9rem;}
+    .specs-table td:first-child{color:var(--gray);font-weight:600;width:35%;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;}
+    .specs-table td:last-child{color:var(--white);font-weight:500;}
+    .specs-table tr:nth-child(odd){background:rgba(0,212,232,.03);}
+    /* CTA */
+    .cta-strip{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:52px;text-align:center;margin-top:20px;}
+    .cta-strip h2{font-size:1.9rem;font-weight:900;margin-bottom:12px;}
+    .cta-strip p{color:rgba(255,255,255,.7);margin-bottom:28px;font-size:1.02rem;}
+    footer{border-top:1px solid var(--border);padding:32px 28px;text-align:center;color:var(--gray);font-size:.82rem;}
+    footer a{color:var(--cyan);text-decoration:none;}
+  
+  /* CONSTELLATION BACKGROUND */
+  #particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../../trivium.html" style="text-decoration:none;">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0090a8"/>
+            <stop offset="100%" stop-color="#00d4e8"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00eeff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00d4e8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <polygon points="50,8 95,82 5,82" stroke="url(#lg1)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+        <polygon points="50,22 82,74 18,74" stroke="url(#lg1)" stroke-width="2.5" fill="none" stroke-linejoin="round" opacity=".7"/>
+        <line x1="50" y1="22" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="82" y1="74" x2="50" y2="50" stroke="url(#lg1)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="6" fill="#00eeff" opacity=".9"/>
+        <circle cx="50" cy="50" r="10" fill="url(#glow)" opacity=".5"/>
+      </svg>
+      <div>
+        <div style="font-size:1.35rem;font-weight:900;letter-spacing:.03em;color:#f0f4f8;">TRIVIUM</div>
+        <div style="font-size:.65rem;color:#00d4e8;letter-spacing:.12em;text-transform:uppercase;margin-top:1px;">Where Paths Converge</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <span class="lang-btn active" onclick="setLang('en')">ENG</span>
+        <span class="lang-btn" onclick="setLang('it')">ITA</span>
+        <span class="lang-btn" onclick="setLang('es')">ESP</span>
+      </div>
+      <a class="nav-back" href="../../trivium.html#products" data-i18n="nav_back">← Back to Solutions</a>
+    </div>
+  </div>
+</nav>
+
+<!-- CAROUSEL -->
+<div class="carousel-wrap" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep02-tower-front.png" alt="CurbSight Tower Front">
+    </div>
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep02-solar.png" alt="Solar Panel">
+    </div>
+    <div class="carousel-slide">
+      <img class="slide-fg" src="wep02-tower-tall.png" alt="CurbSight Tower Full">
+    </div>
+  </div>
+  <button class="carousel-btn prev" id="prevBtn">&#8249;</button>
+  <button class="carousel-btn next" id="nextBtn">&#8250;</button>
+  <div class="carousel-dots" id="carouselDots"></div>
+  <div class="slide-counter"><span id="slideNum">1</span> / <span id="slideTotal">3</span></div>
+</div>
+
+<!-- HERO INFO -->
+<div class="hero-info">
+  <div class="hero-info-inner">
+    <div class="badge" data-i18n="badge">CURBSIDE · LPR · REVENUE PROTECTION</div>
+    <h1 class="hero-title">CURBSIGHT TOWER <span class="model-tag">WEP02</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Pole-mounted multi-sensor unit combining ultrasonic detection, LPR camera, and payment terminal integration. Engineered to eliminate revenue leakage at every curbside space.</p>
+    <div class="tags">
+      <span class="tag" data-i18n="tag1">LPR Camera</span>
+      <span class="tag" data-i18n="tag2">Ultrasonic Detection</span>
+      <span class="tag">4G / 5G</span>
+      <span class="tag" data-i18n="tag3">Revenue Protection</span>
+      <span class="tag">IP67</span>
+      <span class="tag" data-i18n="tag4">Solar Optional</span>
+    </div>
+    <div class="hero-btns">
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="demo_btn">Request a Demo →</a>
+      <a href="https://www.wisdomep.com/en/productDetail?deviceType=wep02" target="_blank" class="btn-outline" data-i18n="mfr_btn">Manufacturer Page ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="container">
+    <h2 class="section-title" data-i18n="overview_title">Product <em>Overview</em></h2>
+    <div class="bar"></div>
+    <p class="lead" data-i18n="overview_lead">The WEP02 is a curbside smart parking terminal that combines ultrasonic vehicle detection with an integrated LPR camera system. Deployed on existing street poles with zero ground infrastructure, it delivers real-time occupancy data, automated plate recognition, and violation evidence — all in a single weatherproof unit.</p>
+
+    <div class="highlights">
+      <div class="hl"><div class="hl-val">99.4%</div><div class="hl-lab" data-i18n="hl1">Detection Accuracy</div></div>
+      <div class="hl"><div class="hl-val">&lt;2s</div><div class="hl-lab" data-i18n="hl2">Data Latency</div></div>
+      <div class="hl"><div class="hl-val">IP67</div><div class="hl-lab" data-i18n="hl3">Weather Rating</div></div>
+      <div class="hl"><div class="hl-val">24/7</div><div class="hl-lab" data-i18n="hl4">Continuous Operation</div></div>
+      <div class="hl"><div class="hl-val">5yr</div><div class="hl-lab" data-i18n="hl5">Maintenance-Free</div></div>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0M5 12a10 10 0 0 1 14 0M8.5 15.5a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="#ffffff"/></svg></div>
+        <h3 data-i18n="f1_title">Dual Detection Mode</h3>
+        <p data-i18n="f1_desc">Combines ultrasonic sonar with camera-based computer vision. Cross-validates occupancy status to eliminate false positives even in rain, fog, or direct sunlight.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 11h.01M10 11h4M18 11h.01"/></svg></div>
+        <h3 data-i18n="f2_title">LPR — Plate Recognition</h3>
+        <p data-i18n="f2_desc">High-definition licence plate recognition at entry and exit. Automated session matching and violation evidence capture with timestamped HD photos.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3 data-i18n="f3_title">Revenue Recovery</h3>
+        <p data-i18n="f3_desc">Verifies every session against payment records in real time. Flags non-paying vehicles instantly, enabling enforcement response before the driver returns.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+        <h3 data-i18n="f4_title">Cloud-Native Integration</h3>
+        <p data-i18n="f4_desc">Push data over 4G/5G/LoRa to the Trivium City Command Platform or any third-party PMS via open REST API. No proprietary lock-in.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3 data-i18n="f5_title">All-Weather Resilience</h3>
+        <p data-i18n="f5_desc">IP67-rated enclosure, operating range −30°C to +70°C. Pole-mounted design handles vibration, wind load, and direct water exposure without performance degradation.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3 data-i18n="f6_title">Flexible Power</h3>
+        <p data-i18n="f6_desc">Powered via standard pole supply or optional solar panel add-on. Built-in battery backup maintains operation during grid outages up to 48 hours.</p>
+      </div>
+    </div>
+
+    <div class="cta-strip">
+      <h2 data-i18n="cta_title">Interested in <em style="color:var(--cyan);">CurbSight Tower WEP02</em>?</h2>
+      <p data-i18n="cta_sub">Contact our team for a live demo, site assessment, or volume pricing quote.</p>
+      <a href="../../trivium.html#contact" class="btn-cyan" data-i18n="cta_btn">Get in Touch →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS SECTION -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span class="badge" data-i18n="an_badge">ANALYTICS AT A GLANCE · WEP02</span>
+      <h2 class="section-title" data-i18n="an_title">Key Performance <em>Metrics</em></h2>
+      <div class="bar" style="margin:12px auto 0;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">≥99.4%</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_acc_l">Detection Accuracy</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_acc_d">Ultrasonic + LPR dual mode</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">&lt;2s</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_lat_l">Data Latency</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_lat_d">Real-time platform sync</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">1080p</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_cam_l">Camera Resolution</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_cam_d">Full HD · 2MP image sensor</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">5.5m</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_range_l">Detection Range</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_range_d">0.3 m – 5.5 m (ultrasonic)</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">48h</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_bat_l">Battery Backup</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_bat_d">Solar panel option available</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">IP67</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_ip_l">Protection Rating</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_ip_d">Waterproof · dustproof</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">−30°</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_temp_l">Min Operating Temp.</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_temp_d">Range: −30°C to +70°C</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
+        <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">3Y</div>
+        <div style="font-size:.78rem;font-weight:700;color:#ffffff;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em;" data-i18n="an_war_l">Standard Warranty</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.5);" data-i18n="an_war_d">CE · FCC · RoHS certified</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VISUALIZED OUTPUT SECTION — from WisdomEP WEP02 official page -->
+<section style="background:var(--card);padding:80px 0;border-top:1px solid rgba(0,212,232,.12);">
+  <div class="container">
+
+    <div style="text-align:center;max-width:720px;margin:0 auto 60px;">
+      <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="vis_badge">PRODUCT ADVANTAGES · WEP02</div>
+      <h2 class="section-title" data-i18n="vis_title">Visualized Output of Full-Process <em>Parking Information</em></h2>
+      <div class="bar" style="margin:12px auto 24px;"></div>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.85;" data-i18n="vis_lead">Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
+    </div>
+
+    <!-- Feature blocks -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;margin-bottom:60px;">
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 1 -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-license.jpg','Roadside & Perpendicular Parking — License Plate Capture')">
+          <img src="wep02-parking-license.jpg" alt="WEP02 License Plate Capture" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>🎥</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-license.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f1_desc">Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 2 -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-scenario.jpg','Comprehensive Detection — All On-Street Parking Scenarios')">
+          <img src="wep02-parking-scenario.jpg" alt="WEP02 Parking Scenario" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>📸</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-scenario.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f2_title">HD Evidence Collection</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 3 — WEP02 Parking Full Process -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-full-process.jpg','WEP02 Parking Full Process')">
+          <img src="wep02-parking-full-process.jpg" alt="WEP02 Parking Full Process" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>🗺️</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-full-process.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f3_title">Full-Process Visualisation</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f3_desc">From arrival to departure, the entire parking journey is visualised on the city dashboard — space discovery, entry detection, session timing, payment verification and exit confirmation.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SOURCE CREDIT -->
+    <div style="text-align:center;padding:20px;border:1px solid rgba(0,212,232,.12);border-radius:12px;background:rgba(0,212,232,.04);">
+      <p style="font-size:.8rem;color:var(--gray);" data-i18n="vis_source">Source: <a href="https://www.wisdomep.com/en/productDetail?deviceType=wep02" target="_blank" style="color:var(--cyan);">wisdomep.com — WEP02 Official Product Page</a> · Shenzhen P-IOTEYE Technology Co., Ltd</p>
+      <p style="font-size:.75rem;color:rgba(128,144,168,.6);margin-top:6px;" data-i18n="vis_img_note">To display the official product images: save them from the WisdomEP website and replace the image slots above with &lt;img src="filename.jpg"&gt;</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── INSTALLATION SCENARIOS ── -->
+<section style="padding:80px 0;background:var(--bg);">
+  <div style="max-width:1100px;margin:0 auto;padding:0 32px;">
+
+    <div style="text-align:center;margin-bottom:52px;">
+      <div style="display:inline-block;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.3);color:var(--cyan);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;" data-i18n="inst_badge">DEPLOYMENT · WEP02</div>
+      <h2 class="section-title" style="margin-bottom:12px;" data-i18n="inst_title">Installation <em>Scenarios</em></h2>
+      <div class="bar" style="margin:0 auto 24px;"></div>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,.75);max-width:620px;margin:0 auto;line-height:1.8;" data-i18n="inst_lead">The CurbSight Tower WEP02 adapts to every urban context: on-street parking, residential areas, commercial zones and public infrastructure.</p>
+    </div>
+
+    <!-- Photo gallery — 6 individual deployment photos -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;border-radius:18px;overflow:hidden;background:var(--bg);">
+      <div class="inst-photo" style="background-image:url('wep02-install-1.jpg');" onclick="openLightbox('wep02-install-1.jpg','WEP02 — On-Street Deployment')"></div>
+      <div class="inst-photo" style="background-image:url('wep02-install-2.jpg');" onclick="openLightbox('wep02-install-2.jpg','WEP02 — Perpendicular Parking')"></div>
+      <div class="inst-photo" style="background-image:url('wep02-install-3.jpg');" onclick="openLightbox('wep02-install-3.jpg','WEP02 — Roadside Capture')"></div>
+      <div class="inst-photo" style="background-image:url('wep02-install-4.jpg');" onclick="openLightbox('wep02-install-4.jpg','WEP02 — Urban Street')"></div>
+      <div class="inst-photo" style="background-image:url('wep02-install-5.jpg');" onclick="openLightbox('wep02-install-5.jpg','WEP02 — Curbside Detection')"></div>
+      <div class="inst-photo" style="background-image:url('wep02-install-6.jpg');" onclick="openLightbox('wep02-install-6.jpg','WEP02 — Parking Bay Sensor')"></div>
+    </div>
+    <p style="text-align:center;font-size:.78rem;color:rgba(255,255,255,.4);margin-top:14px;" data-i18n="inst_photo_caption">Real WEP02 deployments — click to enlarge</p>
+
+  </div>
+</section>
+
+<!-- TECHNICAL SPECIFICATIONS -->
+<section style="padding:80px 0;">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:10px;" data-i18n="specs_title">Technical <em>Specifications</em></h2>
+    <div class="bar"></div>
+    <table class="specs-table">
+      <tr><td data-i18n="sp_model_l">Model</td><td>WEP02</td></tr>
+      <tr><td data-i18n="sp_det_l">Detection Technology</td><td data-i18n="sp_det_v">Ultrasonic + LPR Camera (dual mode)</td></tr>
+      <tr><td data-i18n="sp_cam_l">Camera Resolution</td><td>Full HD 1080p (2MP)</td></tr>
+      <tr><td data-i18n="sp_range_l">Detection Range</td><td>0.3 m – 5.5 m (ultrasonic)</td></tr>
+      <tr><td data-i18n="sp_acc_l">Detection Accuracy</td><td>≥ 99.4%</td></tr>
+      <tr><td data-i18n="sp_lat_l">Data Latency</td><td data-i18n="sp_lat_v">&lt; 2 seconds</td></tr>
+      <tr><td data-i18n="sp_conn_l">Communication</td><td>4G LTE / 5G / LoRaWAN / Wi-Fi</td></tr>
+      <tr><td data-i18n="sp_pwr_l">Power Supply</td><td data-i18n="sp_pwr_v">DC 12V (pole) / Solar panel optional</td></tr>
+      <tr><td data-i18n="sp_bat_l">Battery Backup</td><td data-i18n="sp_bat_v">Up to 48 h</td></tr>
+      <tr><td data-i18n="sp_temp_l">Operating Temperature</td><td>−30°C to +70°C</td></tr>
+      <tr><td data-i18n="sp_ip_l">Protection Rating</td><td>IP67</td></tr>
+      <tr><td data-i18n="sp_inst_l">Installation</td><td data-i18n="sp_inst_v">Pole-mounted, no ground works required</td></tr>
+      <tr><td data-i18n="sp_api_l">Data Interface</td><td>REST API / MQTT / RTSP</td></tr>
+      <tr><td data-i18n="sp_cert_l">Certifications</td><td>CE · FCC · RoHS</td></tr>
+      <tr><td data-i18n="sp_war_l">Warranty</td><td data-i18n="sp_war_v">3 years standard</td></tr>
+      <tr><td data-i18n="sp_mfr_l">Manufacturer</td><td>Shenzhen P-IOTEYE Technology Co., Ltd</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Trivium — Where Paths Converge &nbsp;·&nbsp;
+  <a href="../../trivium.html" data-i18n="footer_link">Back to main site</a>
+</footer>
+
+<script>
+(function(){
+  /* ── CAROUSEL ── */
+  const track=document.getElementById('carouselTrack');
+  const total=track.children.length;
+  const dotsWrap=document.getElementById('carouselDots');
+  const slideNum=document.getElementById('slideNum');
+  document.getElementById('slideTotal').textContent=total;
+  let cur=0;
+  for(let i=0;i<total;i++){const d=document.createElement('button');d.className='carousel-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsWrap.appendChild(d);}
+  function goTo(n){cur=(n+total)%total;track.style.transform=`translateX(-${cur*100}%)`;document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));slideNum.textContent=cur+1;}
+  document.getElementById('prevBtn').onclick=()=>goTo(cur-1);
+  document.getElementById('nextBtn').onclick=()=>goTo(cur+1);
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')goTo(cur-1);if(e.key==='ArrowRight')goTo(cur+1);});
+  let tx=0;
+  track.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goTo(dx<0?cur+1:cur-1);},{passive:true});
+  setInterval(()=>goTo(cur+1),5000);
+
+  /* ── TRANSLATIONS ── */
+  const T = {
+    en: {
+      nav_back:"← Back to Solutions",
+      badge:"CURBSIDE · LPR · REVENUE PROTECTION",
+      hero_sub:"Pole-mounted multi-sensor unit combining ultrasonic detection, LPR camera, and payment terminal integration. Engineered to eliminate revenue leakage at every curbside space.",
+      tag1:"LPR Camera", tag2:"Ultrasonic Detection", tag3:"Revenue Protection", tag4:"Solar Optional",
+      demo_btn:"Request a Demo →", mfr_btn:"Manufacturer Page ↗",
+      overview_title:"Product <em>Overview</em>",
+      overview_lead:"The WEP02 is a curbside smart parking terminal that combines ultrasonic vehicle detection with an integrated LPR camera system. Deployed on existing street poles with zero ground infrastructure, it delivers real-time occupancy data, automated plate recognition, and violation evidence — all in a single weatherproof unit.",
+      hl1:"Detection Accuracy", hl2:"Data Latency", hl3:"Weather Rating", hl4:"Continuous Operation", hl5:"Maintenance-Free",
+      f1_title:"Dual Detection Mode", f1_desc:"Combines ultrasonic sonar with camera-based computer vision. Cross-validates occupancy status to eliminate false positives even in rain, fog, or direct sunlight.",
+      f2_title:"LPR — Plate Recognition", f2_desc:"High-definition licence plate recognition at entry and exit. Automated session matching and violation evidence capture with timestamped HD photos.",
+      f3_title:"Revenue Recovery", f3_desc:"Verifies every session against payment records in real time. Flags non-paying vehicles instantly, enabling enforcement response before the driver returns.",
+      f4_title:"Cloud-Native Integration", f4_desc:"Push data over 4G/5G/LoRa to the Trivium City Command Platform or any third-party PMS via open REST API. No proprietary lock-in.",
+      f5_title:"All-Weather Resilience", f5_desc:"IP67-rated enclosure, operating range −30°C to +70°C. Pole-mounted design handles vibration, wind load, and direct water exposure without performance degradation.",
+      f6_title:"Flexible Power", f6_desc:"Powered via standard pole supply or optional solar panel add-on. Built-in battery backup maintains operation during grid outages up to 48 hours.",
+      specs_title:"Technical <em>Specifications</em>",
+      sp_model_l:"Model", sp_det_l:"Detection Technology", sp_det_v:"Ultrasonic + LPR Camera (dual mode)",
+      sp_cam_l:"Camera Resolution", sp_range_l:"Detection Range", sp_acc_l:"Detection Accuracy",
+      sp_lat_l:"Data Latency", sp_lat_v:"&lt; 2 seconds", sp_conn_l:"Communication",
+      sp_pwr_l:"Power Supply", sp_pwr_v:"DC 12V (pole) / Solar panel optional",
+      sp_bat_l:"Battery Backup", sp_bat_v:"Up to 48 h", sp_temp_l:"Operating Temperature",
+      sp_ip_l:"Protection Rating", sp_inst_l:"Installation", sp_inst_v:"Pole-mounted, no ground works required",
+      sp_api_l:"Data Interface", sp_cert_l:"Certifications", sp_war_l:"Warranty", sp_war_v:"3 years standard", sp_mfr_l:"Manufacturer",
+      area_title:"📎 Additional Content Area", area_desc:"Add here: technical datasheets PDF, photo/video gallery, case studies, installation images, certification documents.",
+      cta_title:"Interested in <em style=\"color:var(--cyan);\">CurbSight Tower WEP02</em>?",
+      cta_sub:"Contact our team for a live demo, site assessment, or volume pricing quote.",
+      cta_btn:"Get in Touch →", footer_link:"Back to main site",
+      slide_ph1:"Replace with WEP02 product photo", slide_ph2:"LPR sensor / camera detail",
+      slide_ph3:"Urban pole installation photo", slide_ph4:"Technical diagram / dimensions",
+      vis_badge:"PRODUCT ADVANTAGES · WEP02",
+      vis_title:"Visualized Output of Full-Process <em>Parking Information</em>",
+      vis_lead:"Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.",
+      vis_f1_title:"Real-Time Space Status Monitoring", vis_f1_desc:"Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.",
+      vis_f2_title:"HD Evidence Collection", vis_f2_desc:"High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.",
+      vis_f3_title:"Full-Process Visualisation", vis_f3_desc:"From arrival to departure, the entire parking journey is visualised on the city dashboard — space discovery, entry detection, session timing, payment verification and exit confirmation.",
+      vis_img1_ph:"Real-time monitoring dashboard — add image from WisdomEP",
+      vis_img2_ph:"HD evidence capture — add image from WisdomEP",
+      vis_img3_ph:"Full-process visualisation — add image from WisdomEP",
+      vis_source:"Source: wisdomep.com — WEP02 Official Product Page · Shenzhen P-IOTEYE Technology Co., Ltd",
+      vis_img_note:"To display the official product images: save them from the WisdomEP website and replace the image slots above.",
+      inst_badge:"DEPLOYMENT · WEP02",
+      inst_title:"Installation <em>Scenarios</em>",
+      inst_lead:"The CurbSight Tower WEP02 adapts to every urban context: on-street parking, residential areas, commercial zones and public infrastructure.",
+      inst_s1_title:"On-Street Parking", inst_s1_desc:"Vehicle detection along urban roads, with flexible pole-mounted sensors adaptable to any capture angle.",
+      inst_s2_title:"Commercial Zone", inst_s2_desc:"Parking monitoring in shopping centres and retail areas, with direct integration to the City Command platform for rate and availability management.",
+      inst_s3_title:"Residential Area", inst_s3_desc:"Access control and reserved spot detection in residential contexts, with automatic violation alerts and full session history.",
+      inst_s4_title:"Public Infrastructure", inst_s4_desc:"Hospitals, stations, airports and government buildings: WEP02 guarantees 24/7 operational continuity with IP67 certification and optional solar power.",
+      inst_photo_caption:"Real WEP02 deployments — click to enlarge",
+      an_badge:"ANALYTICS AT A GLANCE · WEP02", an_title:"Key Performance <em>Metrics</em>",
+      an_acc_l:"Detection Accuracy", an_acc_d:"Ultrasonic + LPR dual mode",
+      an_lat_l:"Data Latency", an_lat_d:"Real-time platform sync",
+      an_cam_l:"Camera Resolution", an_cam_d:"Full HD · 2MP image sensor",
+      an_range_l:"Detection Range", an_range_d:"0.3 m – 5.5 m (ultrasonic)",
+      an_bat_l:"Battery Backup", an_bat_d:"Solar panel option available",
+      an_ip_l:"Protection Rating", an_ip_d:"Waterproof · dustproof",
+      an_temp_l:"Min Operating Temp.", an_temp_d:"Range: −30°C to +70°C",
+      an_war_l:"Standard Warranty", an_war_d:"CE · FCC · RoHS certified",
+    },
+    it: {
+      nav_back:"← Torna alle Soluzioni",
+      badge:"CURBSIDE · LPR · PROTEZIONE RICAVI",
+      hero_sub:"Unità multisensore su palo che combina rilevamento ultrasonico, telecamera LPR e integrazione terminale di pagamento. Progettata per eliminare le perdite di ricavo su ogni posto auto.",
+      tag1:"Telecamera LPR", tag2:"Rilevamento Ultrasonico", tag3:"Protezione Ricavi", tag4:"Solare Opzionale",
+      demo_btn:"Richiedi una Demo →", mfr_btn:"Pagina Produttore ↗",
+      overview_title:"Panoramica <em>Prodotto</em>",
+      overview_lead:"Il WEP02 è un terminale smart parking per parcheggio su strada che combina il rilevamento ultrasonico dei veicoli con un sistema integrato di telecamera LPR. Installato su pali stradali esistenti senza opere a terra, fornisce dati di occupazione in tempo reale, riconoscimento automatico della targa ed evidenza delle violazioni — tutto in un'unica unità resistente alle intemperie.",
+      hl1:"Accuratezza Rilevamento", hl2:"Latenza Dati", hl3:"Protezione Meteo", hl4:"Operatività Continua", hl5:"Senza Manutenzione",
+      f1_title:"Doppia Modalità di Rilevamento", f1_desc:"Combina sonar ultrasonico con visione artificiale basata su telecamera. Convalida incrociata dello stato di occupazione per eliminare i falsi positivi anche in pioggia, nebbia o luce solare diretta.",
+      f2_title:"LPR — Riconoscimento Targa", f2_desc:"Riconoscimento ad alta definizione della targa in ingresso e uscita. Corrispondenza automatica delle sessioni e acquisizione di prove di violazione con foto HD con timestamp.",
+      f3_title:"Recupero Ricavi", f3_desc:"Verifica ogni sessione rispetto ai record di pagamento in tempo reale. Segnala immediatamente i veicoli non paganti, consentendo la risposta degli addetti prima che il conducente torni.",
+      f4_title:"Integrazione Cloud-Native", f4_desc:"Invia dati via 4G/5G/LoRa alla piattaforma Trivium City Command o a qualsiasi PMS di terze parti tramite REST API aperta. Nessun lock-in proprietario.",
+      f5_title:"Resistenza a Tutte le Condizioni", f5_desc:"Custodia con grado IP67, range operativo −30°C / +70°C. Design su palo gestisce vibrazioni, carico del vento ed esposizione diretta all'acqua senza degradazione delle prestazioni.",
+      f6_title:"Alimentazione Flessibile", f6_desc:"Alimentato tramite presa standard su palo o pannello solare opzionale. Batteria di backup integrata mantiene il funzionamento fino a 48 ore in caso di mancanza di rete.",
+      specs_title:"Specifiche <em>Tecniche</em>",
+      sp_model_l:"Modello", sp_det_l:"Tecnologia di Rilevamento", sp_det_v:"Ultrasonico + Telecamera LPR (doppia modalità)",
+      sp_cam_l:"Risoluzione Telecamera", sp_range_l:"Portata Rilevamento", sp_acc_l:"Accuratezza Rilevamento",
+      sp_lat_l:"Latenza Dati", sp_lat_v:"&lt; 2 secondi", sp_conn_l:"Comunicazione",
+      sp_pwr_l:"Alimentazione", sp_pwr_v:"DC 12V (palo) / Pannello solare opzionale",
+      sp_bat_l:"Backup Batteria", sp_bat_v:"Fino a 48 h", sp_temp_l:"Temperatura Operativa",
+      sp_ip_l:"Grado di Protezione", sp_inst_l:"Installazione", sp_inst_v:"Su palo, nessuna opera a terra necessaria",
+      sp_api_l:"Interfaccia Dati", sp_cert_l:"Certificazioni", sp_war_l:"Garanzia", sp_war_v:"3 anni standard", sp_mfr_l:"Produttore",
+      area_title:"📎 Area Contenuti Aggiuntivi", area_desc:"Aggiungi qui: schede tecniche PDF, galleria foto/video, case study, immagini installazione, documenti di certificazione.",
+      cta_title:"Interessato a <em style=\"color:var(--cyan);\">CurbSight Tower WEP02</em>?",
+      cta_sub:"Contatta il nostro team per una demo dal vivo, valutazione del sito o preventivo volume.",
+      cta_btn:"Contattaci →", footer_link:"Torna al sito principale",
+      slide_ph1:"Sostituisci con foto prodotto WEP02", slide_ph2:"Dettaglio sensore / telecamera LPR",
+      slide_ph3:"Foto installazione su palo urbano", slide_ph4:"Schema tecnico / dimensioni",
+      vis_badge:"VANTAGGI PRODOTTO · WEP02",
+      vis_title:"Output Visuale dell'Intero Processo di <em>Parcheggio</em>",
+      vis_lead:"Rilevamento ultrasonico combinato con collegamento telecamera per il monitoraggio in tempo reale dello stato di ogni posto auto. Raccolta prove ad alta definizione, impermeabile alle condizioni meteo.",
+      vis_f1_title:"Monitoraggio Stato in Tempo Reale", vis_f1_desc:"Il rilevamento ultrasonico combinato con la telecamera fornisce visibilità continua e in tempo reale di ogni posto auto — occupato, libero o riservato — con frequenza di aggiornamento inferiore a 2 secondi.",
+      vis_f2_title:"Raccolta Prove in HD", vis_f2_desc:"Raccolta prove ad alta definizione, indipendente dalle condizioni meteo. Ogni ingresso, uscita e violazione è acquisita con foto HD con timestamp per enforcement, risoluzione controversie e reportistica.",
+      vis_f3_title:"Visualizzazione dell'Intero Processo", vis_f3_desc:"Dall'arrivo alla partenza, l'intero percorso di parcheggio è visualizzato sul dashboard cittadino — ricerca posto, rilevamento ingresso, temporizzazione sessione, verifica pagamento e conferma uscita.",
+      vis_img1_ph:"Dashboard monitoraggio in tempo reale — aggiungi immagine da WisdomEP",
+      vis_img2_ph:"Acquisizione prove HD — aggiungi immagine da WisdomEP",
+      vis_img3_ph:"Visualizzazione intero processo — aggiungi immagine da WisdomEP",
+      vis_source:"Fonte: wisdomep.com — Pagina Ufficiale Prodotto WEP02 · Shenzhen P-IOTEYE Technology Co., Ltd",
+      vis_img_note:"Per visualizzare le immagini ufficiali del prodotto: salvale dal sito WisdomEP e sostituisci gli slot sopra.",
+      inst_badge:"DEPLOYMENT · WEP02",
+      inst_title:"Scenari di <em>Installazione</em>",
+      inst_lead:"Il CurbSight Tower WEP02 si adatta a ogni contesto urbano: parcheggi su strada, aree residenziali, zone commerciali e infrastrutture pubbliche.",
+      inst_s1_title:"Parcheggio su Strada", inst_s1_desc:"Rilevamento di veicoli in sosta lungo vie urbane, con sensori a palo flessibili e adattabili a qualsiasi angolo di ripresa.",
+      inst_s2_title:"Zona Commerciale", inst_s2_desc:"Monitoraggio posti auto in centri commerciali e aree retail, con integrazione diretta alla piattaforma City Command per gestione tariffe e disponibilità.",
+      inst_s3_title:"Area Residenziale", inst_s3_desc:"Controllo degli accessi e rilevamento posti riservati in contesti residenziali, con alert automatici per violazioni e storico delle sessioni.",
+      inst_s4_title:"Infrastruttura Pubblica", inst_s4_desc:"Ospedali, stazioni, aeroporti e edifici governativi: il WEP02 garantisce continuità operativa H24 con certificazione IP67 e alimentazione solare opzionale.",
+      inst_photo_caption:"Installazioni reali WEP02 — clicca per ingrandire",
+      an_badge:"DATI ANALITICI · WEP02", an_title:"Metriche di <em>Performance</em>",
+      an_acc_l:"Accuratezza Rilevamento", an_acc_d:"Modalità dual ultrasonico + LPR",
+      an_lat_l:"Latenza Dati", an_lat_d:"Sincronizzazione in tempo reale",
+      an_cam_l:"Risoluzione Telecamera", an_cam_d:"Full HD · sensore 2MP",
+      an_range_l:"Portata Rilevamento", an_range_d:"0,3 m – 5,5 m (ultrasonico)",
+      an_bat_l:"Backup Batteria", an_bat_d:"Opzione pannello solare disponibile",
+      an_ip_l:"Grado di Protezione", an_ip_d:"Impermeabile · antipolvere",
+      an_temp_l:"Temp. Min Operativa", an_temp_d:"Intervallo: −30°C a +70°C",
+      an_war_l:"Garanzia Standard", an_war_d:"Certificazioni CE · FCC · RoHS",
+    },
+    es: {
+      nav_back:"← Volver a Soluciones",
+      badge:"CURBSIDE · LPR · PROTECCIÓN DE INGRESOS",
+      hero_sub:"Unidad multisensor montada en poste que combina detección ultrasónica, cámara LPR e integración de terminal de pago. Diseñada para eliminar la pérdida de ingresos en cada plaza de aparcamiento.",
+      tag1:"Cámara LPR", tag2:"Detección Ultrasónica", tag3:"Protección de Ingresos", tag4:"Solar Opcional",
+      demo_btn:"Solicitar Demo →", mfr_btn:"Página del Fabricante ↗",
+      overview_title:"Descripción <em>del Producto</em>",
+      overview_lead:"El WEP02 es un terminal de aparcamiento inteligente para vía pública que combina detección ultrasónica de vehículos con un sistema integrado de cámara LPR. Instalado en postes existentes sin obras en el suelo, proporciona datos de ocupación en tiempo real, reconocimiento automático de matrículas y evidencia de infracciones — todo en una unidad resistente a la intemperie.",
+      hl1:"Precisión de Detección", hl2:"Latencia de Datos", hl3:"Protección Climática", hl4:"Operación Continua", hl5:"Sin Mantenimiento",
+      f1_title:"Detección Dual", f1_desc:"Combina sonar ultrasónico con visión artificial basada en cámara. Valida de forma cruzada el estado de ocupación para eliminar falsos positivos incluso bajo lluvia, niebla o luz solar directa.",
+      f2_title:"LPR — Reconocimiento de Matrículas", f2_desc:"Reconocimiento de matrículas en HD en entrada y salida. Correspondencia automática de sesiones y captura de evidencias de infracción con fotos HD con marca de tiempo.",
+      f3_title:"Recuperación de Ingresos", f3_desc:"Verifica cada sesión contra los registros de pago en tiempo real. Señala inmediatamente los vehículos sin pagar, permitiendo la respuesta de los agentes antes de que el conductor regrese.",
+      f4_title:"Integración Cloud Nativa", f4_desc:"Envía datos via 4G/5G/LoRa a la plataforma Trivium City Command o cualquier PMS de terceros mediante API REST abierta. Sin dependencia propietaria.",
+      f5_title:"Resistencia a Todo Tiempo", f5_desc:"Carcasa con clasificación IP67, rango operativo −30°C / +70°C. El diseño en poste soporta vibraciones, carga de viento y exposición directa al agua sin degradación.",
+      f6_title:"Alimentación Flexible", f6_desc:"Alimentado por suministro estándar en poste o panel solar opcional. Batería de respaldo integrada mantiene el funcionamiento hasta 48 horas en cortes de red.",
+      specs_title:"Especificaciones <em>Técnicas</em>",
+      sp_model_l:"Modelo", sp_det_l:"Tecnología de Detección", sp_det_v:"Ultrasónico + Cámara LPR (modo dual)",
+      sp_cam_l:"Resolución de Cámara", sp_range_l:"Alcance de Detección", sp_acc_l:"Precisión de Detección",
+      sp_lat_l:"Latencia de Datos", sp_lat_v:"&lt; 2 segundos", sp_conn_l:"Comunicación",
+      sp_pwr_l:"Alimentación", sp_pwr_v:"DC 12V (poste) / Panel solar opcional",
+      sp_bat_l:"Batería de Respaldo", sp_bat_v:"Hasta 48 h", sp_temp_l:"Temperatura de Operación",
+      sp_ip_l:"Grado de Protección", sp_inst_l:"Instalación", sp_inst_v:"Montado en poste, sin obras en el suelo",
+      sp_api_l:"Interfaz de Datos", sp_cert_l:"Certificaciones", sp_war_l:"Garantía", sp_war_v:"3 años estándar", sp_mfr_l:"Fabricante",
+      area_title:"📎 Área de Contenido Adicional", area_desc:"Añade aquí: fichas técnicas PDF, galería de fotos/vídeos, casos de estudio, imágenes de instalación, documentos de certificación.",
+      cta_title:"¿Interesado en <em style=\"color:var(--cyan);\">CurbSight Tower WEP02</em>?",
+      cta_sub:"Contacta con nuestro equipo para una demo en directo, evaluación del emplazamiento o presupuesto.",
+      cta_btn:"Contáctanos →", footer_link:"Volver al sitio principal",
+      slide_ph1:"Reemplaza con foto del producto WEP02", slide_ph2:"Detalle del sensor LPR / cámara",
+      slide_ph3:"Foto de instalación en poste urbano", slide_ph4:"Esquema técnico / dimensiones",
+      vis_badge:"VENTAJAS DEL PRODUCTO · WEP02",
+      vis_title:"Salida Visualizada del Proceso Completo de <em>Aparcamiento</em>",
+      vis_lead:"Detección ultrasónica combinada con enlace de cámara para la monitorización en tiempo real del estado de cada plaza. Recogida de evidencias en alta definición, sin verse afectada por las condiciones meteorológicas.",
+      vis_f1_title:"Monitorización de Estado en Tiempo Real", vis_f1_desc:"La detección ultrasónica combinada con la cámara proporciona visibilidad continua y en tiempo real de cada plaza — ocupada, libre o reservada — con frecuencia de actualización inferior a 2 segundos.",
+      vis_f2_title:"Recogida de Evidencias en HD", vis_f2_desc:"Recogida de evidencias en alta definición, sin verse afectada por el clima. Cada entrada, salida e infracción se captura con fotos HD con marca de tiempo para control, resolución de disputas e informes.",
+      vis_f3_title:"Visualización del Proceso Completo", vis_f3_desc:"Desde la llegada hasta la salida, todo el proceso de aparcamiento se visualiza en el panel de la ciudad — búsqueda de plaza, detección de entrada, temporización de sesión, verificación de pago y confirmación de salida.",
+      vis_img1_ph:"Panel de monitorización en tiempo real — añade imagen de WisdomEP",
+      vis_img2_ph:"Captura de evidencias HD — añade imagen de WisdomEP",
+      vis_img3_ph:"Visualización del proceso completo — añade imagen de WisdomEP",
+      vis_source:"Fuente: wisdomep.com — Página Oficial del Producto WEP02 · Shenzhen P-IOTEYE Technology Co., Ltd",
+      vis_img_note:"Para mostrar las imágenes oficiales del producto: guárdalas del sitio WisdomEP y sustituye los slots anteriores.",
+      inst_badge:"DEPLOYMENT · WEP02",
+      inst_title:"Escenarios de <em>Instalación</em>",
+      inst_lead:"El CurbSight Tower WEP02 se adapta a cualquier contexto urbano: aparcamiento en vía pública, zonas residenciales, áreas comerciales e infraestructuras públicas.",
+      inst_s1_title:"Aparcamiento en Vía Pública", inst_s1_desc:"Detección de vehículos estacionados en vías urbanas, con sensores en poste flexibles y adaptables a cualquier ángulo de captura.",
+      inst_s2_title:"Zona Comercial", inst_s2_desc:"Monitorización de plazas en centros comerciales y áreas retail, con integración directa a la plataforma City Command para gestión de tarifas y disponibilidad.",
+      inst_s3_title:"Área Residencial", inst_s3_desc:"Control de accesos y detección de plazas reservadas en contextos residenciales, con alertas automáticas por infracciones e historial completo de sesiones.",
+      inst_s4_title:"Infraestructura Pública", inst_s4_desc:"Hospitales, estaciones, aeropuertos y edificios gubernamentales: el WEP02 garantiza continuidad operativa 24/7 con certificación IP67 y alimentación solar opcional.",
+      inst_photo_caption:"Instalaciones reales WEP02 — haz clic para ampliar",
+      an_badge:"ANALÍTICA · WEP02", an_title:"Métricas de <em>Rendimiento</em>",
+      an_acc_l:"Precisión de Detección", an_acc_d:"Modo dual ultrasónico + LPR",
+      an_lat_l:"Latencia de Datos", an_lat_d:"Sincronización en tiempo real",
+      an_cam_l:"Resolución de Cámara", an_cam_d:"Full HD · sensor 2MP",
+      an_range_l:"Alcance de Detección", an_range_d:"0,3 m – 5,5 m (ultrasónico)",
+      an_bat_l:"Batería de Respaldo", an_bat_d:"Opción de panel solar disponible",
+      an_ip_l:"Grado de Protección", an_ip_d:"Impermeable · antipolvo",
+      an_temp_l:"Temp. Mín. Operativa", an_temp_d:"Rango: −30°C a +70°C",
+      an_war_l:"Garantía Estándar", an_war_d:"Certificaciones CE · FCC · RoHS",
+    }
+  };
+
+  function setLang(lang){
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().startsWith(lang)));
+    const t=T[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+    localStorage.setItem('trivium_lang',lang);
+  }
+  window.setLang=setLang;
+
+  // Apply saved or default language
+  const saved=localStorage.getItem('trivium_lang')||'en';
+  setLang(saved);
+})();
+</script>
+<!-- LIGHTBOX -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeLightbox()">
+  <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:20px;right:28px;background:none;border:none;color:#fff;font-size:2.2rem;cursor:pointer;line-height:1;opacity:.8;">&times;</button>
+  <img id="lightbox-img" src="" alt="" style="max-width:92vw;max-height:88vh;border-radius:12px;box-shadow:0 8px 60px rgba(0,0,0,.8);object-fit:contain;user-select:none;" onclick="event.stopPropagation()">
+  <p id="lightbox-caption" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:.88rem;pointer-events:none;"></p>
+</div>
+
+<style>
+.lightbox-img-wrap:hover .lightbox-img { transform: scale(1.04); filter: brightness(1.08); }
+.lightbox-img-wrap:hover .lightbox-overlay-hint { opacity: 1 !important; }
+div[onclick*="openLightbox"]:hover img.lightbox-img { transform: scale(1.04); filter: brightness(1.08); }
+div[onclick*="openLightbox"]:hover img { transform: scale(1.02); filter: brightness(1.06); }
+div[onclick*="openLightbox"]:hover .lightbox-overlay-hint { opacity: 1 !important; }
+#lightbox { animation: lbFadeIn .2s ease; }
+@keyframes lbFadeIn { from { opacity:0; } to { opacity:1; } }
+.inst-photo { aspect-ratio:4/3;cursor:zoom-in;background-size:cover;background-position:center;background-repeat:no-repeat;transition:transform .35s,filter .35s;position:relative; }
+.inst-photo:hover { transform:scale(1.04);filter:brightness(1.1);z-index:1; }
+</style>
+
+<script>
+function openLightbox(src, caption) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-caption').textContent = caption || '';
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(); });
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function rand(a,b){ return Math.random()*(b-a)+a; }
+  for(let i=0;i<80;i++){
+    dots.push({x:rand(0,W),y:rand(0,H),vx:rand(-.3,.3),vy:rand(-.3,.3),r:rand(1,2.5),o:rand(.15,.5)});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<dots.length;i++){
+      for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(0,212,232,${.12*(1-d/140)})`;
+          ctx.lineWidth=.8;
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    dots.forEach(d=>{
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,232,${d.o})`;
+      ctx.fill();
+      d.x+=d.vx; d.y+=d.vy;
+      if(d.x<0||d.x>W) d.vx*=-1;
+      if(d.y<0||d.y>H) d.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
