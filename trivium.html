@@ -175,37 +175,66 @@
 
     /* ========== TOPBAR ========== */
     .topbar {
-      background: rgba(15, 18, 24, 0.95);
-      padding: 6px 0;
+      background: rgba(15, 18, 24, 0.97);
+      padding: 8px 0;
       border-bottom: 1px solid var(--border);
-      position: relative;
-      z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 200;
     }
 
     .topbar .container {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
     }
 
-    .topbar-right {
+    .topbar-lang {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       font-size: .8rem;
-      font-weight: 600;
-      letter-spacing: .06em;
+      font-weight: 700;
+      letter-spacing: .07em;
     }
 
-    .topbar-right span {
+    .topbar-lang span {
       color: var(--gray);
       cursor: pointer;
       transition: color .2s;
     }
 
-    .topbar-right span.active { color: var(--cyan); }
-    .topbar-right span:hover { color: var(--white); }
+    .topbar-lang span.active { color: var(--cyan); }
+    .topbar-lang span:hover  { color: var(--white); }
+    .tb-sep { color: var(--border) !important; cursor: default !important; }
+
+    /* Hamburger nel topbar */
+    .tb-hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      touch-action: manipulation;
+    }
+
+    .tb-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease, background .2s;
+    }
+
+    .tb-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
+    .tb-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .tb-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
+
+    /* Su desktop nascondi hamburger nel topbar */
+    @media(min-width: 769px) {
+      .tb-hamburger { display: none; }
+    }
 
     /* Globe active presence pill */
     .globe-active-pill {
@@ -1032,6 +1061,10 @@
     @media(max-width: 768px) {
       .container { padding: 0 18px; }
 
+      /* Su mobile: topbar sticky prende il posto della navbar */
+      .navbar { display: none !important; }
+      .topbar { position: sticky; top: 0; z-index: 200; }
+
       /* Hero — single column, fully centered */
       .hero .container {
         grid-template-columns: 1fr;
@@ -1268,10 +1301,6 @@
     .citem:active { border-color: var(--cyan); }
 
     /* Hamburger → X animation */
-    .hamburger span { transition: transform .3s ease, opacity .3s ease, background .2s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
-    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
 
     /* Video mute button */
     .vid-mute-btn {
@@ -1337,13 +1366,16 @@
 
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
-    <div class="container" style="justify-content:center;">
-      <div class="topbar-right">
-        <span onclick="switchLang('it')" style="cursor:pointer;" id="tb-it">ITA</span>
-        <span style="color:var(--border);">|</span>
-        <span onclick="switchLang('en')" style="cursor:pointer;" id="tb-en" class="active">ENG</span>
-        <span style="color:var(--border);">|</span>
-        <span onclick="switchLang('es')" style="cursor:pointer;" id="tb-es">ESP</span>
+    <div class="container">
+      <div class="topbar-lang">
+        <span onclick="switchLang('it')" id="tb-it">ITA</span>
+        <span class="tb-sep">|</span>
+        <span onclick="switchLang('en')" id="tb-en" class="active">ENG</span>
+        <span class="tb-sep">|</span>
+        <span onclick="switchLang('es')" id="tb-es">ESP</span>
+      </div>
+      <div class="tb-hamburger" id="hamburgerBtn" role="button" aria-label="Menu">
+        <span></span><span></span><span></span>
       </div>
     </div>
   </div>
@@ -1399,7 +1431,6 @@
           <span class="lang-btn" onclick="switchLang('es')">ESP</span>
         </div>
       </div>
-      <div class="hamburger" id="hamburgerBtn" aria-label="Menu" role="button"><span></span><span></span><span></span></div>
     </div>
   </nav>
 
