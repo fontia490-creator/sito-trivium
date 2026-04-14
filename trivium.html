@@ -862,185 +862,8 @@
 
     /* ========== RESPONSIVE ========== */
     @media(max-width:1024px) {
-      #stats .container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .products-panel.active {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .footer-main .container {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .testi-track {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .process-steps {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .ps:not(:last-child)::after {
-        display: none;
-      }
-    }
-
-    @media(max-width:768px) {
-
-      .hero .container,
-      #chi-siamo .container,
-      #business-plan .container,
-      .contact-wrapper {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links,
-      .nav-actions {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-        padding: 10px;
-        min-width: 44px;
-        min-height: 44px;
-        align-items: center;
-        justify-content: center;
-      }
-
-      /* HERO: stack logo under text, scale down */
-      .hero .container {
-        gap: 36px;
-        padding: 60px 20px 40px;
-      }
-      .hero-visual {
-        min-width: unset;
-        width: 100%;
-        order: -1;
-      }
-      .logo-scene {
-        width: 260px;
-        height: 260px;
-        margin: 0 auto;
-      }
-      .trivium-logo-hero {
-        width: 230px;
-        height: 230px;
-      }
-      .t-ring:nth-child(1){width:150px;height:150px;}
-      .t-ring:nth-child(2){width:195px;height:195px;}
-      .t-ring:nth-child(3){width:235px;height:235px;}
-      .t-ring:nth-child(4){width:260px;height:260px;}
-      .orbit-wrap{width:195px;height:195px;}
-      .orbit-wrap2{width:150px;height:150px;}
-      .logo-tagline{margin-top:-24px;}
-      .logo-tagline .lt-name{font-size:1.4rem;}
-      .logo-tagline .lt-sub{font-size:.75rem;letter-spacing:.18em;}
-
-      .hero h1 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-      .hero p { font-size: .95rem; }
-      .hero-cta { gap: 10px; }
-      .hero-cta .btn { padding: 12px 20px; font-size: .88rem; min-height: 44px; }
-      .hero-stats { gap: 20px; flex-wrap: wrap; }
-      .hstat .n { font-size: 1.6rem; }
-
-      /* PROBLEM section */
-      .problem-grid { grid-template-columns: 1fr; gap: 36px; }
-      .prob-stats { grid-template-columns: 1fr 1fr; }
-      .problem-content { padding: 70px 0; }
-
-      /* TECHNOLOGY / SCHEMA */
-      .schema-cards { grid-template-columns: 1fr 1fr; gap: 20px; }
-      .sc-card .icon { width: 100px; height: 100px; }
-
-      /* PRODUCTS */
-      .prod-intro { grid-template-columns: 1fr; gap: 36px; }
-      .prod-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-      .vcard-media { height: 200px; }
-
-      /* HOW IT WORKS */
-      .steps-flow {
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-      }
-      .steps-flow::before { display: none; }
-      .step { padding: 0 8px; }
-
-      /* DATA */
-      .data-grid { grid-template-columns: 1fr; gap: 28px; }
-
-      /* STATS BAR */
-      #statsbar .container { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .stb .n { font-size: 2rem; }
-
-      /* PLANS */
-      .plans-row { grid-template-columns: 1fr; gap: 16px; }
-
-      /* CONTACT */
-      .contact-grid { grid-template-columns: 1fr; gap: 28px; }
-      .fgrow { grid-template-columns: 1fr; }
-
-      /* GLOBE — height gestita da clamp nel blocco globe */
-      #city-panel { width: 180px; padding: 14px 12px; }
-
-      /* WHERE STATS */
-      .where-stats { gap: 28px; padding: 36px 20px; }
-
-      /* FOOTER */
-      .products-panel.active { grid-template-columns: 1fr; }
-      .testi-track { grid-template-columns: 1fr; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .footer-main .container { grid-template-columns: 1fr; }
-      .cta-banner { padding: 36px 28px; }
-      .form-row { grid-template-columns: 1fr; }
-      #stats .container { grid-template-columns: 1fr 1fr; }
-
-      /* CTA BAND */
-      .cta-content { padding: 60px 20px; }
-      .cta-btns { flex-direction: column; align-items: center; }
-      .cta-btns .btn { width: 100%; max-width: 320px; justify-content: center; min-height: 44px; }
-    }
-
-    /* ===== EXTRA SMALL PHONES (max 480px) ===== */
-    @media(max-width:480px) {
-      .container { padding: 0 16px; }
-
-      .logo-scene { width: 200px; height: 200px; }
-      .trivium-logo-hero { width: 180px; height: 180px; }
-      .t-ring:nth-child(1){width:115px;height:115px;}
-      .t-ring:nth-child(2){width:148px;height:148px;}
-      .t-ring:nth-child(3){width:180px;height:180px;}
-      .t-ring:nth-child(4){width:200px;height:200px;}
-      .orbit-wrap{width:148px;height:148px;}
-      .orbit-wrap2{width:115px;height:115px;}
-
-      .hero h1 { font-size: clamp(1.6rem, 8vw, 2rem); }
-      .hero-stats { gap: 12px; }
-      .hstat .n { font-size: 1.4rem; }
-
-      .schema-cards { grid-template-columns: 1fr; }
-      .prod-grid { grid-template-columns: 1fr; }
-      .prob-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .pstat { padding: 16px; }
-      .pstat .sn { font-size: 1.8rem; }
-
-      .steps-flow { grid-template-columns: 1fr; }
-      .step-num { width: 56px; height: 56px; font-size: 1.2rem; }
-
-      #statsbar .container { grid-template-columns: 1fr 1fr; }
-
-      /* heights gestite da clamp */
-      #city-panel { max-width: 300px; }
-
-      .plans-row { grid-template-columns: 1fr; }
-      .plan { padding: 24px 20px; }
-      .plan .price { font-size: 2rem; }
-
-      .sc-card .icon { width: 80px; height: 80px; }
-
-      footer .footer-btm .container { flex-direction: column; text-align: center; gap: 8px; }
+      .footer-main .container { grid-template-columns: 1fr 1fr; }
+      .schema-cards { grid-template-columns: repeat(2,1fr); }
     }
 
     /* ===== IOS SAFE AREA ===== */
@@ -1201,11 +1024,61 @@
     @media(max-width: 768px) {
       .container { padding: 0 18px; }
 
-      /* Hero */
-      .hero .container { gap: 32px; padding-top: 56px; padding-bottom: 36px; }
-      .hero p { font-size: clamp(.88rem, 3.5vw, 1.05rem); }
-      .hero-cta { gap: 10px; }
-      .hero-stats { gap: 18px; padding-top: 20px; flex-wrap: wrap; }
+      /* Hero — single column, fully centered */
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 32px;
+        padding-top: 56px;
+        padding-bottom: 36px;
+      }
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero-visual {
+        width: 100% !important;
+        min-width: unset !important;
+        order: -1;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden;
+      }
+      .hero-cta { justify-content: center; gap: 10px; }
+      .hero-stats { justify-content: center; flex-wrap: wrap; gap: 18px; padding-top: 20px; }
+      .hero p { margin-left: auto; margin-right: auto; font-size: clamp(.88rem, 3.5vw, 1.05rem); }
+      .divider, .bar { margin-left: auto; margin-right: auto; }
+
+      /* Logo: bigger on mobile, rings scaled proportionally */
+      .logo-scene {
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: clamp(220px, 78vw, 310px) !important;
+        height: clamp(220px, 78vw, 310px) !important;
+      }
+      .trivium-logo-hero {
+        display: block !important;
+        margin: 0 auto !important;
+        width: clamp(185px, 66vw, 260px) !important;
+        height: clamp(185px, 66vw, 260px) !important;
+      }
+      .t-ring:nth-child(1) { width: 175px; height: 175px; }
+      .t-ring:nth-child(2) { width: 220px; height: 220px; }
+      .t-ring:nth-child(3) { width: 265px; height: 265px; }
+      .t-ring:nth-child(4) { display: none; }
+      .orbit-wrap  { width: 220px; height: 220px; }
+      .orbit-wrap2 { width: 175px; height: 175px; }
+      .logo-tagline { text-align: center !important; width: 100%; margin-top: -10px !important; }
+      .logo-tagline .lt-sub { color: #ffffff !important; }
+
+      /* Title smaller in proportion to the bigger logo */
+      .hero h1 { font-size: clamp(1.6rem, 6.5vw, 2.1rem) !important; }
+
+      /* Section description text: white on mobile */
+      .lead, .sec-sub { color: #ffffff !important; }
       .hstat .n { font-size: 1.55rem; }
       .hstat .l { font-size: .72rem; }
 
@@ -1433,41 +1306,6 @@
     .cp { min-height: 34px; display: inline-flex; align-items: center; }
     .vcard-link { min-height: 44px; display: inline-flex; align-items: center; }
     .lang-btn { min-height: 34px; min-width: 36px; }
-
-    /* Hero visual center fix on mobile */
-    @media(max-width: 768px) {
-      .hero .container { text-align: center; }
-      .hero-left { display: flex; flex-direction: column; align-items: center; }
-      .hero-cta { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .hero p { margin-left: auto; margin-right: auto; }
-      .divider, .bar { margin-left: auto; margin-right: auto; }
-      .hero-visual {
-        align-items: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        min-width: unset !important;
-      }
-      .logo-scene {
-        margin: 0 auto !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-      }
-      .logo-tagline {
-        text-align: center !important;
-        width: 100%;
-      }
-      .trivium-logo-hero {
-        display: block;
-        margin: 0 auto;
-      }
-    }
-
-    /* Smooth scroll indicator for globe hint on mobile */
-    @media(max-width: 768px) {
-      #globe-hint { content: 'Touch to rotate · Pinch to zoom'; }
-    }
 
     </style>
 </head>
@@ -1784,7 +1622,7 @@
       <div class="cp-name" id="cp-name"></div>
       <div class="cp-region" id="cp-region">Italy · Europe</div>
       <div class="cp-desc" id="cp-desc">Trivium operational headquarters. Smart parking and IoT deployment hub for Southern Europe.</div>
-      <span class="cp-tag" id="cp-tag" style="color:#00d4e8;border-color:rgba(0,212,232,.4);background:rgba(0,212,232,.08);">Active</span>
+      <span class="cp-tag" id="cp-tag" style="color:#4ade80;border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.08);">Active Presence</span>
     </div>
   </div>
 
@@ -2431,7 +2269,7 @@
       <!-- Product 1 — WEP01 -->
       <div class="vcard rv d1">
         <div class="vcard-media">
-          <video autoplay muted loop playsinline preload="none" data-src="uploads/Low-Profile_Resilience__version_1.mp4"><source src="uploads/Low-Profile_Resilience__version_1.mp4" type="video/mp4"/></video>
+          <video autoplay muted loop playsinline><source src="uploads/Low-Profile_Resilience__version_1.mp4" type="video/mp4"/></video>
           <div class="vcard-overlay"></div>
           <div class="vcard-badge">LOW-PROFILE</div>
         </div>
@@ -3385,14 +3223,16 @@ function togBill(){
         const muteBtn = document.createElement('div');
         muteBtn.className = 'vid-mute-btn';
         muteBtn.setAttribute('aria-label', 'Toggle sound');
-        muteBtn.innerHTML = '🔇';
+        const svgMuted = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+        const svgUnmuted = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        muteBtn.innerHTML = svgMuted;
         muteBtn.title = 'Tap to unmute';
         media.appendChild(muteBtn);
 
         muteBtn.addEventListener('click', function(e) {
           e.stopPropagation();
           vid.muted = !vid.muted;
-          muteBtn.innerHTML = vid.muted ? '🔇' : '🔊';
+          muteBtn.innerHTML = vid.muted ? svgMuted : svgUnmuted;
         });
 
         // On touch devices: add play-overlay (video starts paused until tap)
