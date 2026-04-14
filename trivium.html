@@ -255,20 +255,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 20px;
+      padding: 14px 20px;
       background: var(--bg-deep);
+      border-top: 1px solid rgba(0,212,232,.1);
+    }
+    .gap-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 80, 160, 0.55);
+      border: 1.5px solid rgba(0, 140, 220, 0.5);
+      border-radius: 999px;
+      padding: 7px 18px;
       font-size: .82rem;
-      font-weight: 600;
-      color: #4ade80;
-      border-top: 1px solid rgba(74,222,128,.15);
+      font-weight: 700;
+      color: #e0f0ff;
+      letter-spacing: .04em;
+      box-shadow: 0 0 18px rgba(0, 100, 200, 0.25);
     }
     .gap-dot {
-      width: 8px; height: 8px;
+      width: 9px; height: 9px;
       border-radius: 50%;
       background: #4ade80;
-      box-shadow: 0 0 6px #4ade80;
+      box-shadow: 0 0 7px #4ade80, 0 0 14px rgba(74,222,128,.4);
       animation: pulse 1.5s infinite;
+      flex-shrink: 0;
     }
 
     /* ========== NAVBAR ========== */
@@ -1694,9 +1705,6 @@
     <canvas id="globe-canvas"></canvas>
     <div id="globe-hint" id="globe-hint-text">Hover 1s · Scroll to zoom · Touch to rotate</div>
     <div id="globe-tooltip"><span id="tt-city">City</span><div class="tt-sub" id="tt-sub"></div></div>
-    <div id="globe-info">
-      <div class="gi-item"><div class="gi-dot" style="background:#4ade80;box-shadow:0 0 7px #4ade80;"></div><span data-i18n="where_leg_pre">Active Presence</span></div>
-    </div>
     <div class="globe-zoom">
       <div class="gz-btn" id="gzIn">+</div>
       <div class="gz-btn" id="gzOut">−</div>
@@ -1715,10 +1723,10 @@
   </div>
 
   <div class="globe-active-pill">
-    <span class="gap-dot"></span>
-    <span data-i18n="where_leg_pre">Active Presence</span>
-    <span style="color:var(--gray);margin:0 6px;">·</span>
-    <span style="color:var(--cyan);font-weight:700;">50+ Countries</span>
+    <div class="gap-badge">
+      <span class="gap-dot"></span>
+      <span data-i18n="where_leg_pre">Active Presence</span>
+    </div>
   </div>
 
   <div class="where-stats">
