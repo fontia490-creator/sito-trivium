@@ -245,10 +245,9 @@
     .tb-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .tb-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
 
-    /* Su desktop nascondi hamburger e topbar-lang (usano la navbar) */
+    /* Su desktop nascondi il topbar intero (usa la navbar) */
     @media(min-width: 769px) {
-      .tb-hamburger { display: none; }
-      .topbar-lang  { display: none; }
+      .topbar       { display: none; }
     }
 
     /* Globe active presence pill */
