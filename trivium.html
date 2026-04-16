@@ -530,6 +530,12 @@
       padding-top: 30px;
     }
 
+    .hstat {
+      cursor: pointer;
+      user-select: none;
+      transition: transform .18s;
+    }
+    .hstat:hover { transform: scale(1.06); }
     .hstat .n {
       font-size: 2.1rem;
       font-weight: 900;
@@ -3237,7 +3243,7 @@ function animNum(el){
 const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
 },{threshold:.3});
-document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid,.where-stats').forEach(s=>cObs.observe(s));
+document.querySelectorAll('.hero-trust,.hero-stats,.prob-stats,#statsbar,.metrics-col,.data-grid,.where-stats').forEach(s=>cObs.observe(s));
 
 // ===== TAP-TO-REPLAY COUNTERS =====
 document.querySelectorAll('.hstat, .pstat, .stb, .metric-card, .where-stats > div').forEach(function(el) {
