@@ -3240,7 +3240,7 @@ function animNum(el){
 const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
 },{threshold:.3});
-document.querySelectorAll('.hero-trust,.hero-stats,.prob-stats,#statsbar,.metrics-col,.data-grid,.where-stats').forEach(s=>cObs.observe(s));
+document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid,.where-stats').forEach(s=>cObs.observe(s));
 
 // ===== TAP-TO-REPLAY COUNTERS =====
 document.querySelectorAll('.hstat, .pstat, .stb, .metric-card, .where-stats > div').forEach(function(el) {
@@ -3309,20 +3309,7 @@ const perfObs = new IntersectionObserver(es => {
 const perfBox = document.getElementById('perf-box');
 if (perfBox) perfObs.observe(perfBox);
 
-// ---- HERO STATS: animate immediately on load ----
-window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.hero-stats [data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    let n = 0; const step = Math.max(1, Math.ceil(target/60));
-    const iv = setInterval(() => {
-      n = Math.min(n+step, target);
-      el.textContent = n + (target >= 100 ? '+' : target === 99 ? '%' : '+');
-      if(n >= target) clearInterval(iv);
-    }, 20);
-  });
-});
-
-// ---- HERO STATS: animate immediately on load ----
+// ---- HERO STATS: animate on load ----
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.hero-stats [data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
