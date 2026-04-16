@@ -533,9 +533,12 @@
     .hstat {
       cursor: pointer;
       user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
       transition: transform .18s;
     }
     .hstat:hover { transform: scale(1.06); }
+    .hstat:active { transform: scale(1.09); }
     .hstat .n {
       font-size: 2.1rem;
       font-weight: 900;
@@ -1543,19 +1546,19 @@
         <h1><span data-i18n="hero_prefix">From</span> <span id="typed-text">Chaos</span> <span data-i18n="hero_suffix">to Smart Cities</span></h1>
         <p data-i18n="hero_desc">Trivium deploys AI-powered IoT terminals and sensor networks that transform parking infrastructure into real-time, revenue-generating urban intelligence.</p>
         <div class="hero-stats">
-          <div class="hstat">
+          <div class="hstat" onclick="replayHstat(this)">
             <div class="n" data-count="500" data-suffix="+">0</div>
             <div class="l" data-i18n="stat_cities">Connected Cities</div>
           </div>
-          <div class="hstat">
+          <div class="hstat" onclick="replayHstat(this)">
             <div class="n" data-count="10" data-suffix="+">0</div>
             <div class="l" data-i18n="stat_spaces">M+ Spaces Monitored</div>
           </div>
-          <div class="hstat">
+          <div class="hstat" onclick="replayHstat(this)">
             <div class="n" data-count="99" data-suffix="%">0</div>
             <div class="l">Uptime SLA</div>
           </div>
-          <div class="hstat">
+          <div class="hstat" onclick="replayHstat(this)">
             <div class="n" data-count="34" data-suffix="%">0</div>
             <div class="l" data-i18n="stat_revenue">Revenue Growth</div>
           </div>
@@ -3250,6 +3253,16 @@ const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
 },{threshold:.3});
 document.querySelectorAll('.hero-trust,.prob-stats,#statsbar,.metrics-col,.data-grid,.where-stats').forEach(s=>cObs.observe(s));
+
+// ===== HERO STAT REPLAY =====
+function replayHstat(el){
+  el.classList.add('stat-flash');
+  setTimeout(function(){ el.classList.remove('stat-flash'); }, 400);
+  el.querySelectorAll('[data-count]').forEach(function(num){
+    num.textContent = '0';
+    animNum(num);
+  });
+}
 
 // ===== TAP-TO-REPLAY COUNTERS =====
 document.querySelectorAll('.hstat, .pstat, .stb, .metric-card, .where-stats > div').forEach(function(el) {
