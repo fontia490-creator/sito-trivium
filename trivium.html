@@ -426,7 +426,7 @@
       align-items: center;
       padding: clamp(64px, 10vw, 100px) 0 clamp(40px, 8vw, 80px);
       position: relative;
-      overflow: visible;
+      overflow: hidden;
     }
 
     /* glow bg */
@@ -1034,11 +1034,11 @@
     /* ===== LOGO HERO — stile pioteye ===== */
     .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;z-index:5;min-width:0;width:100%;}
     .logo-scene{position:relative;width:clamp(200px,42vw,420px);height:clamp(200px,42vw,420px);display:flex;align-items:center;justify-content:center;}
-    .logo-scene::before{content:'';position:absolute;inset:-80px;border-radius:50%;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.08) 35%,transparent 55%);
+    .logo-scene::before{content:'';position:absolute;inset:0;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.1) 35%,transparent 70%);
       animation:bgPulse 3.5s ease-in-out infinite;}
-    .logo-scene::after{content:'';position:absolute;inset:-110px;border-radius:50%;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 50%);
+    .logo-scene::after{content:'';position:absolute;inset:-30px;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 65%);
       animation:bgPulse 3.5s ease-in-out infinite reverse;}
     @keyframes bgPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.18);opacity:.6;}}
     .t-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,232,.18);
@@ -1141,7 +1141,7 @@
         order: -1;
         align-items: center !important;
         justify-content: center !important;
-        overflow: visible;
+        overflow: hidden;
       }
       .hero-cta { justify-content: center; gap: 10px; }
       .hero-stats { justify-content: center; flex-wrap: wrap; gap: 18px; padding-top: 20px; }
@@ -1192,8 +1192,7 @@
       .vcard-media { height: clamp(200px, 48vw, 280px) !important; }
 
       /* No horizontal overflow anywhere */
-      html, body { max-width: 100%; overflow-x: hidden; }
-      section, .container { max-width: 100%; overflow-x: clip; }
+      html, body, section, .container { max-width: 100%; overflow-x: hidden; }
       .hstat .n { font-size: 1.55rem; }
       .hstat .l { font-size: .72rem; }
 
@@ -3427,6 +3426,22 @@ function togBill(){
       document.querySelectorAll('.vcard-media').forEach(media => {
         const vid = media.querySelector('video');
         if (!vid) return;
+
+        // Add mute/unmute button
+        const muteBtn = document.createElement('div');
+        muteBtn.className = 'vid-mute-btn';
+        muteBtn.setAttribute('aria-label', 'Toggle sound');
+        const svgMuted = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+        const svgUnmuted = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        muteBtn.innerHTML = svgMuted;
+        muteBtn.title = 'Tap to unmute';
+        media.appendChild(muteBtn);
+
+        muteBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          vid.muted = !vid.muted;
+          muteBtn.innerHTML = vid.muted ? svgMuted : svgUnmuted;
+        });
 
         // On touch devices: add play-overlay (video starts paused until tap)
         if (isTouchDevice) {
