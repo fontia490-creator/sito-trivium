@@ -1192,7 +1192,8 @@
       .vcard-media { height: clamp(200px, 48vw, 280px) !important; }
 
       /* No horizontal overflow anywhere */
-      html, body, section, .container { max-width: 100%; overflow-x: hidden; }
+      html, body { max-width: 100%; overflow-x: hidden; }
+      section, .container { max-width: 100%; overflow-x: clip; }
       .hstat .n { font-size: 1.55rem; }
       .hstat .l { font-size: .72rem; }
 
