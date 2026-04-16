@@ -3237,10 +3237,11 @@ rvEls.forEach(e=>obs.observe(e));
 
 // ===== COUNTER ANIMATION =====
 function animNum(el){
+  if(el._iv) clearInterval(el._iv);
   const t=parseInt(el.dataset.count);
   const sfx=el.dataset.suffix!==undefined?el.dataset.suffix:(t>=100?'+':'');
-  let n=0;const step=Math.max(1,Math.ceil(t/55));
-  const iv=setInterval(()=>{n=Math.min(n+step,t);el.textContent=n+sfx;if(n>=t)clearInterval(iv);},22);
+  let n=0; const step=Math.max(1,Math.ceil(t/55));
+  el._iv=setInterval(()=>{n=Math.min(n+step,t);el.textContent=n+sfx;if(n>=t){clearInterval(el._iv);el._iv=null;}},22);
 }
 const cObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animNum);cObs.unobserve(e.target);}});
