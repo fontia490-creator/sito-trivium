@@ -426,7 +426,7 @@
       align-items: center;
       padding: clamp(64px, 10vw, 100px) 0 clamp(40px, 8vw, 80px);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     /* glow bg */
@@ -1034,11 +1034,11 @@
     /* ===== LOGO HERO — stile pioteye ===== */
     .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;z-index:5;min-width:0;width:100%;}
     .logo-scene{position:relative;width:clamp(200px,42vw,420px);height:clamp(200px,42vw,420px);display:flex;align-items:center;justify-content:center;}
-    .logo-scene::before{content:'';position:absolute;inset:0;border-radius:50%;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.1) 35%,transparent 70%);
+    .logo-scene::before{content:'';position:absolute;inset:-80px;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.08) 35%,transparent 55%);
       animation:bgPulse 3.5s ease-in-out infinite;}
-    .logo-scene::after{content:'';position:absolute;inset:-30px;border-radius:50%;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 65%);
+    .logo-scene::after{content:'';position:absolute;inset:-110px;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 50%);
       animation:bgPulse 3.5s ease-in-out infinite reverse;}
     @keyframes bgPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.18);opacity:.6;}}
     .t-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,232,.18);
@@ -1141,7 +1141,7 @@
         order: -1;
         align-items: center !important;
         justify-content: center !important;
-        overflow: hidden;
+        overflow: visible;
       }
       .hero-cta { justify-content: center; gap: 10px; }
       .hero-stats { justify-content: center; flex-wrap: wrap; gap: 18px; padding-top: 20px; }
