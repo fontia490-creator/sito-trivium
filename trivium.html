@@ -3331,10 +3331,18 @@ const perfObs = new IntersectionObserver(es => {
 const perfBox = document.getElementById('perf-box');
 if (perfBox) perfObs.observe(perfBox);
 
-// ---- HERO STATS: animate on load ----
-window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.hero-stats [data-count]').forEach(animNum);
-});
+// ---- HERO STATS: animate every time they enter viewport ----
+const hstatObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('[data-count]').forEach(function(num){
+        num.textContent = '0';
+        animNum(num);
+      });
+    }
+  });
+}, { threshold: 0.6 });
+document.querySelectorAll('.hero-stats .hstat').forEach(el => hstatObs.observe(el));
 
 // ===== BAR CHART =====
 const barData7={labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],vals:[3200,4100,3800,4600,5100,4300,3700]};
