@@ -1545,20 +1545,20 @@
         </div>
         <div class="hero-stats">
           <div class="hstat">
-            <div class="n" data-count="500">0</div>
+            <div class="n" data-count="500" data-suffix="+">0</div>
             <div class="l" data-i18n="stat_cities">Connected Cities</div>
           </div>
           <div class="hstat">
-            <div class="n" data-count="10">0</div>
+            <div class="n" data-count="10" data-suffix="+">0</div>
             <div class="l" data-i18n="stat_spaces">M+ Spaces Monitored</div>
           </div>
           <div class="hstat">
-            <div class="n" data-count="99">0</div>
-            <div class="l">% Uptime SLA</div>
+            <div class="n" data-count="99" data-suffix="%">0</div>
+            <div class="l">Uptime SLA</div>
           </div>
           <div class="hstat">
-            <div class="n" data-count="34">0</div>
-            <div class="l" data-i18n="stat_revenue">% Revenue Growth</div>
+            <div class="n" data-count="34" data-suffix="%">0</div>
+            <div class="l" data-i18n="stat_revenue">Revenue Growth</div>
           </div>
         </div>
       </div>
@@ -3316,15 +3316,7 @@ if (perfBox) perfObs.observe(perfBox);
 
 // ---- HERO STATS: animate on load ----
 window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.hero-stats [data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    let n = 0; const step = Math.max(1, Math.ceil(target/60));
-    const iv = setInterval(() => {
-      n = Math.min(n+step, target);
-      el.textContent = n + (target >= 100 ? '+' : target === 99 ? '%' : '+');
-      if(n >= target) clearInterval(iv);
-    }, 20);
-  });
+  document.querySelectorAll('.hero-stats [data-count]').forEach(animNum);
 });
 
 // ===== BAR CHART =====
