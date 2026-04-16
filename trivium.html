@@ -1034,11 +1034,11 @@
     /* ===== LOGO HERO — stile pioteye ===== */
     .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;z-index:5;min-width:0;width:100%;}
     .logo-scene{position:relative;width:clamp(200px,42vw,420px);height:clamp(200px,42vw,420px);display:flex;align-items:center;justify-content:center;}
-    .logo-scene::before{content:'';position:absolute;inset:-60px;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.08) 40%,transparent 68%);
+    .logo-scene::before{content:'';position:absolute;inset:-80px;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.18) 0%,rgba(0,180,200,.08) 35%,transparent 55%);
       animation:bgPulse 3.5s ease-in-out infinite;}
-    .logo-scene::after{content:'';position:absolute;inset:-80px;
-      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 60%);
+    .logo-scene::after{content:'';position:absolute;inset:-110px;border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,rgba(0,212,232,.07) 0%,transparent 50%);
       animation:bgPulse 3.5s ease-in-out infinite reverse;}
     @keyframes bgPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.18);opacity:.6;}}
     .t-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,232,.18);
