@@ -2021,11 +2021,10 @@
   }
   document.getElementById('gzIn').onclick  = () => applyZoom(-0.4);
   document.getElementById('gzOut').onclick = () => applyZoom(+0.4);
+  let spinBoost=0;
   document.getElementById('gzReset').onclick=()=>{
-    rotX=0.22; rotY=0; camDist=2.6;
-    targetCamDist=2.6; targetRotX=0.22; targetRotY=0;
     autoRot=true; animating=false;
-    panel.classList.remove('visible');
+    spinBoost=0.055; // kick fast spin
   };
 
   // Tasti rotazione sinistra/destra — tenere premuto
@@ -2125,7 +2124,9 @@
       if(Math.abs(dx)<0.001&&Math.abs(dy)<0.001) animating=false;
     }
 
-    if(autoRot) rotY+=0.0008;
+    if(spinBoost>0.0002){ rotY+=spinBoost; spinBoost*=0.975; }
+    else if(spinBoost>0){ spinBoost=0; }
+    else if(autoRot){ rotY+=0.0008; }
     group.rotation.x=rotX; group.rotation.y=rotY;
 
     // Label opacity: show when close enough
