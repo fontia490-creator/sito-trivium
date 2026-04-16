@@ -2809,6 +2809,7 @@
         btn_explore:'Explore Technology ↓', btn_expert:'Talk to an Expert',
         stat_cities:'Connected Cities', stat_spaces:'M+ Spaces Monitored', stat_revenue:'% Revenue Growth',
         typed_words:['Chaos','Complexity','Congestion','Lost Revenue'],
+        typed_prefixes:['From','From','From','From'],
         // WHERE WE ARE
         where_badge:'Global Presence', where_title:'Where We Are',
         where_lead:'Trivium is active across 5 continents, with local teams ensuring fast deployment and dedicated support in every market we serve.',
@@ -2898,11 +2899,12 @@
       it: {
         nav_problem:'Il Problema', nav_tech:'Tecnologia', nav_solutions:'Soluzioni', nav_plans:'Piani', nav_contact:'Contatti', nav_where:'Dove Siamo',
         btn_contact:'Contattaci', btn_demo:'Demo Gratuita →',
-        hero_tag:'Piattaforma Intelligente B2B', hero_prefix:'Dallo', hero_suffix:'alle Smart Cities',
+        hero_tag:'Piattaforma Intelligente B2B', hero_prefix:'Dal', hero_suffix:'alle Smart Cities',
         hero_desc:'Trivium distribuisce terminali IoT potenziati dall\'AI e reti di sensori che trasformano le infrastrutture di parcheggio in intelligenza urbana in tempo reale.',
         btn_explore:'Esplora la Tecnologia ↓', btn_expert:'Parla con un Esperto',
         stat_cities:'Città Connesse', stat_spaces:'M+ Posti Monitorati', stat_revenue:'% Aumento Ricavi',
         typed_words:['Caos','Complessità','Congestione','Perdite'],
+        typed_prefixes:['Dal','Dalla','Dalla','Dalle'],
         where_badge:'Presenza Globale', where_title:'Dove Siamo',
         where_lead:'Trivium è attiva in 5 continenti, con team locali che garantiscono deployment rapido e supporto dedicato in ogni mercato.',
         where_hq_title:'Sede Centrale', where_hq_addr:'Shenzhen Technology Park<br>Nanshan District, Shenzhen, Cina',
@@ -2988,6 +2990,7 @@
         btn_explore:'Explorar Tecnología ↓', btn_expert:'Hablar con un Experto',
         stat_cities:'Ciudades Conectadas', stat_spaces:'M+ Plazas Monitorizadas', stat_revenue:'% Crecimiento de Ingresos',
         typed_words:['Caos','Complejidad','Congestión','Pérdidas'],
+        typed_prefixes:['Del','De la','De la','De las'],
         where_badge:'Presencia Global', where_title:'Dónde Estamos',
         where_lead:'Trivium está activa en 5 continentes, con equipos locales que garantizan un despliegue rápido y soporte dedicado en cada mercado.',
         where_hq_title:'Sede Central', where_hq_addr:'Shenzhen Technology Park<br>Nanshan District, Shenzhen, China',
@@ -3087,8 +3090,12 @@
       const nt  = (el,k)=> { if(el&&t[k]!==undefined) el.textContent=t[k]; };
       const nh  = (el,k)=> { if(el&&t[k]!==undefined) el.innerHTML=t[k]; };
 
-      // 2. typed words
+      // 2. typed words + per-word prefixes
       words.length=0; t.typed_words.forEach(w=>words.push(w));
+      heroPrefixes = t.typed_prefixes || t.typed_words.map(()=>t.hero_prefix);
+      // reset to prefix of current word immediately
+      const pfxEl = document.querySelector('[data-i18n="hero_prefix"]');
+      if (pfxEl) pfxEl.textContent = heroPrefixes[wi] || t.hero_prefix;
 
       // 3. PROBLEM
       const probChip = $('#problem .chip'); if(probChip){const sp=probChip.querySelector('span:not(.blink)'); if(sp) sp.textContent=t.prob_badge; else probChip.childNodes[probChip.childNodes.length-1].textContent=' '+t.prob_badge;}
@@ -3184,14 +3191,24 @@
       if(tbs) tbs.classList.add('active');
     }
 
-    // ---- TYPED HERO (from Pioteye) ----
+    // ---- TYPED HERO ----
     const words = ['Chaos', 'Complexity', 'Congestion', 'Lost Revenue'];
+    let heroPrefixes = ['From','From','From','From'];
     let wi = 0, ci2 = 0, del = false;
     function typeHero() {
       const el = document.getElementById('typed-text'); if (!el) return;
       const w = words[wi];
       if (!del) { el.textContent = w.slice(0, ++ci2); if (ci2 === w.length) { setTimeout(() => del = true, 1800); } }
-      else { el.textContent = w.slice(0, --ci2); if (ci2 === 0) { del = false; wi = (wi + 1) % words.length; } }
+      else {
+        el.textContent = w.slice(0, --ci2);
+        if (ci2 === 0) {
+          del = false;
+          wi = (wi + 1) % words.length;
+          // update prefix for next word
+          const pfxEl = document.querySelector('[data-i18n="hero_prefix"]');
+          if (pfxEl && heroPrefixes[wi]) pfxEl.textContent = heroPrefixes[wi];
+        }
+      }
       setTimeout(typeHero, del ? 60 : 100);
     }
     typeHero();
