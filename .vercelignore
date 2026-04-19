@@ -1,0 +1,19 @@
+# Audit and session files
+audit.jsonl
+*.jsonl
+outputs/
+
+# Screenshots and loose files not used by the site
+Screenshot*.png
+pomelli_creative_image_9_16_0410.png
+pomelli_creative_video_9_16_0409-3_HD.mp4
+pomelli_creative_video_9_16_0409-4_HD.mp4
+"pomelli_creative_video_9_16_0410 copia 2.mp4"
+"pomelli_creative_video_9_16_0410 copia.mp4"
+"pomelli_creative_video_9_16_0410 copia 3.mp4"
+pomelli_creative_video_9_16_0410.mp4
+pomelli_photoshoot_image_9_16_0410.png
+pomelli_creative_video_9_16_0409-3_HD.mp4
+
+# Screenshots inside products/
+products/Screenshot*.png
