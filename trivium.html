@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
   <meta name="theme-color" content="#1a1e24" />
   <title>Trivium — Where Paths Converge</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <style>
     /* ========== RESET & VARIABLES ========== */
     *,
@@ -375,6 +376,27 @@
       gap: 10px;
       align-items: center;
     }
+
+    /* SEARCH */
+    .nav-search{position:relative;display:flex;align-items:center;}
+    .search-toggle{background:none;border:1px solid rgba(0,212,232,.25);border-radius:20px;color:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;width:34px;height:34px;transition:all .2s;flex-shrink:0;}
+    .search-toggle:hover,.search-toggle.open{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,232,.08);}
+    .search-toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+    .search-box{position:absolute;right:0;top:44px;width:280px;background:rgba(18,24,36,.97);border:1px solid rgba(0,212,232,.3);border-radius:14px;padding:10px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;z-index:200;}
+    .search-box.open{display:block;}
+    .search-input-wrap{display:flex;align-items:center;gap:8px;background:rgba(0,212,232,.06);border:1px solid rgba(0,212,232,.2);border-radius:10px;padding:8px 12px;}
+    .search-input-wrap svg{width:14px;height:14px;stroke:var(--cyan);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
+    .search-input{background:none;border:none;outline:none;color:var(--white);font-size:.88rem;width:100%;font-family:inherit;}
+    .search-input::placeholder{color:rgba(255,255,255,.3);}
+    .search-results{margin-top:8px;display:flex;flex-direction:column;gap:2px;max-height:240px;overflow-y:auto;}
+    .search-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:background .15s;text-decoration:none;}
+    .search-item:hover{background:rgba(0,212,232,.1);}
+    .search-item-icon{width:28px;height:28px;border-radius:8px;background:rgba(0,212,232,.12);border:1px solid rgba(0,212,232,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .search-item-icon svg{width:13px;height:13px;stroke:var(--cyan);fill:none;stroke-width:2;stroke-linecap:round;}
+    .search-item-text{font-size:.82rem;color:var(--white);font-weight:500;}
+    .search-item-sub{font-size:.72rem;color:var(--gray);margin-top:1px;}
+    .search-empty{text-align:center;padding:18px;color:var(--gray);font-size:.82rem;}
+    @media(max-width:768px){.nav-search{display:none;}}
 
     .lang-switch {
       display: flex;
@@ -1506,6 +1528,18 @@
         <li><a href="booking.html" data-i18n="nav_contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
+        <div class="nav-search" id="navSearch">
+          <button class="search-toggle" id="searchToggle" aria-label="Search" onclick="toggleSearch()">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <div class="search-box" id="searchBox">
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input class="search-input" id="searchInput" type="text" placeholder="Search…" oninput="runSearch(this.value)" onkeydown="searchKey(event)"/>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+          </div>
+        </div>
 <div class="lang-switch">
           <span class="lang-btn active" onclick="switchLang('en')">ENG</span>
           <span class="lang-sep">|</span>
@@ -3229,6 +3263,50 @@
       setTimeout(typeHero, del ? 60 : 100);
     }
     typeHero();
+
+    // ---- SEARCH ----
+    const SEARCH_INDEX = [
+      {title:'The Problem',sub:'Parking congestion & lost revenue',href:'#problem',icon:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'},
+      {title:'Technology',sub:'AI-powered IoT sensor architecture',href:'#schema',icon:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'},
+      {title:'Solutions',sub:'WEP01, WEP02, WEP03 hardware',href:'#products',icon:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'},
+      {title:'Analytics',sub:'Revenue & occupancy dashboard',href:'#data',icon:'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>'},
+      {title:'Where We Are',sub:'Global presence across 50+ countries',href:'#where-we-are',icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'},
+      {title:'Contact',sub:'Request a demo or proposal',href:'#contact',icon:'<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>'},
+      {title:'PaveSense Nano — WEP01',sub:'Ultra-flat in-ground sensor, IP67',href:'products/pavesense-nano.html',icon:'<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>'},
+      {title:'CurbSight Tower — WEP02',sub:'Pole-mounted LPR camera system',href:'products/curbsight-tower.html',icon:'<line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/>'},
+      {title:'GroundSense Pro — WEP03',sub:'IP68 in-ground sensor, 4G/5G, 180d battery',href:'products/in-ground-version.html',icon:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>'},
+      {title:'Book a Demo',sub:'Schedule a live product demonstration',href:'booking.html',icon:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'},
+    ];
+
+    function toggleSearch(){
+      const box=document.getElementById('searchBox');
+      const btn=document.getElementById('searchToggle');
+      const inp=document.getElementById('searchInput');
+      const open=box.classList.toggle('open');
+      btn.classList.toggle('open',open);
+      if(open){inp.focus();runSearch('');}
+    }
+    function runSearch(q){
+      const res=document.getElementById('searchResults');
+      const items=q.trim()===''?SEARCH_INDEX:SEARCH_INDEX.filter(i=>
+        i.title.toLowerCase().includes(q.toLowerCase())||i.sub.toLowerCase().includes(q.toLowerCase()));
+      if(!items.length){res.innerHTML='<div class="search-empty">No results found</div>';return;}
+      res.innerHTML=items.map(i=>`
+        <a class="search-item" href="${i.href}" onclick="closeSearch()">
+          <div class="search-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">${i.icon}</svg></div>
+          <div><div class="search-item-text">${i.title}</div><div class="search-item-sub">${i.sub}</div></div>
+        </a>`).join('');
+    }
+    function closeSearch(){
+      document.getElementById('searchBox').classList.remove('open');
+      document.getElementById('searchToggle').classList.remove('open');
+      document.getElementById('searchInput').value='';
+    }
+    function searchKey(e){if(e.key==='Escape')closeSearch();}
+    document.addEventListener('click',e=>{
+      const ns=document.getElementById('navSearch');
+      if(ns&&!ns.contains(e.target))closeSearch();
+    });
 
     // ===== SCROLL REVEAL =====
 const rvEls=document.querySelectorAll('.rv');
