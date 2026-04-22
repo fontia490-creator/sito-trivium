@@ -1777,7 +1777,7 @@
 <section id="where-we-are">
   <div class="where-header rv">
     <div class="chip"><span class="blink"></span> <span data-i18n="where_badge">Global Presence</span></div>
-    <h2 class="h2" data-i18n="where_title"><em style="color:var(--cyan);font-style:normal;">Where</em> We Are</h2>
+    <h2 class="h2" id="where-title-el"><em style="color:var(--cyan);font-style:normal;">Where</em> We Are</h2>
     <div class="bar" style="margin:0 auto 20px;"></div>
     <p class="lead" style="margin:0 auto;" data-i18n="where_lead">Trivium is active across 5 continents. Drag to rotate, scroll to zoom, hover a dot to see the city.</p>
   </div>
@@ -2959,7 +2959,7 @@
         stat_cities:'Città Connesse', stat_spaces:'M+ Posti Monitorati', stat_revenue:'% Aumento Ricavi',
         typed_words:['Caos','Complessità','Congestione','Perdite'],
         typed_prefixes:['Dal','Dalla','Dalla','Dalle'],
-        where_badge:'Presenza Globale', where_title:'Dove Siamo',
+        where_badge:'Presenza Globale', where_title:'<em style="color:var(--cyan);font-style:normal;">Dove</em> Siamo',
         where_lead:'Trivium è attiva in 5 continenti, con team locali che garantiscono deployment rapido e supporto dedicato in ogni mercato.',
         where_hq_title:'Sede Centrale', where_hq_addr:'Shenzhen Technology Park<br>Nanshan District, Shenzhen, Cina',
         where_eu_title:'Ufficio Europeo', where_eu_addr:'Via Smart City 12<br>Milano, Italia',
@@ -3045,7 +3045,7 @@
         stat_cities:'Ciudades Conectadas', stat_spaces:'M+ Plazas Monitorizadas', stat_revenue:'% Crecimiento de Ingresos',
         typed_words:['Caos','Complejidad','Congestión','Pérdidas'],
         typed_prefixes:['Del','De la','De la','De las'],
-        where_badge:'Presencia Global', where_title:'Dónde Estamos',
+        where_badge:'Presencia Global', where_title:'<em style="color:var(--cyan);font-style:normal;">Dónde</em> Estamos',
         where_lead:'Trivium está activa en 5 continentes, con equipos locales que garantizan un despliegue rápido y soporte dedicado en cada mercado.',
         where_hq_title:'Sede Central', where_hq_addr:'Shenzhen Technology Park<br>Nanshan District, Shenzhen, China',
         where_eu_title:'Oficina Europea', where_eu_addr:'Via Smart City 12<br>Milán, Italia',
@@ -3202,6 +3202,10 @@
       nt(ml[0],'data_m1'); nt(mtr[0],'data_t1'); nt(ml[1],'data_m2'); nt(mtr[1],'data_t2');
       nt(ml[2],'data_m3'); nt(mtr[2],'data_t3'); nt(ml[3],'data_m4'); nt(mtr[3],'data_t4');
       nt(ml[4],'data_m5'); nt(mtr[4],'data_t5');
+
+      // WHERE WE ARE title (uses innerHTML for cyan "Where")
+      const whereTitleEl = document.getElementById('where-title-el');
+      if(whereTitleEl && t['where_title']) whereTitleEl.innerHTML = t['where_title'];
 
       // 8. CTA BAND
       const ctaChip=$('.cta-band .chip'); if(ctaChip){const sp=ctaChip.querySelector('span:not(.blink)'); nt(sp,'cta_badge');}
