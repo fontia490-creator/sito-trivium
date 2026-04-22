@@ -2676,18 +2676,22 @@
       <div class="form-card rv d2">
         <h3>Request a Custom Proposal</h3>
         <p>Fill in the form and our team will respond within 4 business hours.</p>
-        <form onsubmit="window.location.href='booking.html';return false;">
+        <form action="https://formsubmit.co/info@triviumholding.com" method="POST">
+          <input type="hidden" name="_subject" value="New Demo Request — Trivium Holdings"/>
+          <input type="hidden" name="_next" value="https://triviumholding.com/booking.html"/>
+          <input type="hidden" name="_captcha" value="false"/>
+          <input type="hidden" name="_template" value="table"/>
           <div class="fgrow">
-            <div class="fg"><label>Full Name *</label><input type="text" placeholder="John Smith" required/></div>
-            <div class="fg"><label>Work Email *</label><input type="email" placeholder="john@city.gov" required/></div>
+            <div class="fg"><label>Full Name *</label><input type="text" name="Full Name" placeholder="John Smith" required/></div>
+            <div class="fg"><label>Work Email *</label><input type="email" name="Work Email" placeholder="john@city.gov" required/></div>
           </div>
           <div class="fgrow">
-            <div class="fg"><label>Organisation</label><input type="text" placeholder="City of Rome"/></div>
-            <div class="fg"><label>Role</label><input type="text" placeholder="Head of Mobility"/></div>
+            <div class="fg"><label>Organisation</label><input type="text" name="Organisation" placeholder="City of Rome"/></div>
+            <div class="fg"><label>Role</label><input type="text" name="Role" placeholder="Head of Mobility"/></div>
           </div>
           <div class="fgrow">
             <div class="fg"><label>Organisation Type</label>
-              <select>
+              <select name="Organisation Type">
                 <option>— Select —</option>
                 <option>Municipal Authority</option>
                 <option>Private Operator</option>
@@ -2698,7 +2702,7 @@
               </select>
             </div>
             <div class="fg"><label>Spaces to Manage</label>
-              <select>
+              <select name="Spaces to Manage">
                 <option>— Estimate —</option>
                 <option>Under 100</option>
                 <option>100 – 500</option>
@@ -2709,10 +2713,10 @@
             </div>
           </div>
           <div class="fg"><label>Describe Your Project</label>
-            <textarea placeholder="E.g. We need to digitise our on-street parking across 3 zones to reduce enforcement costs and improve turnover..."></textarea>
+            <textarea name="Project Description" placeholder="E.g. We need to digitise our on-street parking across 3 zones to reduce enforcement costs and improve turnover..."></textarea>
           </div>
           <div class="fsub">
-            <button type="submit" class="btn btn-cyan" id="fBtn" onclick="window.location.href='booking.html';return false;">Send Request →</button>
+            <button type="submit" class="btn btn-cyan" id="fBtn">Send Request →</button>
             <span class="fnote">🔒 GDPR compliant · Response within 4 hours</span>
           </div>
         </form>
