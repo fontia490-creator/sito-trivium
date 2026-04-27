@@ -26,6 +26,12 @@
     .carousel-slide{min-width:100%;position:relative;}
     .carousel-slide{min-width:100%;position:relative;height:70vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#ffffff;}
     @media(max-width:768px){.carousel-wrap{min-height:40vh;}.carousel-slide{height:48vh;}}
+    @media(max-width:768px){
+      .vis-inner{padding:24px 16px !important;}
+      .vis-grid{grid-template-columns:repeat(3,1fr) !important;gap:10px !important;}
+      .vis-grid>div{border-radius:12px !important;}
+      .vis-grid>div>div:first-child{height:120px !important;}
+    }
     .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
     .carousel-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
     .slide-placeholder{width:100%;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card);border:2px dashed rgba(0,212,232,.2);gap:12px;color:var(--gray);}
@@ -90,23 +96,6 @@
     .slide-zoom-btn{position:absolute;bottom:14px;right:14px;z-index:20;width:36px;height:36px;border-radius:50%;background:rgba(6,14,26,.75);border:1px solid rgba(0,212,232,.5);color:#00d4e8;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .2s,transform .15s;}
     .slide-zoom-btn:hover{background:rgba(0,212,232,.25);transform:scale(1.1);}
     .slide-zoom-btn svg{width:16px;height:16px;stroke:#00d4e8;fill:none;stroke-width:2;stroke-linecap:round;}
-    /* PHOTO ROWS */
-    .photo-row{display:grid;grid-template-columns:1.4fr 1fr;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;background:var(--bg);cursor:zoom-in;}
-    .photo-row-img{overflow:hidden;position:relative;min-height:300px;}
-    .photo-row-img img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;transition:transform .35s;}
-    .photo-row:hover .photo-row-img img{transform:scale(1.04);}
-    .photo-row-text{padding:40px 36px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
-    .photo-row-text h3{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;width:fit-content;}
-    .photo-row-text p{font-size:.92rem;color:#fff;line-height:1.8;}
-    @media(max-width:768px){.photo-row{grid-template-columns:1fr;height:auto;}.photo-row-img{height:280px;order:-1;}.photo-row-text{padding:24px 20px;}}
-    .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
-    .how-card{background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;transition:border-color .2s;}
-    .how-card:hover{border-color:rgba(0,212,232,.4);}
-    .how-card-img{background:#ffffff;display:flex;align-items:center;justify-content:center;padding:20px;height:280px;}
-    .how-card-img img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;}
-    .how-card-text{padding:24px;}
-    .how-card-text h3{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;margin-bottom:12px;}
-    .how-card-text p{font-size:.88rem;color:#fff;line-height:1.75;}
   
   /* CONSTELLATION BACKGROUND */
   #particles {
@@ -326,30 +315,54 @@
       <p style="font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.85;" data-i18n="vis_lead">Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
     </div>
 
-    <!-- Feature grid -->
-    <div class="how-grid">
-      <div class="how-card" onclick="openLightbox('wep02-parking-license.jpg','WEP02 — License Plate Capture')">
-        <div class="how-card-img"><img src="wep02-parking-license.jpg" alt="WEP02 License Plate"/></div>
-        <div class="how-card-text">
-          <h3 data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
-          <p data-i18n="vis_f1_desc">Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.</p>
+    <!-- Feature blocks -->
+    <div class="vis-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;margin-bottom:60px;">
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 1 -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-license.jpg','Roadside & Perpendicular Parking — License Plate Capture')">
+          <img src="wep02-parking-license.jpg" alt="WEP02 License Plate Capture" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>🎥</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-license.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f1_desc">Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.</p>
         </div>
       </div>
-      <div class="how-card" onclick="openLightbox('wep02-parking-scenario.jpg','WEP02 — Parking Scenario')">
-        <div class="how-card-img"><img src="wep02-parking-scenario.jpg" alt="WEP02 Parking Scenario"/></div>
-        <div class="how-card-text">
-          <h3 data-i18n="vis_f2_title">HD Evidence Collection</h3>
-          <p data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.</p>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 2 -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-scenario.jpg','Comprehensive Detection — All On-Street Parking Scenarios')">
+          <img src="wep02-parking-scenario.jpg" alt="WEP02 Parking Scenario" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>📸</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-scenario.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f2_title">HD Evidence Collection</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.</p>
         </div>
       </div>
-      <div class="how-card" onclick="openLightbox('wep02-parking-full-process.jpg','WEP02 — Full Process')">
-        <div class="how-card-img"><img src="wep02-parking-full-process.jpg" alt="WEP02 Full Process"/></div>
-        <div class="how-card-text">
-          <h3 data-i18n="vis_f3_title">Full-Process Visualisation</h3>
-          <p data-i18n="vis_f3_desc">From arrival to departure, the entire parking journey is visualised on the city dashboard — space discovery, entry detection, session timing, payment verification and exit confirmation.</p>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+        <!-- IMAGE SLOT 3 — WEP02 Parking Full Process -->
+        <div style="height:220px;overflow:hidden;cursor:zoom-in;position:relative;" onclick="openLightbox('wep02-parking-full-process.jpg','WEP02 Parking Full Process')">
+          <img src="wep02-parking-full-process.jpg" alt="WEP02 Parking Full Process" class="lightbox-img" style="width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease;" onerror="this.parentElement.innerHTML='<div style=\'height:220px;background:linear-gradient(135deg,#0a1628,#1a2035);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8090a8;\'><span style=\'font-size:2rem;\'>🗺️</span><span style=\'font-size:.8rem;\'>Salva l\'immagine come: products/wep02-parking-full-process.jpg</span></div>'">
+          <div class="lightbox-overlay-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(0,0,0,.45);pointer-events:none;">
+            <span style="font-size:2rem;color:#fff;filter:drop-shadow(0 2px 8px #000);">&#128269;</span>
+          </div>
+        </div>
+        <div style="padding:24px;">
+          <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f3_title">Full-Process Visualisation</h3>
+          <p style="font-size:.88rem;color:#fff;line-height:1.65;" data-i18n="vis_f3_desc">From arrival to departure, the entire parking journey is visualised on the city dashboard — space discovery, entry detection, session timing, payment verification and exit confirmation.</p>
         </div>
       </div>
+
     </div>
+
+    <!-- image note removed -->
 
   </div>
 </section>
