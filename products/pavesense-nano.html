@@ -89,6 +89,15 @@
     .slide-zoom-btn{position:absolute;bottom:14px;right:14px;z-index:20;width:36px;height:36px;border-radius:50%;background:rgba(6,14,26,.75);border:1px solid rgba(0,212,232,.5);color:#00d4e8;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .2s,transform .15s;}
     .slide-zoom-btn:hover{background:rgba(0,212,232,.25);transform:scale(1.1);}
     .slide-zoom-btn svg{width:16px;height:16px;stroke:#00d4e8;fill:none;stroke-width:2;stroke-linecap:round;}
+    /* PHOTO ROWS */
+    .photo-row{display:grid;grid-template-columns:1fr 1fr;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;background:var(--bg);}
+    .photo-row-img{overflow:hidden;cursor:zoom-in;position:relative;min-height:300px;}
+    .photo-row-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
+    .photo-row-img:hover img{transform:scale(1.04);}
+    .photo-row-text{padding:40px 36px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
+    .photo-row-text h3{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;width:fit-content;}
+    .photo-row-text p{font-size:.92rem;color:#fff;line-height:1.8;}
+    @media(max-width:768px){.photo-row{grid-template-columns:1fr;}.photo-row-img{min-height:220px;order:-1;}.photo-row-text{padding:24px 20px;}}
     div[onclick*="openLightbox"]:hover img.lightbox-img{transform:scale(1.04);filter:brightness(1.08);}
     div[onclick*="openLightbox"]:hover .lightbox-overlay-hint{opacity:1!important;}
   
@@ -284,35 +293,29 @@
       <h2 class="section-title" data-i18n="hd_title">High-Definition Evidence Collection, <em>Unaffected by Weather</em></h2>
       <div class="bar" style="margin:12px auto 0;"></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+    <div style="display:flex;flex-direction:column;gap:0;">
 
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-1.png','WEP01 — HD Evidence 1')">
-        <div style="height:220px;overflow:hidden;">
-          <img src="wep01-hd-1.png" alt="HD Evidence 1" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap1_title">Adverse Weather Performance</p>
-          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap1_desc">LPR capture in heavy rain — plate clearly readable at >99% accuracy.</p>
+      <div class="photo-row" onclick="openLightbox('wep01-hd-1.png','WEP01 — HD Evidence 1')">
+        <div class="photo-row-img"><img src="wep01-hd-1.png" alt="HD Evidence 1"/></div>
+        <div class="photo-row-text">
+          <h3 data-i18n="hd_cap1_title">Adverse Weather Performance</h3>
+          <p data-i18n="hd_cap1_desc">LPR capture in heavy rain — plate clearly readable at &gt;99% accuracy.</p>
         </div>
       </div>
 
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-2.png','WEP01 — HD Evidence 2')">
-        <div style="height:220px;overflow:hidden;">
-          <img src="wep01-hd-2.png" alt="HD Evidence 2" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div class="photo-row" onclick="openLightbox('wep01-hd-2.png','WEP01 — HD Evidence 2')">
+        <div class="photo-row-text">
+          <h3 data-i18n="hd_cap2_title">Night Vision Capability</h3>
+          <p data-i18n="hd_cap2_desc">Full plate recognition at night with headlight glare — no false reads.</p>
         </div>
-        <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap2_title">Night Vision Capability</p>
-          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap2_desc">Full plate recognition at night with headlight glare — no false reads.</p>
-        </div>
+        <div class="photo-row-img"><img src="wep01-hd-2.png" alt="HD Evidence 2"/></div>
       </div>
 
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;" onclick="openLightbox('wep01-hd-3.png','WEP01 — HD Evidence 3')">
-        <div style="height:220px;overflow:hidden;">
-          <img src="wep01-hd-3.png" alt="HD Evidence 3" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap3_title">Daytime Precision</p>
-          <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap3_desc">Accurate capture under direct sunlight — sharp detail, zero overexposure.</p>
+      <div class="photo-row" onclick="openLightbox('wep01-hd-3.png','WEP01 — HD Evidence 3')">
+        <div class="photo-row-img"><img src="wep01-hd-3.png" alt="HD Evidence 3"/></div>
+        <div class="photo-row-text">
+          <h3 data-i18n="hd_cap3_title">Daytime Precision</h3>
+          <p data-i18n="hd_cap3_desc">Accurate capture under direct sunlight — sharp detail, zero overexposure.</p>
         </div>
       </div>
 
