@@ -31,19 +31,26 @@
       padding:5px 16px !important;white-space:nowrap !important;margin-bottom:10px !important;
     }
     @media(max-width:768px){
-      /* How It Works: 1 card per riga, foto sx + testo dx */
-      .vis-inner{padding:20px 14px !important;}
+      /* How It Works: foto sopra, testo sotto, card full-width */
+      .vis-inner{padding:16px 12px !important;}
       .vis-grid{grid-template-columns:1fr !important;gap:14px !important;}
-      .vis-grid>div{display:flex !important;flex-direction:row !important;border-radius:14px !important;overflow:hidden !important;}
-      .vis-grid>div>div:first-child{width:42% !important;min-width:42% !important;height:auto !important;min-height:150px !important;flex-shrink:0 !important;}
+      .vis-grid>div{display:flex !important;flex-direction:column !important;border-radius:14px !important;overflow:hidden !important;}
+      .vis-grid>div>div:first-child{width:100% !important;height:200px !important;flex-shrink:0 !important;}
       .vis-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;}
-      .vis-grid>div>div:last-child{padding:14px 14px !important;display:flex !important;flex-direction:column !important;justify-content:center !important;}
-      /* HD Evidence: 1 card per riga, foto sx + testo dx */
+      .vis-grid>div>div:last-child{padding:16px !important;}
+
+      /* HD Evidence: foto sx + testo dx, titoli proporzionati */
       .hd-grid{grid-template-columns:1fr !important;gap:14px !important;}
-      .hd-grid>div{display:flex !important;flex-direction:row !important;border-radius:14px !important;overflow:hidden !important;}
-      .hd-grid>div>div:first-child{width:42% !important;min-width:42% !important;height:auto !important;min-height:150px !important;flex-shrink:0 !important;}
-      .hd-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;}
-      .hd-grid>div>div:last-child{padding:14px 14px !important;display:flex !important;flex-direction:column !important;justify-content:center !important;}
+      .hd-grid>div{display:flex !important;flex-direction:row !important;border-radius:14px !important;overflow:hidden !important;min-height:120px !important;}
+      .hd-grid>div>div:first-child{width:40% !important;min-width:40% !important;flex-shrink:0 !important;}
+      .hd-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;display:block !important;}
+      .hd-grid>div>div:last-child{padding:12px !important;display:flex !important;flex-direction:column !important;justify-content:center !important;overflow:hidden !important;}
+      /* Titoli HD proporzionati */
+      [data-i18n="hd_cap1_title"],[data-i18n="hd_cap2_title"],[data-i18n="hd_cap3_title"]{
+        font-size:.6rem !important;padding:3px 8px !important;white-space:normal !important;
+        margin-bottom:6px !important;line-height:1.3 !important;
+      }
+      .hd-grid [data-i18n$="_desc"]{font-size:.7rem !important;line-height:1.4 !important;}
     }
     .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
     .carousel-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
