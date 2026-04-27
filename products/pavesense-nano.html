@@ -98,6 +98,14 @@
     .photo-row-text h3{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;width:fit-content;}
     .photo-row-text p{font-size:.92rem;color:#fff;line-height:1.8;}
     @media(max-width:768px){.photo-row{grid-template-columns:1fr;height:auto;}.photo-row-img{height:280px;order:-1;}.photo-row-text{padding:24px 20px;}}
+    .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+    .how-card{background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:zoom-in;transition:border-color .2s;}
+    .how-card:hover{border-color:rgba(0,212,232,.4);}
+    .how-card-img{background:#ffffff;display:flex;align-items:center;justify-content:center;padding:20px;height:280px;}
+    .how-card-img img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;}
+    .how-card-text{padding:24px;}
+    .how-card-text h3{font-size:.72rem;font-weight:800;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;margin-bottom:12px;}
+    .how-card-text p{font-size:.88rem;color:#fff;line-height:1.75;}
     div[onclick*="openLightbox"]:hover img.lightbox-img{transform:scale(1.04);filter:brightness(1.08);}
     div[onclick*="openLightbox"]:hover .lightbox-overlay-hint{opacity:1!important;}
   
@@ -254,17 +262,17 @@
         <div class="bar" style="margin:12px auto 24px;"></div>
         <p style="font-size:1.05rem;color:#ffffff;line-height:1.85;" data-i18n="vis_lead">Ultrasonic detection combined with camera linkage to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
       </div>
-      <div style="display:flex;flex-direction:column;">
-        <div class="photo-row" onclick="openLightbox('wep01-vis-1.jpg','WEP01 — Night Detection')">
-          <div class="photo-row-img"><img src="wep01-vis-1.jpg" alt="WEP01 Night Detection"/></div>
-          <div class="photo-row-text">
+      <div class="how-grid">
+        <div class="how-card" onclick="openLightbox('wep01-vis-1.jpg','WEP01 — Night Detection')">
+          <div class="how-card-img"><img src="wep01-vis-1.jpg" alt="WEP01 Night Detection"/></div>
+          <div class="how-card-text">
             <h3 data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
             <p data-i18n="vis_f1_desc">Ultrasonic detection combined with camera linkage provides continuous, real-time visibility of every parking space status — occupied, free, or reserved — with sub-2-second update frequency.</p>
           </div>
         </div>
-        <div class="photo-row" onclick="openLightbox('wep01-vis-2.jpg','WEP01 — Vehicle Exit Process')">
-          <div class="photo-row-img"><img src="wep01-vis-2.jpg" alt="WEP01 Vehicle Exit"/></div>
-          <div class="photo-row-text">
+        <div class="how-card" onclick="openLightbox('wep01-vis-2.jpg','WEP01 — Vehicle Exit Process')">
+          <div class="how-card-img"><img src="wep01-vis-2.jpg" alt="WEP01 Vehicle Exit"/></div>
+          <div class="how-card-text">
             <h3 data-i18n="vis_f2_title">HD Evidence Collection</h3>
             <p data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images for enforcement, dispute resolution and compliance reporting.</p>
           </div>
@@ -320,7 +328,7 @@
       <h2 class="section-title" data-i18n="an_title">Key Performance <em>Metrics</em></h2>
       <div class="bar" style="margin:12px auto 0;"></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+    <div style="display:grid;grid-template-columns:1fr;gap:14px;">
 
       <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
         <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">&gt;99%</div>
