@@ -1414,21 +1414,10 @@
 
 
     /* Video tap-to-play overlay (mobile) */
-    .vid-play-overlay {
-      position: absolute; inset: 0; z-index: 7;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(6,13,26,.35); cursor: pointer;
-      transition: opacity .3s; touch-action: manipulation;
-    }
-    .vid-play-overlay.hidden { opacity: 0; pointer-events: none; }
-    .vid-play-icon {
-      width: 54px; height: 54px; border-radius: 50%;
-      background: rgba(0,212,232,.18); border: 2px solid rgba(0,212,232,.6);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform .2s, background .2s;
-    }
-    .vid-play-icon svg { width: 22px; height: 22px; fill: white; margin-left: 4px; }
-    .vid-play-overlay:active .vid-play-icon { transform: scale(0.92); background: rgba(0,212,232,.4); }
+    .vid-play-overlay { display: none !important; }
+    .vcard-media video::-webkit-media-controls { display: none !important; }
+    .vcard-media video::-webkit-media-controls-start-playback-button { display: none !important; }
+    .vcard-media video::-webkit-media-controls-panel { display: none !important; }
 
     /* iOS select fix */
     .fg select {
