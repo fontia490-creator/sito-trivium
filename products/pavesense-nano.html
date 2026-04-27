@@ -39,6 +39,9 @@
       .vis-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;}
       .vis-grid>div>div:last-child{padding:16px !important;}
 
+      /* Key Performance Metrics: 2 per riga */
+      .an-grid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
+
       /* HD Evidence: foto sx + testo dx, titoli proporzionati */
       .hd-grid{grid-template-columns:1fr !important;gap:14px !important;}
       .hd-grid>div{display:flex !important;flex-direction:row !important;border-radius:14px !important;overflow:hidden !important;min-height:120px !important;}
@@ -355,7 +358,7 @@
       <h2 class="section-title" data-i18n="an_title">Key Performance <em>Metrics</em></h2>
       <div class="bar" style="margin:12px auto 0;"></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
+    <div class="an-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;">
 
       <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 20px;text-align:center;">
         <div style="font-size:2.6rem;font-weight:900;color:var(--cyan);line-height:1;">&gt;99%</div>
