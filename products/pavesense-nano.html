@@ -86,6 +86,9 @@
     .inst-photo:hover{transform:scale(1.04);filter:brightness(1.1);z-index:1;}
     #lightbox{animation:lbFadeIn .2s ease;}
     @keyframes lbFadeIn{from{opacity:0;}to{opacity:1;}}
+    .slide-zoom-btn{position:absolute;bottom:14px;right:14px;z-index:20;width:36px;height:36px;border-radius:50%;background:rgba(6,14,26,.75);border:1px solid rgba(0,212,232,.5);color:#00d4e8;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .2s,transform .15s;}
+    .slide-zoom-btn:hover{background:rgba(0,212,232,.25);transform:scale(1.1);}
+    .slide-zoom-btn svg{width:16px;height:16px;stroke:#00d4e8;fill:none;stroke-width:2;stroke-linecap:round;}
     div[onclick*="openLightbox"]:hover img.lightbox-img{transform:scale(1.04);filter:brightness(1.08);}
     div[onclick*="openLightbox"]:hover .lightbox-overlay-hint{opacity:1!important;}
   
@@ -144,15 +147,19 @@
   <div class="carousel-track" id="carouselTrack">
     <div class="carousel-slide" style="background:#ffffff;">
       <img class="slide-fg" src="wep01-top.png" alt="WEP01 Top View">
+      <button class="slide-zoom-btn" onclick="openLightbox('wep01-top.png','WEP01 Top View')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
     </div>
     <div class="carousel-slide" style="background:#ffffff;">
       <img class="slide-fg" src="wep01-side.png" alt="WEP01 Side View">
+      <button class="slide-zoom-btn" onclick="openLightbox('wep01-side.png','WEP01 Side View')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
     </div>
     <div class="carousel-slide" style="background:#ffffff;">
       <img class="slide-fg" src="wep01-angle.png" alt="WEP01 Angle View">
+      <button class="slide-zoom-btn" onclick="openLightbox('wep01-angle.png','WEP01 Angle View')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
     </div>
     <div class="carousel-slide" style="background:#ffffff;">
       <img class="slide-fg" src="wep01-flat.png" alt="WEP01 Bottom View">
+      <button class="slide-zoom-btn" onclick="openLightbox('wep01-flat.png','WEP01 Bottom View')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
     </div>
   </div>
   <button class="carousel-btn prev" id="prevBtn">&#8249;</button>
