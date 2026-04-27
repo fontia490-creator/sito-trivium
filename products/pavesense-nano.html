@@ -47,18 +47,21 @@
       .an-grid>div>div:nth-child(2){font-size:.56rem !important;margin:3px 0 2px !important;}
       .an-grid>div>div:nth-child(3){font-size:.54rem !important;}
 
-      /* HD Evidence: foto sx + testo dx, titoli proporzionati */
-      .hd-grid{grid-template-columns:1fr !important;gap:14px !important;}
-      .hd-grid>div{display:flex !important;flex-direction:row !important;border-radius:14px !important;overflow:hidden !important;min-height:120px !important;}
-      .hd-grid>div>div:first-child{width:40% !important;min-width:40% !important;flex-shrink:0 !important;}
+      /* HD Evidence: foto sopra, titolo azzurro, descrizione bianca */
+      .hd-grid{grid-template-columns:1fr !important;gap:16px !important;}
+      .hd-grid>div{display:flex !important;flex-direction:column !important;border-radius:14px !important;overflow:hidden !important;}
+      .hd-grid>div>div:first-child{width:100% !important;height:200px !important;flex-shrink:0 !important;}
       .hd-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;display:block !important;}
-      .hd-grid>div>div:last-child{padding:12px !important;display:flex !important;flex-direction:column !important;justify-content:center !important;overflow:hidden !important;}
-      /* Titoli HD proporzionati */
+      .hd-grid>div>div:last-child{padding:14px 16px !important;}
+      /* Titolo azzurro con cerchio */
       [data-i18n="hd_cap1_title"],[data-i18n="hd_cap2_title"],[data-i18n="hd_cap3_title"]{
-        font-size:.6rem !important;padding:3px 8px !important;white-space:normal !important;
-        margin-bottom:6px !important;line-height:1.3 !important;
+        font-size:.68rem !important;padding:4px 12px !important;white-space:normal !important;
+        margin-bottom:8px !important;line-height:1.3 !important;display:inline-block !important;
       }
-      .hd-grid [data-i18n$="_desc"]{font-size:.7rem !important;line-height:1.4 !important;}
+      /* Testo descrizione bianco */
+      .hd-grid [data-i18n="hd_cap1_desc"],.hd-grid [data-i18n="hd_cap2_desc"],.hd-grid [data-i18n="hd_cap3_desc"]{
+        font-size:.78rem !important;line-height:1.55 !important;color:#ffffff !important;
+      }
     }
     .carousel-slide .slide-fg{max-height:90%;max-width:90%;width:auto;height:auto;object-fit:contain;display:block;}
     .carousel-slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
