@@ -654,9 +654,17 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLigh
     });
     localStorage.setItem('trivium_lang',lang);
   }
-  window.setLang=setLang;
+  const _origSetLang = setLang;
+  window.setLang = function(lang){
+    _origSetLang(lang);
+    ['hd_cap1_title','hd_cap2_title','hd_cap3_title'].forEach(k=>{
+      const el=document.querySelector(`[data-i18n="${k}"]`);
+      if(!el) return;
+      el.style.cssText='font-size:.72rem;font-weight:800;text-transform:uppercase;color:#00d4e8;display:inline-block;border:2px solid #00d4e8;border-radius:50px;padding:5px 16px;white-space:nowrap;margin:0 0 10px;';
+    });
+  };
   const saved=localStorage.getItem('trivium_lang')||'en';
-  setLang(saved);
+  window.setLang(saved);
 })();
 </script>
 
