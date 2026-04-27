@@ -36,8 +36,8 @@
       .vis-inner{padding:16px 12px !important;}
       .vis-grid{grid-template-columns:1fr !important;gap:14px !important;}
       .vis-grid>div{display:flex !important;flex-direction:column !important;border-radius:14px !important;overflow:hidden !important;}
-      .vis-grid>div>div:first-child{width:100% !important;height:200px !important;flex-shrink:0 !important;}
-      .vis-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:cover !important;}
+      .vis-grid>div>div:first-child{width:100% !important;height:200px !important;flex-shrink:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;background:#0a0e14 !important;}
+      .vis-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:contain !important;object-position:center !important;display:block !important;}
       .vis-grid>div>div:last-child{padding:16px !important;}
 
       /* Key Performance Metrics: 2 per riga, caselle piccole */
@@ -50,8 +50,10 @@
       /* HD Evidence: foto sopra, titolo azzurro, descrizione bianca */
       .hd-grid{grid-template-columns:1fr !important;gap:16px !important;}
       .hd-grid>div{display:flex !important;flex-direction:column !important;border-radius:14px !important;overflow:hidden !important;}
-      .hd-grid>div>div:first-child{width:100% !important;height:220px !important;flex-shrink:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;background:#0a0e14 !important;}
-      .hd-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:contain !important;display:block !important;}
+      .hd-grid>div>div:first-child{width:100% !important;height:220px !important;flex-shrink:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;background:#0a0e14 !important;position:relative !important;}
+      .hd-grid>div>div:first-child img{width:100% !important;height:100% !important;object-fit:contain !important;object-position:center !important;display:block !important;}
+      /* Lente sulla foto, non sul testo */
+      .hd-grid>div .zoom-lens,.vis-grid>div .zoom-lens{top:10px !important;bottom:auto !important;}
       .hd-grid>div>div:last-child{padding:14px 16px !important;}
       /* Titolo azzurro con cerchio */
       [data-i18n="hd_cap1_title"],[data-i18n="hd_cap2_title"],[data-i18n="hd_cap3_title"]{
