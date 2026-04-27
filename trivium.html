@@ -3503,35 +3503,33 @@ function togBill(){
 
     // ===== VIDEO: LAZY LOAD + MUTE BUTTON + TAP-TO-PLAY =====
     (function initVideos() {
-      const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+      const allVcardVids = document.querySelectorAll('.vcard-media video');
 
+      // IntersectionObserver: play when card enters viewport, no button needed
+      const vo = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          const v = e.target;
+          v.muted = true;
+          if (e.isIntersecting) { v.play().catch(()=>{}); }
+          else { v.pause(); }
+        });
+      }, { threshold: 0.2 });
+
+      allVcardVids.forEach(v => {
+        v.muted = true;
+        v.play().catch(()=>{});
+        vo.observe(v);
+      });
+
+      // Transparent tap-to-play overlay (no visible button — just starts video on any tap)
       document.querySelectorAll('.vcard-media').forEach(media => {
         const vid = media.querySelector('video');
         if (!vid) return;
-
-        // Autoplay on touch devices (no overlay)
-        if (isTouchDevice) {
-          vid.muted = true;
-          vid.play().catch(()=>{});
-        }
+        const tap = document.createElement('div');
+        tap.style.cssText = 'position:absolute;inset:0;z-index:8;cursor:pointer;';
+        tap.addEventListener('click', () => { vid.muted=true; vid.play().catch(()=>{}); tap.remove(); });
+        media.appendChild(tap);
       });
-
-      // Lazy-load videos with IntersectionObserver
-      const vidObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            const v = e.target;
-            if (v.dataset.src) {
-              v.querySelector('source').src = v.dataset.src;
-              v.load();
-              v.play().catch(()=>{});
-            }
-            vidObs.unobserve(v);
-          }
-        });
-      }, { threshold: 0.15 });
-
-      document.querySelectorAll('video[data-src]').forEach(v => vidObs.observe(v));
     })();
 
     // ===== GLOBE: PINCH-TO-ZOOM (touch two fingers) =====
