@@ -3520,31 +3520,10 @@ function togBill(){
         const vid = media.querySelector('video');
         if (!vid) return;
 
-        // On touch devices: add play-overlay (video starts paused until tap)
+        // Autoplay on touch devices (no overlay)
         if (isTouchDevice) {
-          const overlay = document.createElement('div');
-          overlay.className = 'vid-play-overlay';
-          overlay.innerHTML = '<div class="vid-play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>';
-          media.appendChild(overlay);
-
-          // Try autoplay; show overlay only if blocked
-          const playPromise = vid.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              overlay.classList.add('hidden');
-            }).catch(() => {
-              overlay.classList.remove('hidden');
-            });
-          }
-
-          overlay.addEventListener('click', function() {
-            vid.play().then(() => overlay.classList.add('hidden'));
-          });
-          // Tap on video also toggles pause
-          vid.addEventListener('click', function(e) {
-            if (vid.paused) { vid.play(); overlay.classList.add('hidden'); }
-            else { vid.pause(); overlay.classList.remove('hidden'); }
-          });
+          vid.muted = true;
+          vid.play().catch(()=>{});
         }
       });
 
