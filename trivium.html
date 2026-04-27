@@ -1415,9 +1415,12 @@
 
     /* Video tap-to-play overlay (mobile) */
     .vid-play-overlay { display: none !important; }
-    .vcard-media video::-webkit-media-controls { display: none !important; }
-    .vcard-media video::-webkit-media-controls-start-playback-button { display: none !important; }
-    .vcard-media video::-webkit-media-controls-panel { display: none !important; }
+    @media(max-width:768px){
+      .vcard-media video::-webkit-media-controls { display:none !important; }
+      .vcard-media video::-webkit-media-controls-start-playback-button { display:none !important; }
+      .vcard-media video::-webkit-media-controls-panel { display:none !important; }
+      .vcard-media video { -webkit-appearance:none; }
+    }
 
     /* iOS select fix */
     .fg select {
@@ -3503,9 +3506,28 @@ function togBill(){
 
     // ===== VIDEO: LAZY LOAD + MUTE BUTTON + TAP-TO-PLAY =====
     (function initVideos() {
+      const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
       const allVcardVids = document.querySelectorAll('.vcard-media video');
 
-      // IntersectionObserver: play when card enters viewport, no button needed
+      // Desktop: hover to play
+      if (!isMobile) {
+        document.querySelectorAll('.vcard').forEach(card => {
+          const vid = card.querySelector('video');
+          if (!vid) return;
+          card.addEventListener('mouseenter', () => { vid.muted=true; vid.play().catch(()=>{}); });
+          card.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime=0; });
+        });
+        return;
+      }
+
+      // Mobile only: unlock autoplay on first touch anywhere on page
+      const unlockAll = () => {
+        allVcardVids.forEach(v => { v.muted=true; v.play().catch(()=>{}); });
+        document.removeEventListener('touchstart', unlockAll);
+      };
+      document.addEventListener('touchstart', unlockAll, {passive:true});
+
+      // IntersectionObserver: play/pause as cards scroll in and out
       const vo = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           const v = e.target;
@@ -3513,23 +3535,9 @@ function togBill(){
           if (e.isIntersecting) { v.play().catch(()=>{}); }
           else { v.pause(); }
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.25 });
 
-      allVcardVids.forEach(v => {
-        v.muted = true;
-        v.play().catch(()=>{});
-        vo.observe(v);
-      });
-
-      // Transparent tap-to-play overlay (no visible button — just starts video on any tap)
-      document.querySelectorAll('.vcard-media').forEach(media => {
-        const vid = media.querySelector('video');
-        if (!vid) return;
-        const tap = document.createElement('div');
-        tap.style.cssText = 'position:absolute;inset:0;z-index:8;cursor:pointer;';
-        tap.addEventListener('click', () => { vid.muted=true; vid.play().catch(()=>{}); tap.remove(); });
-        media.appendChild(tap);
-      });
+      allVcardVids.forEach(v => { v.muted=true; v.play().catch(()=>{}); vo.observe(v); });
     })();
 
     // ===== GLOBE: PINCH-TO-ZOOM (touch two fingers) =====
