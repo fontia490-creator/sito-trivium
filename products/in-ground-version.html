@@ -249,24 +249,20 @@
         <div class="bar" style="margin:12px auto 24px;"></div>
         <p style="font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.85;" data-i18n="vis_lead">Wide-angle camera combined with ultrasonic/radar to achieve real-time parking space status monitoring. High-definition evidence collection, unaffected by weather.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
-          <div style="height:220px;overflow:hidden;border-bottom:1px solid rgba(0,212,232,.2);cursor:zoom-in;" onclick="openLightbox('wep03-vis-1.jpg','WEP03 — Real-Time Monitoring')">
-            <img src="wep03-vis-1.jpg" alt="WEP03 Real-Time Monitoring" style="width:100%;height:100%;object-fit:cover;display:block;"/>
-          </div>
-          <div style="padding:24px;">
-            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
-            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f1_desc">Wide-angle camera combined with ultrasonic/radar linkage provides continuous, real-time visibility of every parking space — occupied, free, or reserved — with sub-2-second update frequency.</p>
+      <div style="display:flex;flex-direction:column;">
+        <div class="photo-row" onclick="openLightbox('wep03-vis-1.jpg','WEP03 — Real-Time Monitoring')">
+          <div class="photo-row-img"><img src="wep03-vis-1.jpg" alt="WEP03 Real-Time Monitoring"/></div>
+          <div class="photo-row-text">
+            <h3 data-i18n="vis_f1_title">Real-Time Space Status Monitoring</h3>
+            <p data-i18n="vis_f1_desc">Wide-angle camera combined with ultrasonic/radar linkage provides continuous, real-time visibility of every parking space — occupied, free, or reserved — with sub-2-second update frequency.</p>
           </div>
         </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
-          <div style="height:220px;overflow:hidden;border-bottom:1px solid rgba(0,212,232,.2);cursor:zoom-in;" onclick="openLightbox('wep03-vis-2.jpg','WEP03 — HD Evidence Collection')">
-            <img src="wep03-vis-2.jpg" alt="WEP03 HD Evidence Collection" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+        <div class="photo-row" onclick="openLightbox('wep03-vis-2.jpg','WEP03 — HD Evidence Collection')">
+          <div class="photo-row-text">
+            <h3 data-i18n="vis_f2_title">HD Evidence Collection</h3>
+            <p data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images — plate, colour, date and time — for enforcement and compliance reporting.</p>
           </div>
-          <div style="padding:24px;">
-            <h3 style="font-size:.72rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;color:var(--cyan);display:inline-block;border:2px solid var(--cyan);border-radius:50px;padding:5px 16px;white-space:nowrap;" data-i18n="vis_f2_title">HD Evidence Collection</h3>
-            <p style="font-size:.88rem;color:#ffffff;line-height:1.65;margin-top:12px;" data-i18n="vis_f2_desc">High-definition evidence collection, unaffected by weather. Every entry, exit and violation is captured with timestamped HD images — plate, colour, date and time — for enforcement and compliance reporting.</p>
-          </div>
+          <div class="photo-row-img"><img src="wep03-vis-2.jpg" alt="WEP03 HD Evidence Collection"/></div>
         </div>
       </div>
     </div>
