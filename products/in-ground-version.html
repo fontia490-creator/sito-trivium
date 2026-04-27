@@ -24,6 +24,12 @@
     .carousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);}
     .carousel-slide{min-width:100%;position:relative;height:80vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#ffffff;}
     @media(max-width:768px){.carousel-wrap{min-height:40vh;}.carousel-slide{height:48vh;}}
+    [data-i18n="hd_cap1_title"],[data-i18n="hd_cap2_title"],[data-i18n="hd_cap3_title"]{
+      font-size:.72rem !important;font-weight:800 !important;text-transform:uppercase !important;
+      color:#00d4e8 !important;display:inline-block !important;
+      border:2px solid #00d4e8 !important;border-radius:50px !important;
+      padding:5px 16px !important;white-space:nowrap !important;margin-bottom:10px !important;
+    }
     @media(max-width:768px){
       .vis-inner{padding:24px 16px !important;}
       .vis-grid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
@@ -287,7 +293,7 @@
           <img src="wep03-hd-1.jpg" alt="WEP03 HD Evidence 1" style="width:100%;height:100%;object-fit:cover;display:block;"/>
         </div>
         <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap1_title">Adverse Weather Performance</p>
+          <div data-i18n="hd_cap1_title">Adverse Weather Performance</div>
           <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap1_desc">LPR capture in heavy rain — plate clearly readable at ≥97% day accuracy.</p>
         </div>
       </div>
@@ -296,7 +302,7 @@
           <img src="wep03-hd-2.jpg" alt="WEP03 HD Evidence 2" style="width:100%;height:100%;object-fit:cover;display:block;"/>
         </div>
         <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap2_title">Night Vision Capability</p>
+          <div data-i18n="hd_cap2_title">Night Vision Capability</div>
           <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap2_desc">Full plate recognition at night — ≥94% accuracy even with headlight glare.</p>
         </div>
       </div>
@@ -305,7 +311,7 @@
           <img src="wep03-hd-3.jpg" alt="WEP03 HD Evidence 3" style="width:100%;height:100%;object-fit:cover;display:block;"/>
         </div>
         <div style="padding:16px 20px;">
-          <p style="font-size:.82rem;font-weight:700;color:#ffffff;margin:0 0 4px;" data-i18n="hd_cap3_title">Daytime Precision</p>
+          <div data-i18n="hd_cap3_title">Daytime Precision</div>
           <p style="font-size:.78rem;color:rgba(255,255,255,.65);margin:0;line-height:1.5;" data-i18n="hd_cap3_desc">Accurate capture under direct sunlight — sharp detail, zero overexposure.</p>
         </div>
       </div>
