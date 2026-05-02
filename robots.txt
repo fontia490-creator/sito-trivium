@@ -3,4 +3,4 @@ Allow: /
 Disallow: /uploads/
 Disallow: /outputs/
 
-Sitemap: https://triviumholding.com/sitemap.xml
+Sitemap: https://www.triviumholding.com/sitemap.xml
