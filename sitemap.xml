@@ -1,21 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://triviumholding.com/</loc>
-    <lastmod>2026-04-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home / Main page -->
   <url>
     <loc>https://triviumholding.com/trivium.html</loc>
-    <lastmod>2026-04-14</lastmod>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://triviumholding.com/trivium.html"/>
+    <xhtml:link rel="alternate" hreflang="it"        href="https://triviumholding.com/trivium.html"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://triviumholding.com/trivium.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://triviumholding.com/trivium.html"/>
+  </url>
+
+  <!-- Root redirect -->
+  <url>
+    <loc>https://triviumholding.com/</loc>
+    <lastmod>2026-05-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Product: PaveSense Nano WEP01 -->
+  <url>
+    <loc>https://triviumholding.com/products/pavesense-nano.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://triviumholding.com/products/pavesense-nano.html"/>
+    <xhtml:link rel="alternate" hreflang="it"        href="https://triviumholding.com/products/pavesense-nano.html"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://triviumholding.com/products/pavesense-nano.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://triviumholding.com/products/pavesense-nano.html"/>
+  </url>
+
+  <!-- Product: CurbSight Tower WEP02 -->
+  <url>
+    <loc>https://triviumholding.com/products/curbsight-tower.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://triviumholding.com/products/curbsight-tower.html"/>
+    <xhtml:link rel="alternate" hreflang="it"        href="https://triviumholding.com/products/curbsight-tower.html"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://triviumholding.com/products/curbsight-tower.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://triviumholding.com/products/curbsight-tower.html"/>
+  </url>
+
+  <!-- Product: GroundSense Pro WEP03 -->
+  <url>
+    <loc>https://triviumholding.com/products/in-ground-version.html</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://triviumholding.com/products/in-ground-version.html"/>
+    <xhtml:link rel="alternate" hreflang="it"        href="https://triviumholding.com/products/in-ground-version.html"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://triviumholding.com/products/in-ground-version.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://triviumholding.com/products/in-ground-version.html"/>
+  </url>
+
+  <!-- Booking / Demo -->
   <url>
     <loc>https://triviumholding.com/booking.html</loc>
-    <lastmod>2026-04-14</lastmod>
+    <lastmod>2026-05-02</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
+
 </urlset>
